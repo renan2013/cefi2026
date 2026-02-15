@@ -1,0 +1,169 @@
+<?php
+session_start();
+require_once __DIR__ . '/../../auth/check_auth.php';
+require_once __DIR__ . '/../../config/database.php';
+
+$page_title = 'Crear Nueva Publicación';
+$error = '';
+
+// Fetch categories for the dropdown
+try {
+    $category_stmt = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
+    $categories = $category_stmt->fetchAll();
+} catch (PDOException $e) {
+    die("Could not fetch categories: " . $e->getMessage());
+}
+
+// Handle form submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $title = $_POST['title'] ?? '';
+    $category_id = $_POST['category_id'] ?? null;
+    $synopsis = $_POST['synopsis'] ?? '';
+    $content = $_POST['content'] ?? '';
+    $orden = $_POST['orden'] ?? 0; // Captura el nuevo campo 'orden'
+    $main_image_path = '';
+
+    if (empty($title) || empty($category_id)) {
+        $error = 'El título y la categoría son obligatorios.';
+    } else {
+        // Handle file upload
+        if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = __DIR__ . '/../../public/uploads/images/';
+            $file_name = uniqid('post_', true) . '-' . basename($_FILES['main_image']['name']);
+            $target_file = $upload_dir . $file_name;
+
+            if (move_uploaded_file($_FILES['main_image']['tmp_name'], $target_file)) {
+                $main_image_path = 'public/uploads/images/' . $file_name;
+            } else {
+                $error = 'Fallo al subir la imagen principal.';
+            }
+        }
+
+        if (empty($error)) {
+            try {
+                $stmt = $pdo->prepare(
+                    "INSERT INTO posts (title, id_category, synopsis, content, main_image, id_user, orden) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                );
+                $stmt->execute([$title, $category_id, $synopsis, $content, $main_image_path, $_SESSION['user_id'], $orden]);
+                
+                header('Location: index.php');
+                exit;
+            } catch (PDOException $e) {
+                $error = 'Error de base de datos: ' . $e->getMessage();
+            }
+        }
+    }
+}
+
+require_once __DIR__ . '/../partials/header.php';
+?>
+
+<form action="create.php" method="POST" enctype="multipart/form-data" class="styled-form">
+    <?php if ($error): ?>
+        <div class="error-message"><?php echo $error; ?></div>
+    <?php endif; ?>
+
+    <div class="form-group">
+        <label for="category_id">Categoría</label>
+        <select id="category_id" name="category_id" required class="form-control">
+            <option value="">-- Seleccione la categoría --</option>
+            <?php foreach ($categories as $category): ?>
+                <option value="<?php echo $category['id_category']; ?>"><?php echo htmlspecialchars($category['name']); ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+
+    <div class="form-group">
+        <label for="title">Título - Nombre - Cliente - Producto - Marca</label>
+        <input type="text" id="title" name="title" required class="form-control">
+    </div>
+
+    <div class="form-group">
+        <label for="synopsis">Sintesis - Testimonio - Resumen</label>
+        <textarea id="synopsis" name="synopsis" rows="3" class="form-control"></textarea>
+        <small>Una corta descripcción.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="content">Contenido Principal</label>
+        <textarea id="content" name="content" rows="10" class="form-control"></textarea>
+        <small>El contenido completo de la publicación. Esto puede no mostrarse para todas las categorías (por ejemplo, Galerías).</small>
+    </div>
+
+    <div class="form-group">
+        <label for="main_image">Imagen Principal</label>
+        <input type="file" id="main_image" name="main_image" class="form-control">
+        <small>La imagen principal para el encabezado o miniatura de la publicación.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="orden">Orden de Visualización</label>
+        <input type="number" id="orden" name="orden" value="0" class="form-control">
+        <small>Número para ordenar las publicaciones (menor número = primero).</small>
+    </div>
+
+    <div class="form-actions">
+        <button type="submit" class="btn-submit">Crear Publicación</button>
+        <a href="index.php" class="btn-cancel">Cancelar</a>
+    </div>
+</form>
+
+<!-- Form to add new categories -->
+<div class="category-adder styled-form">
+    <h4>Añadir Nueva Categoría</h4>
+    <form action="create_category.php" method="POST">
+        <div class="form-group">
+            <input type="text" name="category_name" placeholder="Nuevo nombre de categoría" required class="form-control">
+            <button type="submit" class="btn-submit">Añadir</button>
+        </div>
+    </form>
+</div>
+
+<!-- List existing categories with delete buttons -->
+<div class="styled-form" style="margin-top: 20px;">
+    <h4>Categorías Existentes</h4>
+    <?php if (empty($categories)): ?>
+        <p>No hay categorías creadas aún.</p>
+    <?php else: ?>
+        <ul class="category-list">
+            <?php foreach ($categories as $category): ?>
+                <li>
+                    <?php echo htmlspecialchars($category['name']); ?>
+                    <a href="delete_category.php?id=<?php echo $category['id_category']; ?>" class="btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría? Esto también eliminará todas las publicaciones asociadas.');">Eliminar</a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    <?php endif; ?>
+</div>
+
+<style>
+    .category-list { list-style: none; padding: 0; }
+    .category-list li { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
+    .category-list li:last-child { border-bottom: none; }
+    .btn-delete { background-color: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
+    .btn-delete:hover { background-color: #c82333; }
+</style>
+
+<!-- TinyMCE -->
+<script src="<?php echo BASE_URL; ?>/admin/assets/js/tinymce/js/tinymce/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+      selector: 'textarea#content',
+      plugins: 'code table lists image link',
+      toolbar: 'undo redo | blocks | bold italic | alignleft aligncenter alignright | indent outdent | bullist numlist | code | table | link image',
+
+      // Image Upload Configuration
+      images_upload_url: 'image_uploader.php',
+      automatic_uploads: true,
+      file_picker_types: 'image',
+      
+      // Crucial for correct image display
+      relative_urls: false,
+      remove_script_host: false,
+      convert_urls: false
+    });
+</script>
+
+<?php
+require_once __DIR__ . '/../partials/footer.php';
+?>

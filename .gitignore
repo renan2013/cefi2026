@@ -1,0 +1,16 @@
+# Ignorar la carpeta de metadatos de Gemini CLI
+.gemini/
+
+# Ignorar archivos de sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos de logs
+*.log
+
+# En el futuro, si usas Composer, las dependencias se ignorarían
+/vendor/
+
+# Archivos de entorno que podrían contener claves secretas
+.env
+.env.local
