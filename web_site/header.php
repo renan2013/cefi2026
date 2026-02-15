@@ -52,7 +52,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home</a>
+                <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home...</a>
                 <a href="about.php" class="nav-item nav-link <?php echo ($currentPage == 'about.php') ? 'active' : ''; ?>">About</a>
                 <a href="courses.php" class="nav-item nav-link <?php echo ($currentPage == 'courses.php') ? 'active' : ''; ?>">Courses</a>
                 <div class="nav-item dropdown">
