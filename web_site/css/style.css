@@ -1,8 +1,16 @@
 /********** Template CSS **********/
 :root {
-    --primary: #06BBCC;
-    --light: #F0FBFC;
-    --dark: #181d38;
+    --color-principal-oscuro: #1A303D;
+    --color-institucional: #0072B1;
+    --color-acento-verde: #9BC355;
+    --color-acento-claro: #6EB5E5;
+    --color-fondo: #FFFFFF;
+    --color-texto: #333333;
+
+    /* Variables anteriores mapeadas a las nuevas */
+    --primary: var(--color-institucional);
+    --light: var(--color-fondo);
+    --dark: var(--color-principal-oscuro);
 }
 
 .fw-medium {
@@ -49,6 +57,17 @@
     color: #FFFFFF;
 }
 
+/* Nuevos colores de botones */
+.btn-primary {
+    background-color: var(--color-acento-verde) !important;
+    border-color: var(--color-acento-verde) !important;
+}
+
+.btn-primary:hover {
+    background-color: #8ab048 !important;
+    border-color: #8ab048 !important;
+}
+
 .btn-square {
     width: 38px;
     height: 38px;
@@ -77,6 +96,10 @@
 
 
 /*** Navbar ***/
+.navbar {
+    background-color: var(--color-principal-oscuro) !important;
+}
+
 .navbar .dropdown-toggle::after {
     border: none;
     content: "\f107";
@@ -89,15 +112,16 @@
 .navbar-light .navbar-nav .nav-link {
     margin-right: 30px;
     padding: 25px 0;
-    color: #FFFFFF;
     font-size: 15px;
     text-transform: uppercase;
     outline: none;
+    color: #FFFFFF;
+    font-weight: 500;
 }
 
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active {
-    color: var(--primary);
+    color: var(--color-acento-claro);
 }
 
 @media (max-width: 991.98px) {
@@ -107,18 +131,13 @@
     }
 
     .navbar-light .navbar-nav {
-        border-top: 1px solid #EEEEEE;
+        border-top: 1px solid rgba(255, 255, 255, .1);
     }
 }
 
 .navbar-light .navbar-brand,
 .navbar-light a.btn {
     height: 75px;
-}
-
-.navbar-light .navbar-nav .nav-link {
-    color: var(--dark);
-    font-weight: 500;
 }
 
 .navbar-light.sticky-top {
@@ -197,7 +216,7 @@
 }
 
 .page-header {
-    background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url(../img/carousel-1.jpg);
+    background: linear-gradient(rgba(26, 48, 61, .7), rgba(26, 48, 61, .7)), url(../img/carousel-1.jpg);
     background-position: center center;
     background-repeat: no-repeat;
     background-size: cover;
