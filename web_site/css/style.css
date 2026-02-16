@@ -387,6 +387,10 @@
 
 
 /*** Footer ***/
+.footer {
+    background: var(--color-principal-oscuro) !important;
+}
+
 .footer .btn.btn-social {
     margin-right: 5px;
     width: 35px;
