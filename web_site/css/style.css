@@ -97,7 +97,7 @@
 
 /*** Navbar ***/
 .navbar {
-    background-color: var(--color-principal-oscuro) !important;
+    background-color: var(--primary) !important;
 }
 
 .navbar .dropdown-toggle::after {
@@ -388,7 +388,7 @@
 
 /*** Footer ***/
 .footer {
-    background: var(--color-principal-oscuro) !important;
+    background: var(--primary) !important;
 }
 
 .footer .btn.btn-social {
