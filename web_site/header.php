@@ -44,7 +44,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top p-0">
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                        <img src="img/logo_cefi.svg" alt="CEFI Logo" style="height: 50px;">
+                        <img src="img/logo_cefi_blanco.svg" alt="CEFI Logo" style="height: 80px;">
                         <small class="ms-3 text-white">WhatsApp +506 8992-9180</small>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
