@@ -173,19 +173,20 @@
 /*** Header carousel ***/
 .header-carousel .owl-carousel-item {
     position: relative;
-    min-height: 400px; /* Reducir altura para pantallas grandes */
+    max-height: 350px; /* Reducir altura máxima para pantallas grandes */
+    overflow: hidden;
+}
+
+.header-carousel .owl-carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 @media (max-width: 768px) {
     .header-carousel .owl-carousel-item {
         min-height: 500px; /* Mantener altura para pantallas pequeñas */
-    }
-    
-    .header-carousel .owl-carousel-item img {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        max-height: none; /* Anular la altura máxima para pantallas pequeñas */
     }
 }
 
