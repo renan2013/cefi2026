@@ -24,7 +24,7 @@
             <div class="row g-5 align-items-start">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/logo_cefi.svg" alt="Logo CEFI" style="object-fit: contain;">
+                        <img class="img-fluid position-absolute w-100 h-100" src="img/logo_cefi.svg" width="300px" alt="Logo CEFI" style="object-fit: contain;">
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
