@@ -1,5 +1,5 @@
 <!-- Categories Start -->
-    <div class="container-xxl pt-3 category">
+    <div class="container-xxl pt-2 category">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Escuelas</h6>
