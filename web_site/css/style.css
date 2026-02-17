@@ -94,6 +94,15 @@
     border-radius: 0px;
 }
 
+.btn-whatsapp-large {
+    font-size: 1.5rem !important; /* Aumentar tamaño de fuente */
+    padding: 1.5rem 3rem !important; /* Aumentar padding */
+}
+
+.btn-whatsapp-large i {
+    font-size: 2rem !important; /* Aumentar tamaño del ícono */
+}
+
 
 /*** Navbar ***/
 .navbar {
