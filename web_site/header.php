@@ -45,7 +45,7 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top p-0">
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
                         <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
-                        <small class="ms-3">Centro de formación integral - WhatsApp 8992-9180</small>
+                        <small class="ms-3 text-white">Centro de formación integral - WhatsApp 8992-9180</small>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
