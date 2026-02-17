@@ -102,6 +102,16 @@
     font-size: 2rem !important; /* Aumentar tamaño del ícono */
 }
 
+.btn-institutional {
+    background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
+}
+
+.btn-institutional:hover {
+    background-color: var(--color-principal-oscuro) !important; /* o un color un poco más oscuro que --primary */
+    border-color: var(--color-principal-oscuro) !important;
+}
+
 
 /*** Navbar ***/
 .navbar {
