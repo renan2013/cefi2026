@@ -171,10 +171,14 @@
 
 
 /*** Header carousel ***/
+.header-carousel .owl-carousel-item {
+    position: relative;
+    min-height: 400px; /* Reducir altura para pantallas grandes */
+}
+
 @media (max-width: 768px) {
     .header-carousel .owl-carousel-item {
-        position: relative;
-        min-height: 500px;
+        min-height: 500px; /* Mantener altura para pantallas pequeñas */
     }
     
     .header-carousel .owl-carousel-item img {
