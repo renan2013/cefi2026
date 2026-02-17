@@ -20,7 +20,7 @@
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Contacto</h6>
-                <h1 class="mb-5">Contact CEFI</h1>
+                <h1 class="mb-5">Contacto CEFI</h1>
             </div>
             <div class="row g-4">
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
@@ -57,7 +57,9 @@
                         <div class="row g-3">
                             
                             <div class="col-12">
-                                <button class="btn btn-primary w-100 py-3" type="submit">Whatsapp</button>
+                                <a href="https://wa.me/50689929180" class="btn btn-primary w-100 py-3">
+                                    Whatsapp <i class="fab fa-whatsapp ms-2"></i>
+                                </a>
                             </div>
                         </div>
                     </form>
