@@ -11,8 +11,8 @@
                                 <img class="img-fluid w-100 h-100" src="img/cat-2.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
                                 <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
-                                    <h5 class="m-0 text-white">Técnicos</h5>
-                                    <small class="text-white">5 </small>
+                                    <h5 class="m-0 text-white">Técnicos - 5</h5>
+                                   
                                 </div>
                             </a>
                         </div>
