@@ -4,8 +4,8 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6 text-white">
                     <h4 class="text-white mb-3"><img src="img/logo_cefi_blanco.svg" width="120px"></h4>
-                    <h1>CEFI</h1>
-                    <h5 >Centro de Formación Integral</h5>
+                    <h1 class="text-white">CEFI</h1>
+                    <h5 class="text-white">Centro de Formación Integral</h5>
                    
                     
                 </div>
