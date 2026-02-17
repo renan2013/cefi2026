@@ -3,7 +3,7 @@
         <div class="container-fluid py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3"><img src="img/logo_cefi.svg" width="120px"></h4>
+                    <h4 class="text-white mb-3"><img src="img/logo_cefi_blanco.svg" width="120px"></h4>
                    
                     
                 </div>
