@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="utf-8">
-    <title>eLEARNING - eLearning HTML Template</title>
+    <title>CEFI</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="" name="keywords">
     <meta content="" name="description">
@@ -44,7 +44,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top p-0">
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                        <h2 class="m-0 text-primary"><i class="fa fa-book me-3"></i>eLEARNING</h2>
+                        <h2 class="m-0 text-primary">CEFI</h2>
                         <small class="ms-3 text-white">Centro de formación integral - WhatsApp 8992-9180</small>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
@@ -52,7 +52,7 @@
         <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
             <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home...</a>
+                <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home</a>
                 <a href="about.php" class="nav-item nav-link <?php echo ($currentPage == 'about.php') ? 'active' : ''; ?>">About</a>
                 <a href="courses.php" class="nav-item nav-link <?php echo ($currentPage == 'courses.php') ? 'active' : ''; ?>">Courses</a>
                 <div class="nav-item dropdown">
@@ -65,7 +65,7 @@
                 </div>
                 <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contact</a>
             </div>
-            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block"><span style="position: relative; top: -10px;">MATRÍCULA YA!!<i class="fab fa-whatsapp ms-3"></i></span></a>
+            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block"><span style="position: relative; top: -10px;">whatsapp<i class="fab fa-whatsapp ms-3"></i></span></a>
         </div>
     </nav>
     <!-- Navbar End -->
