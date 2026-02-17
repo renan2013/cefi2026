@@ -173,7 +173,7 @@
 /*** Header carousel ***/
 .header-carousel .owl-carousel-item {
     position: relative;
-    max-height: 350px; /* Reducir altura máxima para pantallas grandes */
+    max-height: 438px; /* Reducir altura máxima para pantallas grandes */
     overflow: hidden;
 }
 
