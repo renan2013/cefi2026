@@ -65,7 +65,7 @@
                 </div>
                 <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contact</a>
             </div>
-            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block">Matrícula ya!!<i class="fab fa-whatsapp ms-3"></i></a>
+            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block" style="position: relative; top: -20px;">Matrícula ya!!<i class="fab fa-whatsapp ms-3"></i></a>
         </div>
     </nav>
     <!-- Navbar End -->
