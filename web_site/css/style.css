@@ -95,7 +95,7 @@
 }
 
 .btn-whatsapp-large {
-    padding: 1.5rem 3rem !important; /* Aumentar padding */
+    /* No padding, para alinear con el menú */
 }
 
 .btn-whatsapp-large i {
