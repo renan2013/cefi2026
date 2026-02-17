@@ -38,7 +38,7 @@
                         </div>
                 <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.7s">
                     <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
+                        <img class="img-fluid w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
                         <div class="category-gradient"></div>
                         <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px; z-index: 2;">
                             <h5 class="m-0 text-white">Online Marketing</h5>
