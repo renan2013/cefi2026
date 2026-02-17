@@ -343,7 +343,7 @@
 
 a.category-card {
     display: block; /* Asegurarse de que el enlace sea un bloque */
-    max-height: 250px;
+    max-height: 350px;
     overflow: hidden; /* Ocultar cualquier desbordamiento */
 }
 
