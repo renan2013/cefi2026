@@ -1,12 +1,12 @@
 <!-- Categories Start -->
-    <div class="container-xxl py-5 category">
+    <div class="container-xxl pt-3 category">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Escuelas</h6>
                 <h1 class="mb-5">Escuelas de Aprendizaje</h1>
             </div>
             <div class="row g-3">
-                        <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
+                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.1s">
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-1.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
@@ -16,7 +16,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.3s">
+                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.3s">
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-2.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
@@ -26,7 +26,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.5s">
+                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.5s">
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-3.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
@@ -36,7 +36,7 @@
                                 </div>
                             </a>
                         </div>
-                <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.7s">
+                <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.7s">
                     <a class="position-relative d-block h-100 overflow-hidden" href="">
                         <img class="img-fluid w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
                         <div class="category-gradient"></div>
