@@ -12,8 +12,8 @@
                             <img class="img-fluid" src="img/team-1.jpg" alt="">
                         </div>
                         <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-2 px-1">
-                                <a class="btn btn-sm-square btn-primary mx-1" href="">Escuela</i></a>
+                            <div class="bg-light d-flex justify-content-center pt-6 px-6">
+                                <a class="btn btn-sm-square btn-primary mx-6" href="">Escuela</i></a>
                                 
                             </div>
                         </div>
