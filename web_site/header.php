@@ -49,7 +49,7 @@
         <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
             <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home...</a>
@@ -65,7 +65,7 @@
                 </div>
                 <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contact</a>
             </div>
-            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block">Matricula ya!!<i class="fab fa-whatsapp ms-3"></i></a>
+            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block">Matrícula ya!!<i class="fab fa-whatsapp ms-3"></i></a>
         </div>
     </nav>
     <!-- Navbar End -->
