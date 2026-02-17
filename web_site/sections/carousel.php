@@ -7,7 +7,7 @@
                     <div class="container">
                         <div class="row justify-content-start">
                                                         <div class="col-sm-10 col-lg-8" style="margin-top: auto;">
-                                                            <h3 class="display-4 text-white animated slideInDown" style="font-size: 2.2rem;">The Best Online Learning Platform</h3>
+                                                            <h3 class="display-4 text-white animated slideInDown" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);">The Best Online Learning Platform</h3>
                                                             <p class="fs-5 text-white mb-4 pb-2">Vero elitr justo clita lorem. Ipsum dolor at sed stet sit diam no. Kasd rebum ipsum et diam justo clita et kasd rebum sea sanctus eirmod elitr.</p>
                                                         </div>
                         </div>
