@@ -11,12 +11,7 @@
                         <div class="overflow-hidden">
                             <img class="img-fluid" src="img/team-1.jpg" alt="">
                         </div>
-                        <div class="position-relative d-flex justify-content-center" style="margin-top: -23px;">
-                            <div class="bg-light d-flex justify-content-center pt-6 px-6">
-                                <a class="btn btn-sm-square btn-primary mx-6" href="">Escuela</i></a>
-                                
-                            </div>
-                        </div>
+                        
                         <div class="text-center p-4">
                             <h5 class="mb-0">Instructor Name</h5>
                             <small>Designation</small>
