@@ -325,6 +325,11 @@
     z-index: 1;
 }
 
+.category-card {
+    max-height: 250px;
+    overflow: hidden; /* Ocultar cualquier desbordamiento */
+}
+
 
 
 
