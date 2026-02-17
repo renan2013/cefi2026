@@ -10,7 +10,7 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-1.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
                                     <h5 class="m-0 text-white">Web Design</h5>
                                     <small class="text-white">49 Courses</small>
                                 </div>
@@ -20,7 +20,7 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-2.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
                                     <h5 class="m-0 text-white">Graphic Design</h5>
                                     <small class="text-white">49 Courses</small>
                                 </div>
@@ -30,7 +30,7 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-3.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
                                     <h5 class="m-0 text-white">Video Editing</h5>
                                     <small class="text-white">49 Courses</small>
                                 </div>
@@ -40,7 +40,7 @@
                     <a class="position-relative d-block h-100 overflow-hidden" href="">
                         <img class="img-fluid position-absolute w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
                         <div class="category-gradient"></div>
-                        <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px;">
+                        <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px; z-index: 2;">
                             <h5 class="m-0 text-white">Online Marketing</h5>
                             <small class="text-white">49 Courses</small>
                         </div>
