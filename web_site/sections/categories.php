@@ -3,7 +3,7 @@
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Categories</h6>
-                <h1 class="mb-5">Courses Categories</h1>
+                <h1 class="mb-5">Escuelas de Aprendizaje</h1>
             </div>
             <div class="row g-3">
                         <div class="col-lg-4 col-md-6 wow zoomIn" data-wow-delay="0.1s">
