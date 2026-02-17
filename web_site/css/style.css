@@ -210,7 +210,7 @@
     }
 
     .header-carousel .owl-carousel-item .position-absolute.top-0.start-0.w-100.h-100.d-flex {
-        background: rgba(0, 160, 77, 0.7) !important;
+        background: linear-gradient(to top, rgba(0, 160, 77, 0.9) 0%, rgba(0, 160, 77, 0) 100%) !important;
     }
 }
 
