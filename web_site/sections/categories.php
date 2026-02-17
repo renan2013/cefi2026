@@ -10,9 +10,9 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-1.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3 category-web-design-bg" style="margin: 1px;">
-                                    <h5 class="m-0">Web Design</h5>
-                                    <small class="text-primary">49 Courses</small>
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                    <h5 class="m-0 text-white">Web Design</h5>
+                                    <small class="text-white">49 Courses</small>
                                 </div>
                             </a>
                         </div>
@@ -20,9 +20,9 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-2.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3 category-graphic-design-bg" style="margin: 1px;">
-                                    <h5 class="m-0">Graphic Design</h5>
-                                    <small class="text-primary">49 Courses</small>
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                    <h5 class="m-0 text-white">Graphic Design</h5>
+                                    <small class="text-white">49 Courses</small>
                                 </div>
                             </a>
                         </div>
@@ -30,9 +30,9 @@
                             <a class="position-relative d-block h-100 overflow-hidden" href="">
                                 <img class="img-fluid w-100 h-100" src="img/cat-3.jpg" alt="" style="object-fit: cover;">
                                 <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3 category-video-editing-bg" style="margin: 1px;">
-                                    <h5 class="m-0">Video Editing</h5>
-                                    <small class="text-primary">49 Courses</small>
+                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px;">
+                                    <h5 class="m-0 text-white">Video Editing</h5>
+                                    <small class="text-white">49 Courses</small>
                                 </div>
                             </a>
                         </div>
@@ -40,9 +40,9 @@
                     <a class="position-relative d-block h-100 overflow-hidden" href="">
                         <img class="img-fluid position-absolute w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
                         <div class="category-gradient"></div>
-                        <div class="text-center position-absolute bottom-0 end-0 py-2 px-3 category-online-marketing-bg" style="margin:  1px;">
-                            <h5 class="m-0">Online Marketing</h5>
-                            <small class="text-primary">49 Courses</small>
+                        <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin:  1px;">
+                            <h5 class="m-0 text-white">Online Marketing</h5>
+                            <small class="text-white">49 Courses</small>
                         </div>
                     </a>
                 </div>

@@ -304,40 +304,15 @@
 
 .category-gradient {
     position: absolute;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100%;
-    background: linear-gradient(to top, rgba(7, 96, 156, 0.9) 0%, rgba(7, 96, 156, 0) 100%);
+    height: 30%;
+    background: linear-gradient(to top, rgba(7, 96, 156, 0.95) 0%, rgba(7, 96, 156, 0) 100%);
     z-index: 1;
 }
 
-.category-web-design-bg {
-    background-color: #007bff !important;
-    color: #FFFFFF !important;
-}
 
-.category-graphic-design-bg {
-    background-color: #fd7e14 !important;
-    color: #FFFFFF !important;
-}
-
-.category-video-editing-bg {
-    background-color: #dc3545 !important;
-    color: #FFFFFF !important;
-}
-
-.category-online-marketing-bg {
-    background-color: #28a745 !important;
-    color: #FFFFFF !important;
-}
-
-.category-web-design-bg h5, .category-web-design-bg small,
-.category-graphic-design-bg h5, .category-graphic-design-bg small,
-.category-video-editing-bg h5, .category-video-editing-bg small,
-.category-online-marketing-bg h5, .category-online-marketing-bg small {
-    color: #FFFFFF !important;
-}
 
 
 /*** Team ***/
