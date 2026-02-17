@@ -6,16 +6,7 @@
                 <h1 class="mb-5">Escuelas de Aprendizaje</h1>
             </div>
             <div class="row g-3">
-                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden category-card" href="despliegue_cursos.php?id_escuela=1">
-                                <img class="img-fluid w-100 h-100" src="img/cat-1.jpg" alt="" style="object-fit: cover;">
-                                <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
-                                    <h5 class="m-0 text-white">Diseño Web</h5>
-                                    <small class="text-white">49 Cursos</small>
-                                </div>
-                            </a>
-                        </div>
+                        
                         <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.3s">
                             <a class="position-relative d-block overflow-hidden category-card" href="despliegue_cursos.php?id_escuela=2">
                                 <img class="img-fluid w-100 h-100" src="img/cat-2.jpg" alt="" style="object-fit: cover;">
@@ -26,26 +17,7 @@
                                 </div>
                             </a>
                         </div>
-                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.5s">
-                            <a class="position-relative d-block overflow-hidden category-card" href="despliegue_cursos.php?id_escuela=3">
-                                <img class="img-fluid w-100 h-100" src="img/cat-3.jpg" alt="" style="object-fit: cover;">
-                                <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
-                                    <h5 class="m-0 text-white">Edición de Video</h5>
-                                    <small class="text-white">49 Cursos</small>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="0.7s">
-                            <a class="position-relative d-block overflow-hidden category-card" href="despliegue_cursos.php?id_escuela=4">
-                                <img class="img-fluid w-100 h-100" src="img/cat-4.jpg" alt="" style="object-fit: cover;">
-                                <div class="category-gradient"></div>
-                                <div class="text-center position-absolute bottom-0 end-0 py-2 px-3" style="margin: 1px; z-index: 2;">
-                                    <h5 class="m-0 text-white">Marketing Online</h5>
-                                    <small class="text-white">49 Cursos</small>
-                                </div>
-                            </a>
-                        </div>
+                        
             </div>
         </div>
     </div>
