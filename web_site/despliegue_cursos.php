@@ -18,16 +18,12 @@
         <div class="row g-4">
             <!-- Card de curso 1 -->
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="course-item bg-light">
-                    <div class="position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/course-1.jpg" alt="">
-                    </div>
-                    <div class="text-center p-4 pb-0">
-                        <h5 class="mb-4">Nombre del Curso 1</h5>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>Duración</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>Modalidad</small>
+                <div class="card h-100">
+                    <img src="img/course-1.jpg" class="card-img-top" alt="Imagen del Curso">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Nombre del Curso 1</h5>
+                        <p class="card-text text-center"><small><i class="fa fa-clock text-primary me-2"></i>Duración</small></p>
+                        <p class="card-text text-center"><small><i class="fa fa-user text-primary me-2"></i>Modalidad</small></p>
                     </div>
                 </div>
             </div>
@@ -35,16 +31,12 @@
 
             <!-- Card de curso 2 -->
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.3s">
-                <div class="course-item bg-light">
-                    <div class="position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/course-2.jpg" alt="">
-                    </div>
-                    <div class="text-center p-4 pb-0">
-                        <h5 class="mb-4">Nombre del Curso 2</h5>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>Duración</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>Modalidad</small>
+                <div class="card h-100">
+                    <img src="img/course-2.jpg" class="card-img-top" alt="Imagen del Curso">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Nombre del Curso 2</h5>
+                        <p class="card-text text-center"><small><i class="fa fa-clock text-primary me-2"></i>Duración</small></p>
+                        <p class="card-text text-center"><small><i class="fa fa-user text-primary me-2"></i>Modalidad</small></p>
                     </div>
                 </div>
             </div>
@@ -52,16 +44,12 @@
 
             <!-- Card de curso 3 -->
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.5s">
-                <div class="course-item bg-light">
-                    <div class="position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/course-3.jpg" alt="">
-                    </div>
-                    <div class="text-center p-4 pb-0">
-                        <h5 class="mb-4">Nombre del Curso 3</h5>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>Duración</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>Modalidad</small>
+                <div class="card h-100">
+                    <img src="img/course-3.jpg" class="card-img-top" alt="Imagen del Curso">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Nombre del Curso 3</h5>
+                        <p class="card-text text-center"><small><i class="fa fa-clock text-primary me-2"></i>Duración</small></p>
+                        <p class="card-text text-center"><small><i class="fa fa-user text-primary me-2"></i>Modalidad</small></p>
                     </div>
                 </div>
             </div>
@@ -69,16 +57,12 @@
 
             <!-- Card de curso 4 -->
             <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.7s">
-                <div class="course-item bg-light">
-                    <div class="position-relative overflow-hidden">
-                        <img class="img-fluid" src="img/course-1.jpg" alt="">
-                    </div>
-                    <div class="text-center p-4 pb-0">
-                        <h5 class="mb-4">Nombre del Curso 4</h5>
-                    </div>
-                    <div class="d-flex border-top">
-                        <small class="flex-fill text-center border-end py-2"><i class="fa fa-clock text-primary me-2"></i>Duración</small>
-                        <small class="flex-fill text-center py-2"><i class="fa fa-user text-primary me-2"></i>Modalidad</small>
+                <div class="card h-100">
+                    <img src="img/course-1.jpg" class="card-img-top" alt="Imagen del Curso">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Nombre del Curso 4</h5>
+                        <p class="card-text text-center"><small><i class="fa fa-clock text-primary me-2"></i>Duración</small></p>
+                        <p class="card-text text-center"><small><i class="fa fa-user text-primary me-2"></i>Modalidad</small></p>
                     </div>
                 </div>
             </div>
