@@ -325,7 +325,8 @@
     z-index: 1;
 }
 
-.category-card {
+a.category-card {
+    display: block; /* Asegurarse de que el enlace sea un bloque */
     max-height: 250px;
     overflow: hidden; /* Ocultar cualquier desbordamiento */
 }
