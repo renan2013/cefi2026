@@ -54,16 +54,16 @@
             <div class="navbar-nav ms-auto p-4 p-lg-0">
                 <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Home</a>
                 <a href="about.php" class="nav-item nav-link <?php echo ($currentPage == 'about.php') ? 'active' : ''; ?>">About</a>
-                <a href="courses.php" class="nav-item nav-link <?php echo ($currentPage == 'courses.php') ? 'active' : ''; ?>">Courses</a>
+                
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle <?php echo (in_array($currentPage, ['team.php', 'testimonial.php', '404.php'])) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Pages</a>
+                    <a href="#" class="nav-link dropdown-toggle <?php echo (in_array($currentPage, ['team.php', 'testimonial.php', '404.php'])) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Escuelas</a>
                     <div class="dropdown-menu fade-down m-0">
-                        <a href="team.php" class="dropdown-item">Our Team</a>
-                        <a href="testimonial.php" class="dropdown-item">Testimonial</a>
-                        <a href="404.php" class="dropdown-item">404 Page</a>
+                        <a href="" class="dropdown-item">1</a>
+                        <a href="" class="dropdown-item">2</a>
+                        <a href="" class="dropdown-item">3</a>
                     </div>
                 </div>
-                <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contact</a>
+                <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contacto</a>
             </div>
             <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block"><span style="position: relative; top: -10px;">whatsapp<i class="fab fa-whatsapp ms-3"></i></span></a>
         </div>
