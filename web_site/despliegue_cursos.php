@@ -1,11 +1,22 @@
-<?php include 'header.php'; ?>
+<?php
+$escuelas = [
+    1 => 'Diseño Web',
+    2 => 'Diseño Gráfico',
+    3 => 'Edición de Video',
+    4 => 'Marketing Online'
+];
+$id_escuela = isset($_GET['id_escuela']) ? (int)$_GET['id_escuela'] : 0;
+$nombre_escuela = isset($escuelas[$id_escuela]) ? $escuelas[$id_escuela] : 'Desconocida';
+
+include 'header.php';
+?>
 
 <!-- Header Start -->
 <div class="container-fluid bg-primary py-5 mb-5 page-header">
     <div class="container py-5">
         <div class="row justify-content-center">
             <div class="col-lg-10 text-center">
-                <h1 class="display-3 text-white animated slideInDown">Cursos de la Escuela de [Nombre de la Escuela]</h1>
+                <h1 class="display-3 text-white animated slideInDown">Cursos de la Escuela de <?php echo htmlspecialchars($nombre_escuela); ?></h1>
             </div>
         </div>
     </div>
