@@ -44,7 +44,7 @@
     <!-- Navbar Start -->
     <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top p-0">
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
-                        <h2 class="m-0 text-primary">CEFI</h2>
+                        <h2 class="">CEFI</h2>
                         <small class="ms-3 text-white">WhatsApp 8992-9180</small>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
