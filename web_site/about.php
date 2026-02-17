@@ -22,12 +22,12 @@
     <div class="container-xxl py-5">
         <div class="container">
             <div class="row g-5 align-items-start">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
                     <div class="position-relative h-100">
                         <img class="img-fluid position-absolute w-100 h-100" src="img/logo_cefi.svg" alt="Logo CEFI" style="object-fit: contain;">
                     </div>
                 </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s" style="padding-top: 50px;">
                     <h6 class="section-title bg-white text-start text-primary pe-3">Quiénes Somos</h6>
                     <h1 class="mb-4">Centro Educativo de Formación Integral (CEFI)</h1>
                     <p class="mb-4">En el Centro Educativo de Formación Integral (CEFI), nos enorgullece ser un faro de conocimiento y desarrollo en Guápiles, Limón. Desde nuestra fundación en 2005, nos hemos comprometido a ofrecer una educación de calidad que va más allá de lo convencional, preparando a nuestros estudiantes no solo para los desafíos académicos, sino también para la vida.</p>
