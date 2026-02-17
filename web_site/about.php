@@ -23,10 +23,7 @@
         <div class="container">
             <div class="row g-5 align-items-start">
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-400 h-400" src="img/logo_cefi.svg"  alt="Logo CEFI" style="object-fit: contain;">
-                        
-                    </div>
+                    <img class="img-fluid" src="img/logo_cefi.svg" alt="Logo CEFI" style="max-height: 400px; margin: auto; display: block;">
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                     <h6 class="section-title bg-white text-start text-primary pe-3">Quiénes Somos</h6>
