@@ -32,7 +32,7 @@ include 'header.php';
             </div>
 
             <div class="card" style="width: 18rem;">
-                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Descripción de la imagen">
+                <img src="img/course-1.jpg" class="card-img-top" alt="Descripción de la imagen">
   
                 <div class="card-body">
                 <h5 class="card-title">Título del Producto</h5>
