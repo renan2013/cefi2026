@@ -16,35 +16,25 @@ include 'header.php';
 <!-- Cursos Start -->
 <div class="container-xxl py-5">
 
-<h3 class="display-3 text-center  animated slideInDown">Nombre de la escuela</h3>
+    <h3 class="display-6 text-center  animated slideInDown">Nombre de la escuela</h3>
     <div class="container">
         <div class="row g-4">
-            <!-- Card de curso 1 -->
-            <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
-                <div class="card h-100">
-                    <img src="img/course-1.jpg" class="card-img-top" alt="Imagen del Curso">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Nombre del Curso 1</h5>
-                        <p class="card-text text-center"><small><i class="fa fa-clock text-primary me-2"></i>Duración</small></p>
-                        <p class="card-text text-center"><small><i class="fa fa-user text-primary me-2"></i>Modalidad</small></p>
-                    </div>
+
+
+            <div class="card">
+                <img src="img/course-1.jpg" class="card-img-top" alt="Descripción de la imagen">
+
+                <div class="card-body">
+                    <h5 class="card-title">Título del Producto</h5>
+
+                    <p class="card-text">Esta es una descripción breve para convencer al usuario de hacer clic en el botón de abajo.</p>
+
+                    <a href="#" class="btn btn-primary">Ver detalles</a>
                 </div>
             </div>
-
-            <div class="card" style="width: 18rem;">
-                <img src="img/course-1.jpg" class="card-img-top" alt="Descripción de la imagen">
-  
-                <div class="card-body">
-                <h5 class="card-title">Título del Producto</h5>
-    
-                <p class="card-text">Esta es una descripción breve para convencer al usuario de hacer clic en el botón de abajo.</p>
-    
-                <a href="#" class="btn btn-primary">Ver detalles</a>
-                </div>
-                </div>
             <!-- Fin de Card de curso 1 -->
 
-        
+
 
         </div>
 
