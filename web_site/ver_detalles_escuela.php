@@ -5,11 +5,12 @@
         <div class="col-lg-6 col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Cursos</a></li>
-                    <li class="breadcrumb-item active">Desarrollo Web</li>
+                    <li class="breadcrumb-item"><a href="#">Escuelas</a></li>
+                    <li class="breadcrumb-item"><a href="#">Técnico Especializado</a></li>
+                    <li class="breadcrumb-item active">Diseño Gráfico</li>
                 </ol>
             </nav>
-            <h1 class="display-5 fw-bold">Master en Bootstrap 5: De Cero a Experto</h1>
+            <h1 class="display-5 fw-bold">Diseño Gráfico con IA</h1>
             <p class="lead text-muted">Aprende a crear sitios web responsivos y profesionales utilizando el framework CSS más popular del mundo.</p>
             
             <hr class="my-4">
