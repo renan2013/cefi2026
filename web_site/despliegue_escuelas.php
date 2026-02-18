@@ -26,7 +26,7 @@ include 'header.php';
                     <div class="card-body">
                         <h5 class="card-title text-left">Nombre del Curso 1</h5>
                         <p class="card-text text-left">Aqui va la descripcion de la escuela</p>
-                        
+                        <a href="#" class="btn btn-primary btn-sm">Ver detalles</a>
                     </div>
                 </div>
             </div>
