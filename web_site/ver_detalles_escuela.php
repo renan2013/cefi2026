@@ -41,16 +41,13 @@
                             <span><i class="bi bi-file-earmark-pdf"></i> Programa del curso</span>
                             <span class="badge bg-secondary">PDF</span>
                         </a>
-                        <a href="#" class="btn btn-outline-primary d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-download"></i> Código Fuente</span>
-                            <span class="badge bg-secondary">ZIP</span>
-                        </a>
+                      
                         <hr>
                         <button class="btn btn-success btn-lg">Inscribirme ahora</button>
                     </div>
                 </div>
                 <div class="card-footer text-center bg-white border-0">
-                    <small class="text-muted">Acceso de por vida • Certificado incluido</small>
+                    <small class="text-muted">Certificado incluido</small>
                 </div>
             </div>
         </div>
