@@ -16,7 +16,7 @@ include 'header.php';
 <!-- Cursos Start -->
 <div class="container-xxl py-5">
 
-<h3 class="display-3 text-center  animated slideInDown">Nombre de la escuela</h3>
+<h4 class="text-center">Nombre de la escuela</h4>
     <div class="container">
         <div class="row g-4">
             <!-- Card de curso 1 -->
