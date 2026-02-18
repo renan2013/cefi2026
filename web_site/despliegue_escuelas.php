@@ -11,16 +11,12 @@ $nombre_escuela = isset($escuelas[$id_escuela]) ? $escuelas[$id_escuela] : 'Desc
 include 'header.php';
 ?>
 
-<!-- Header Start -->
-<div class="container-fluid bg-primary py-5 mb-5 page-header">
-  
-                <h1 class="display-3 text-white animated slideInDown">Nombre de la escuela</h1>
-    
-</div>
-<!-- Header End -->
+
 
 <!-- Cursos Start -->
 <div class="container-xxl py-5">
+
+<h1 class="display-3 text-white animated slideInDown">Nombre de la escuela</h1>
     <div class="container">
         <div class="row g-4">
             <!-- Card de curso 1 -->
