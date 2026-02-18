@@ -43,7 +43,7 @@
                         </a>
                       
                         <hr>
-                        <button class="btn btn-success btn-lg">Inscribirme ahora</button>
+                        <a href="https://wa.me/50689929180?text=Hola%2C%20estoy%20interesado%20en%20matricularme%20en%20el%20curso%20Dise%C3%B1o%20Gr%C3%A1fico%20con%20IA" class="btn btn-success btn-lg" target="_blank">Inscribirme ahora</a>
                     </div>
                 </div>
                 <div class="card-footer text-center bg-white border-0">
