@@ -16,7 +16,7 @@ include 'header.php';
 <!-- Cursos Start -->
 <div class="container-xxl py-5">
 
-<h1 class="display-3  animated slideInDown">Nombre de la escuela</h1>
+<h3 class="display-3 text-center  animated slideInDown">Nombre de la escuela</h3>
     <div class="container">
         <div class="row g-4">
             <!-- Card de curso 1 -->
@@ -30,6 +30,18 @@ include 'header.php';
                     </div>
                 </div>
             </div>
+
+            <div class="card" style="width: 18rem;">
+                <img src="https://via.placeholder.com/300x200" class="card-img-top" alt="Descripción de la imagen">
+  
+                <div class="card-body">
+                <h5 class="card-title">Título del Producto</h5>
+    
+                <p class="card-text">Esta es una descripción breve para convencer al usuario de hacer clic en el botón de abajo.</p>
+    
+                <a href="#" class="btn btn-primary">Ver detalles</a>
+                </div>
+                </div>
             <!-- Fin de Card de curso 1 -->
 
         
