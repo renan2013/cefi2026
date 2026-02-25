@@ -126,11 +126,45 @@ try {
 </div>
 
 <style>
+/* Main Carousel Styles */
 .graduation-carousel .item img {
     height: 500px;
     object-fit: contain;
     background-color: #111;
 }
+.graduation-carousel.owl-carousel {
+    position: relative;
+}
+.graduation-carousel .owl-nav {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 10;
+}
+.graduation-carousel .owl-nav button.owl-prev,
+.graduation-carousel .owl-nav button.owl-next {
+    background: rgba(45, 143, 226, 0.7) !important;
+    color: white !important;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 10px;
+    pointer-events: auto;
+    transition: all 0.3s ease;
+}
+.graduation-carousel .owl-nav button:hover {
+    background: rgba(45, 143, 226, 1) !important;
+    transform: scale(1.1);
+}
+
+/* Gallery Grid Styles */
 .gallery-item {
     position: relative;
     transition: transform 0.3s ease;
@@ -146,9 +180,6 @@ try {
     opacity: 0; transition: opacity 0.3s ease;
 }
 .gallery-item:hover .gallery-overlay { opacity: 1; }
-@media (max-width: 991px) {
-    .graduation-carousel .item img { height: 350px; }
-}
 
 /* Lightbox Custom Styles */
 .mfp-arrow {
@@ -156,32 +187,17 @@ try {
     border-radius: 50%;
     width: 60px !important;
     height: 60px !important;
-    margin-top: -30px !important;
 }
-.mfp-arrow:before {
-    border-top-width: 15px !important;
-    border-bottom-width: 15px !important;
-    margin-top: 15px !important;
-}
-.mfp-arrow-left:before { border-right-width: 20px !important; margin-left: 15px !important; }
-.mfp-arrow-right:before { border-left-width: 20px !important; margin-left: 25px !important; }
-
-.mfp-counter {
-    top: 15px !important;
-    right: 60px !important;
-    font-family: 'Heebo', sans-serif;
-    font-weight: 600;
-}
+.mfp-counter { top: 15px !important; right: 60px !important; font-weight: 600; }
 .mfp-close {
     background: #2D8FE2 !important;
     color: white !important;
-    opacity: 1 !important;
     width: 40px !important;
     height: 40px !important;
-    line-height: 40px !important;
+    border-radius: 50%;
     margin-top: 10px;
     margin-right: 10px;
-    border-radius: 50%;
+    opacity: 1 !important;
 }
 .mfp-fullscreen {
     position: fixed;
@@ -194,6 +210,10 @@ try {
     opacity: 0.7;
 }
 .mfp-fullscreen:hover { opacity: 1; }
+
+@media (max-width: 991px) {
+    .graduation-carousel .item img { height: 350px; }
+}
 </style>
 
 <!-- Magnific Popup JS -->
@@ -221,24 +241,13 @@ try {
             $('.popup-gallery').magnificPopup({
                 delegate: 'a',
                 type: 'image',
-                tLoading: 'Cargando imagen #%curr%...',
                 gallery: {
                     enabled: true,
                     navigateByImgClick: true,
-                    preload: [0,1],
-                    tPrev: 'Anterior',
-                    tNext: 'Siguiente',
-                    tCounter: '<span class="mfp-counter">%curr% de %total%</span>'
-                },
-                image: {
-                    tError: '<a href="%url%">La imagen</a> no pudo ser cargada.',
-                    titleSrc: function(item) {
-                        return item.el.attr('title') || '';
-                    }
+                    preload: [0,1]
                 },
                 callbacks: {
                     open: function() {
-                        // Add fullscreen button on open
                         $('body').append('<div class="mfp-fullscreen" id="mfp-fs-btn" title="Pantalla Completa"><i class="fa fa-expand"></i></div>');
                         $('#mfp-fs-btn').on('click', function() {
                             if (!document.fullscreenElement) {
@@ -254,9 +263,7 @@ try {
                     },
                     close: function() {
                         $('#mfp-fs-btn').remove();
-                        if (document.fullscreenElement) {
-                            document.exitFullscreen();
-                        }
+                        if (document.fullscreenElement) document.exitFullscreen();
                     }
                 },
                 mainClass: 'mfp-with-zoom mfp-img-mobile',
@@ -271,67 +278,6 @@ try {
         }
     });
 })(jQuery);
-</script>
-
-<style>
-.graduation-carousel .item img {
-    height: 500px;
-    object-fit: contain;
-    background-color: #111;
-}
-.gallery-item {
-    transition: transform 0.3s ease;
-}
-.gallery-item:hover {
-    transform: scale(1.05);
-}
-.video-card p {
-    font-weight: 500;
-}
-@media (max-width: 991px) {
-    .graduation-carousel .item img { height: 350px; }
-}
-</style>
-
-<script>
-$(document).ready(function(){
-  $(".graduation-carousel").owlCarousel({
-      items: 1,
-      nav: true,
-      dots: true,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      loop: true,
-      navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      animateOut: 'fadeOut'
-  });
-});
-</script>
-
-<style>
-.graduation-carousel .item img {
-    height: 500px;
-    object-fit: contain;
-    background-color: #000;
-}
-@media (max-width: 991px) {
-    .graduation-carousel .item img { height: 350px; }
-}
-.video-item h6 { font-weight: 600; }
-</style>
-
-<script>
-$(document).ready(function(){
-  $(".graduation-carousel").owlCarousel({
-      items: 1,
-      nav: true,
-      dots: true,
-      autoplay: true,
-      loop: true,
-      navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      animateOut: 'fadeOut'
-  });
-});
 </script>
 
 <?php include 'footer.php'; ?>
