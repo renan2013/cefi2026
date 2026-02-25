@@ -1,50 +1,97 @@
-<?php include 'header.php'; ?>
+<?php 
+include 'header.php'; // Includes db_connect.php
+
+$id_post = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+try {
+    // Fetch post details and its category name
+    $stmt = $pdo->prepare("
+        SELECT p.*, c.name as category_name 
+        FROM posts p 
+        JOIN categories c ON p.id_category = c.id_category 
+        WHERE p.id_post = ?
+    ");
+    $stmt->execute([$id_post]);
+    $post = $stmt->fetch();
+
+    if (!$post) {
+        echo '<div class="container mt-5 text-center"><h1>Publicación no encontrada</h1><a href="index.php" class="btn btn-primary">Volver al inicio</a></div>';
+        include 'footer.php';
+        exit;
+    }
+
+    // Fetch attachments (PDFs and YouTube videos)
+    $stmt_attach = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_post = ?");
+    $stmt_attach->execute([$id_post]);
+    $attachments = $stmt_attach->fetchAll();
+
+    $pdf_attachments = array_filter($attachments, function($a) { return $a['type'] === 'pdf'; });
+    $youtube_video = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
+    $youtube_url = !empty($youtube_video) ? reset($youtube_video)['value'] : null;
+
+    // Process YouTube URL to embed format
+    if ($youtube_url) {
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
+            $youtube_id = $match[1];
+        }
+    }
+
+} catch (PDOException $e) {
+    die("Error al cargar los detalles: " . $e->getMessage());
+}
+?>
 
 <div class="container mt-5">
     <div class="row g-4">
-        <div class="col-lg-6 col-md-12">
+        <div class="col-lg-7 col-md-12">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Escuelas</a></li>
-                    <li class="breadcrumb-item"><a href="#">Técnico Especializado</a></li>
-                    <li class="breadcrumb-item active">Diseño Gráfico</li>
+                    <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="despliegue_escuelas.php?id=<?php echo $post['id_category']; ?>"><?php echo htmlspecialchars($post['category_name']); ?></a></li>
+                    <li class="breadcrumb-item active"><?php echo htmlspecialchars($post['title']); ?></li>
                 </ol>
             </nav>
-            <h1 class="display-5 fw-bold">Diseño Gráfico con IA</h1>
-            <p class="lead text-muted">Aprende a crear sitios web responsivos y profesionales utilizando el framework CSS más popular del mundo.</p>
+            <h1 class="display-5 fw-bold"><?php echo htmlspecialchars($post['title']); ?></h1>
+            <p class="lead text-muted"><?php echo htmlspecialchars($post['synopsis']); ?></p>
             
             <hr class="my-4">
             
-            <h3>¿Qué aprenderás?</h3>
-            <ul class="list-group list-group-flush mb-4">
-                <li class="list-group-item">✅ Dominio del sistema de Grid y Flexbox.</li>
-                <li class="list-group-item">✅ Componentes avanzados y utilidades.</li>
-                <li class="list-group-item">✅ Personalización con SASS.</li>
-            </ul>
-
-            <h3>Descripción</h3>
-            <p>Este curso está diseñado para desarrolladores que desean optimizar su flujo de trabajo... (aquí va el resto de tu contenido informativo).</p>
+            <div class="post-content">
+                <?php echo $post['content']; // Tinymce content is usually safe HTML ?>
+            </div>
         </div>
 
         <div class="col-lg-4 offset-lg-1 col-md-12">
-            <div class="card shadow-sm border-0">
-                <div class="ratio ratio-16x9">
-                    <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Video del curso" allowfullscreen></iframe>
-                </div>
+            <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+                <?php if (isset($youtube_id)): ?>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video del curso" allowfullscreen></iframe>
+                    </div>
+                <?php elseif (!empty($post['main_image'])): ?>
+                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($post['main_image']); ?>" class="card-img-top" alt="Imagen del curso">
+                <?php endif; ?>
                 
                 <div class="card-body">
                     <h5 class="card-title">Recursos del curso</h5>
-                    <p class="card-text small text-muted">Descarga el material de apoyo para comenzar.</p>
                     
-                    <div class="d-grid gap-2">
-                        <a href="#" class="btn btn-outline-primary d-flex justify-content-between align-items-center">
-                            <span><i class="bi bi-file-earmark-pdf"></i> Programa del curso</span>
-                            <span class="badge bg-secondary">PDF</span>
-                        </a>
+                    <?php if (empty($pdf_attachments)): ?>
+                        <p class="card-text small text-muted">No hay documentos adjuntos disponibles.</p>
+                    <?php else: ?>
+                        <div class="d-grid gap-2">
+                            <?php foreach ($pdf_attachments as $pdf): ?>
+                                <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf['value']); ?>" target="_blank" class="btn btn-outline-primary d-flex justify-content-between align-items-center">
+                                    <span><i class="bi bi-file-earmark-pdf"></i> <?php echo htmlspecialchars($pdf['file_name'] ?: 'Descargar PDF'); ?></span>
+                                    <span class="badge bg-secondary">PDF</span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
                       
-                        <hr>
-                        <a href="https://wa.me/50689929180?text=Hola%2C%20estoy%20interesado%20en%20matricularme%20en%20el%20curso%20Dise%C3%B1o%20Gr%C3%A1fico%20con%20IA" class="btn btn-success btn-lg" target="_blank">Inscribirme ahora</a>
-                    </div>
+                    <hr>
+                    <?php 
+                    $whatsapp_msg = urlencode("Hola, estoy interesado en matricularme en el curso: " . $post['title']);
+                    ?>
+                    <a href="https://wa.me/50689929180?text=<?php echo $whatsapp_msg; ?>" class="btn btn-success btn-lg w-100" target="_blank">Inscribirme ahora</a>
                 </div>
                 <div class="card-footer text-center bg-white border-0">
                     <small class="text-muted">Certificado incluido</small>
@@ -53,5 +100,7 @@
         </div>
     </div>
 </div>
+
+<?php include 'footer.php'; ?>
 
 <?php include 'footer.php'; ?>
