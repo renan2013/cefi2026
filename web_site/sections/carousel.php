@@ -19,10 +19,9 @@
                 $is_gallery = (stripos($slide['cat_name'], 'Graduaciones') !== false || stripos($slide['cat_name'], 'Diplomado') !== false || stripos($slide['cat_name'], 'Galería') !== false);
                 $detail_page = $is_gallery ? 'ver_graduacion.php' : 'ver_detalles_escuela.php';
                 ?>
-            <div class="owl-carousel-item position-relative">
-                <img class="img-fluid w-100" src="../classbox/public/uploads/attachments/<?php echo $slide['value']; ?>" alt="<?php echo htmlspecialchars($slide['title']); ?>" style="height: 80vh; object-fit: cover;">
-                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end" style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 80, 40, 0.5) 15%, transparent 35%);">
-                    <div class="container">
+                            <div class="owl-carousel-item position-relative">
+                                <img class="img-fluid w-100" src="../classbox/public/uploads/attachments/<?php echo $slide['value']; ?>" alt="<?php echo htmlspecialchars($slide['title']); ?>" style="height: 65vh; max-height: 600px; object-fit: cover;">
+                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-end" style="background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 80, 40, 0.5) 15%, transparent 35%);">                    <div class="container">
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8" style="margin-top: auto;">
                                 <h3 class="display-4 text-white animated slideInDown" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);"><?php echo htmlspecialchars($slide['title']); ?></h3>
