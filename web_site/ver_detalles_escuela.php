@@ -67,8 +67,16 @@ try {
                     <div class="ratio ratio-16x9">
                         <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video del curso" allowfullscreen></iframe>
                     </div>
-                <?php elseif (!empty($post['main_image'])): ?>
-                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($post['main_image']); ?>" class="card-img-top" alt="Imagen del curso">
+                <?php elseif (!empty($post['main_image'])): 
+                    // Intelligent image path detection
+                    $main_img = $post['main_image'];
+                    if (strpos($main_img, 'public/uploads/images/') !== false) {
+                        $image_path = '../classbox/' . $main_img;
+                    } else {
+                        $image_path = '../classbox/public/uploads/images/' . $main_img;
+                    }
+                    ?>
+                    <img src="<?php echo htmlspecialchars($image_path); ?>" class="card-img-top" alt="Imagen del curso">
                 <?php endif; ?>
                 
                 <div class="card-body">
