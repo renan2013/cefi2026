@@ -31,6 +31,34 @@
     <!-- Template Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
 
+    <style>
+        /* Navbar Mobile Adjustments */
+        @media (max-width: 991px) {
+            .navbar-brand {
+                padding-left: 1rem !important;
+                padding-right: 0 !important;
+                max-width: 70%;
+            }
+            .navbar-brand img {
+                height: 50px !important;
+            }
+            .navbar-brand small {
+                font-size: 0.7rem;
+                display: none; /* Hide phone on very small screens to fit toggle */
+            }
+            @media (min-width: 400px) {
+                .navbar-brand small { display: inline-block; }
+            }
+            .navbar-toggler {
+                border-color: rgba(255,255,255,0.5) !important;
+                margin-right: 1rem !important;
+            }
+            .navbar-toggler-icon {
+                background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
+            }
+        }
+    </style>
+
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CEFI</title>
+    <!--Jquery-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+<!--Floating WhatsApp css-->
+<link rel="stylesheet" href="https://rawcdn.githack.com/rafaelbotazini/floating-whatsapp/3d18b26d5c7d430a1ab0b664f8ca6b69014aed68/floating-wpp.min.css">
+<!--Floating WhatsApp javascript-->
+<script type="text/javascript" src="https://rawcdn.githack.com/rafaelbotazini/floating-whatsapp/3d18b26d5c7d430a1ab0b664f8ca6b69014aed68/floating-wpp.min.js"></script>
+    <style type="text/css">
+    html, body, div, iframe { margin:0; padding:0; height:100%; font-family: Arial, Helvetica, sans-serif;}
+    iframe { display:block; width:100%; border:none; }
+    #WAButton{
+      
+      padding:10px;
+      height:60%;
+      
+    }
+    #menu{
+    
+    color:black;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:16px;
+}
+
+@media only screen and (max-width: 880px) {
+  #WAButton{
+    height:15%;
+ }
+ #texto_cel{
+   font-size: 16px;
+ }
+ #footer2{
+    display: none !important;
+    
+}
+
+
+}
+ 
+ 
+</style>
+</head>
+<body>
+  <div id="WAButton"></div>
+<div class="embed-responsive embed-responsive-16by9" >
+  
+  <iframe class="embed-responsive-item" src="https://ceficr.com/webmanager3.0_oct2017/argon/card2.php"></iframe>
+</div>
+
+<script>
+  $(function() {
+$('#WAButton').floatingWhatsApp({
+phone: '+506 89929180', //WhatsApp Business phone number International format-
+//Get it with Toky at https://toky.co/en/features/whatsapp.
+headerTitle: 'Chat con CEFI!', //Popup Title
+popupMessage: 'CEFI le da la bienvenida! ¿En cuál programa te encuentras interesado?', //Popup Message
+showPopup: true, //Enables popup display
+buttonImage: '<img src="https://rawcdn.githack.com/rafaelbotazini/floating-whatsapp/3d18b26d5c7d430a1ab0b664f8ca6b69014aed68/whatsapp.svg" />', //Button Image
+//headerColor: 'crimson', //Custom header color
+//backgroundColor: 'crimson', //Custom background button color
+position: "right"    
+});
+});
+</script>
+</body>
+</html>
