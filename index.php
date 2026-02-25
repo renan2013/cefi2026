@@ -1,8 +1,8 @@
 <?php
 /**
  * Redirección automática al sitio web principal
- * Ubicado en la raíz del proyecto para Hostinger
+ * Este archivo debe ser movido a la raíz de Hostinger (public_html)
  */
-header("Location: web_site/");
+header("Location: web_cefi_2026/web_site/");
 exit;
 ?>
