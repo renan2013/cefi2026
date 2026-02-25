@@ -31,8 +31,8 @@ require_once(dirname(__FILE__) . '/../../auth/check_auth.php');
         .actions a { margin-right: 10px; color: #007bff; text-decoration: none; }
         .actions a.delete { color: #dc3545; }
         .container {
-            max-width: 960px;
-            margin: 0 auto;
+            width: 100%;
+            margin: 0;
             padding: 20px;
         }
         .form-group {
@@ -103,7 +103,7 @@ require_once(dirname(__FILE__) . '/../../auth/check_auth.php');
             border-color: #f5c6cb;
         }
         /* Styles for forms */
-        .styled-form { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); max-width: 600px; margin-left: 0; }
+        .styled-form { background-color: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); width: 100%; margin-left: 0; }
         .form-group { margin-bottom: 20px; }
         .form-group label { display: block; font-weight: 500; margin-bottom: 8px; }
         .form-group input[type="text"], .form-group input[type="password"], .form-group input[type="number"], .form-group select, .form-group textarea, .form-group input[type="file"] { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
