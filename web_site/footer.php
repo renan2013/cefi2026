@@ -18,12 +18,25 @@
                         while ($menu_f = $stmt_footer->fetch()) {
                             echo '<a class="btn btn-link" href="' . htmlspecialchars($menu_f['url']) . '">' . htmlspecialchars($menu_f['title']) . '</a>';
                             
-                            // If it has submenus, we can list them too or just keep top level. 
-                            // Following "replica" instruction, let's add a small indent for submenus if any.
-                            $stmt_sub_f = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
+                            // If it's a submenu and parent is "Escuelas", we should filter
+                            $stmt_sub_f = $pdo->prepare("SELECT id_menu, title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
                             $stmt_sub_f->execute([$menu_f['id_menu']]);
                             while ($sub_f = $stmt_sub_f->fetch()) {
                                 echo '<a class="btn btn-link ps-4" href="' . htmlspecialchars($sub_f['url']) . '" style="font-size: 0.9em;">- ' . htmlspecialchars($sub_f['title']) . '</a>';
+                            }
+
+                            // Dynamic categories for Escuelas or Galerías in footer
+                            if ($menu_f['title'] === 'Escuelas') {
+                                $stmt_cat_f = $pdo->query("SELECT name, id_category FROM categories WHERE name NOT LIKE '%Graduaciones%' AND name NOT LIKE '%Diplomado%' AND name NOT LIKE '%Galería%' ORDER BY name ASC");
+                                while ($cat_f = $stmt_cat_f->fetch()) {
+                                    echo '<a class="btn btn-link ps-4" href="despliegue_escuelas.php?id=' . $cat_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($cat_f['name']) . '</a>';
+                                }
+                            }
+                            if ($menu_f['title'] === 'Galerías' || $menu_f['title'] === 'Graduaciones') {
+                                $stmt_cat_f = $pdo->query("SELECT name, id_category FROM categories WHERE name LIKE '%Graduaciones%' OR name LIKE '%Diplomado%' OR name LIKE '%Galería%' ORDER BY name ASC");
+                                while ($cat_f = $stmt_cat_f->fetch()) {
+                                    echo '<a class="btn btn-link ps-4" href="graduaciones.php?id=' . $cat_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($cat_f['name']) . '</a>';
+                                }
                             }
                         }
                     } catch (PDOException $e) {
