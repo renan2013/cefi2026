@@ -58,17 +58,28 @@
                     <div class="row g-2 pt-2">
                         <?php
                         try {
-                            // Fetch the latest 6 gallery images from any post
-                            $stmt_grad_f = $pdo->query("SELECT value, id_post FROM attachments WHERE type = 'gallery_image' ORDER BY id_attachment DESC LIMIT 6");
+                            // Fetch one image from each of the 4 most recent posts that have gallery images
+                            $stmt_grad_f = $pdo->query("
+                                SELECT a.value, a.id_post 
+                                FROM attachments a
+                                INNER JOIN (
+                                    SELECT id_post, MAX(id_attachment) as max_id
+                                    FROM attachments 
+                                    WHERE type = 'gallery_image' 
+                                    GROUP BY id_post
+                                ) as latest_pics ON a.id_attachment = latest_pics.max_id
+                                ORDER BY a.id_post DESC 
+                                LIMIT 4
+                            ");
                             $grads_f = $stmt_grad_f->fetchAll();
 
                             if (empty($grads_f)): ?>
                                 <p class="text-muted small">No hay fotos de graduaciones aún.</p>
                             <?php else: 
                                 foreach ($grads_f as $grad_img): ?>
-                                    <div class="col-4">
+                                    <div class="col-6">
                                         <a href="ver_graduacion.php?id=<?php echo $grad_img['id_post']; ?>">
-                                            <img class="img-fluid bg-light p-1" src="../classbox/public/uploads/attachments/<?php echo $grad_img['value']; ?>" alt="Graduación" style="height: 60px; width: 100%; object-fit: cover;">
+                                            <img class="img-fluid bg-light p-1" src="../classbox/public/uploads/attachments/<?php echo $grad_img['value']; ?>" alt="Graduación" style="height: 80px; width: 100%; object-fit: cover;">
                                         </a>
                                     </div>
                                 <?php endforeach; 
