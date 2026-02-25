@@ -54,7 +54,7 @@ try {
                     <td><span class="badge bg-primary"><?php echo $gal['photo_count']; ?> fotos</span></td>
                     <td class="actions">
                         <a href="../posts/attachments.php?post_id=<?php echo $gal['id_post']; ?>" class="btn-attach"><i class="fa-solid fa-camera"></i> Gestionar Fotos</a>
-                        <a href="../posts/edit.php?id=<?php echo $gal['id_post']; ?>">Editar</a>
+                        <a href="edit.php?id=<?php echo $gal['id_post']; ?>">Editar</a>
                         <button type="button" class="btn-link delete" style="background:none; border:none; color:#dc3545; cursor:pointer;" onclick="confirmDelete(<?php echo $gal['id_post']; ?>, '<?php echo addslashes($gal['title']); ?>')">Eliminar</button>
                     </td>
                 </tr>
