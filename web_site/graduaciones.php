@@ -25,22 +25,22 @@ try {
 
 <!-- Graduaciones Start -->
 <div class="container-xxl py-5">
-    <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-        <h6 class="section-title bg-white text-center text-primary px-3">Galería de Eventos</h6>
-        <h1 class="mb-5">Nuestras Graduaciones</h1>
-    </div>
-
     <div class="container">
-        <div class="row g-4">
-            <?php if (empty($graduations)): ?>
-                <div class="col-12 text-center py-5">
-                    <div class="bg-light p-5 rounded">
-                        <i class="fa fa-images fs-1 text-muted mb-3"></i>
-                        <p class="text-muted">Próximamente estaremos compartiendo las fotos y videos de nuestras ceremonias de graduación.</p>
-                        <a href="index.php" class="btn btn-primary mt-3">Volver al Inicio</a>
-                    </div>
+        <?php if (empty($graduations)): ?>
+            <div class="col-12 text-center py-5">
+                <div class="bg-light p-5 rounded">
+                    <i class="fa fa-images fs-1 text-muted mb-3"></i>
+                    <h1 class="mb-3">Próximamente</h1>
+                    <p class="text-muted">Estaremos compartiendo las fotos y videos de nuestras ceremonias de graduación muy pronto.</p>
+                    <a href="index.php" class="btn btn-primary mt-3">Volver al Inicio</a>
                 </div>
-            <?php else: ?>
+            </div>
+        <?php else: ?>
+            <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-center text-primary px-3">Galería de Eventos</h6>
+                <h1 class="mb-5">Nuestras Graduaciones</h1>
+            </div>
+            <div class="row g-4">
                 <?php foreach ($graduations as $index => $grad): 
                     $delay = (0.1 * ($index % 3)) + 0.1;
                     
@@ -76,8 +76,8 @@ try {
                         </div>
                     </div>
                 <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 
