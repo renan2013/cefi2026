@@ -46,17 +46,7 @@ try {
                 <p class="text-muted mb-4"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
 
                 <?php if (!empty($gallery)): ?>
-                    <!-- Main Carousel -->
-                    <div class="owl-carousel graduation-carousel mb-5 shadow rounded overflow-hidden">
-                        <?php foreach ($gallery as $img): ?>
-                            <div class="item">
-                                <img src="../classbox/public/uploads/attachments/<?php echo $img['value']; ?>" class="img-fluid" alt="Graduación">
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-
                     <!-- Full Grid of Images with Lightbox Support -->
-                    <h3 class="mb-4">Galería de Fotos</h3>
                     <div class="row g-2 popup-gallery">
                         <?php foreach ($gallery as $img): 
                             $img_url = '../classbox/public/uploads/attachments/' . $img['value'];
@@ -179,15 +169,6 @@ try {
 <script>
 (function($) {
     $(document).ready(function(){
-        // Initialize Carousel
-        if ($.fn.owlCarousel) {
-            $(".graduation-carousel").owlCarousel({
-                items: 1, nav: true, dots: true, autoplay: true, autoplayTimeout: 5000,
-                loop: true, navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-                animateOut: 'fadeOut'
-            });
-        }
-
         // Initialize Lightbox Gallery
         if ($.fn.magnificPopup) {
             $('.popup-gallery').magnificPopup({
