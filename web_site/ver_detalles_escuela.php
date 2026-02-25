@@ -44,14 +44,13 @@ try {
 <div class="container mt-5">
     <div class="row g-4">
         <div class="col-lg-7 col-md-12">
-            <nav aria-label="breadcrumb">
+            <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
-                    <li class="breadcrumb-item"><a href="despliegue_escuelas.php?id=<?php echo $post['id_category']; ?>"><?php echo htmlspecialchars($post['category_name']); ?></a></li>
-                    <li class="breadcrumb-item active"><?php echo htmlspecialchars($post['title']); ?></li>
+                    <li class="breadcrumb-item">Escuelas</li>
+                    <li class="breadcrumb-item active"><?php echo htmlspecialchars($post['category_name']); ?></li>
                 </ol>
             </nav>
-            <h1 class="display-5 fw-bold"><?php echo htmlspecialchars($post['title']); ?></h1>
+            <h2 class="fw-bold mb-3"><?php echo htmlspecialchars($post['title']); ?></h2>
             <p class="lead text-muted"><?php echo htmlspecialchars($post['synopsis']); ?></p>
             
             <hr class="my-4">
