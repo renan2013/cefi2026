@@ -52,7 +52,7 @@ require_once __DIR__ . '/../partials/header.php';
 
     <h3>Add New Attachment</h3>
     
-    <!-- Form for Gallery Images (only if category is Gallery or Graduaciones) -->
+    <!-- Form for Gallery Images (Multiple) - FIRST -->
     <?php if (stripos($post['category_name'], 'gallery') !== false || stripos($post['category_name'], 'Graduaciones') !== false): ?>
     <div class="upload-form">
         <h4>Upload Gallery Images (Multiple)</h4>
