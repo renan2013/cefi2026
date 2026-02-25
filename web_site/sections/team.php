@@ -8,9 +8,9 @@
         <div class="row g-4">
             <?php
             try {
-                // Fetch instructors from posts table
+                // Fetch instructors from posts table, including the post title
                 $stmt_team = $pdo->query("
-                    SELECT id_post, instructor_name, instructor_title, instructor_photo 
+                    SELECT id_post, title, instructor_name, instructor_title, instructor_photo 
                     FROM posts 
                     WHERE show_in_instructors = 1 
                     ORDER BY created_at DESC
@@ -34,6 +34,7 @@
                                 <div class="text-center p-4">
                                     <h5 class="mb-0"><?php echo htmlspecialchars($inst['instructor_name']); ?></h5>
                                     <small><?php echo htmlspecialchars($inst['instructor_title']); ?></small>
+                                    <p class="mt-2 mb-0 text-primary small fw-bold"><?php echo htmlspecialchars($inst['title']); ?></p>
                                 </div>
                             </div>
                         </div>
