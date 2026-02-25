@@ -43,7 +43,7 @@
                 height: 45px !important;
             }
             .phone-text {
-                font-size: 0.65rem;
+                font-size: 0.85rem;
                 display: none; 
             }
             @media (min-width: 380px) {
