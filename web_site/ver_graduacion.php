@@ -148,15 +148,18 @@ try {
 
 /* Lightbox Custom Styles */
 .mfp-arrow { background: rgba(0,0,0,0.2) !important; border-radius: 50%; width: 60px !important; height: 60px !important; }
-.mfp-counter { top: 15px !important; right: 60px !important; font-weight: 600; color: #FFF; }
+.mfp-counter { top: 20px !important; right: 110px !important; font-weight: 600; color: #FFF; font-size: 14px; }
 .mfp-close {
     background: #2D8FE2 !important; color: white !important;
-    width: 40px !important; height: 40px !important;
-    border-radius: 50%; margin-top: 10px; margin-right: 10px; opacity: 1 !important;
+    width: 44px !important; height: 44px !important;
+    line-height: 44px !important;
+    border-radius: 50%; margin-top: 10px; margin-right: 10px; 
+    opacity: 1 !important; padding: 0 !important;
+    text-align: center !important;
 }
 .mfp-fullscreen-btn {
-    position: absolute; right: 60px; top: 15px; z-index: 1050;
-    color: #FFF; font-size: 22px; cursor: pointer; opacity: 0.8; transition: opacity 0.3s;
+    position: absolute; right: 65px; top: 20px; z-index: 1050;
+    color: #FFF; font-size: 24px; cursor: pointer; opacity: 0.8; transition: opacity 0.3s;
 }
 .mfp-fullscreen-btn:hover { opacity: 1; }
 
