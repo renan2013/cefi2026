@@ -55,12 +55,12 @@ require_once __DIR__ . '/../partials/header.php';
     <!-- Form for Gallery Images (only if category is Gallery or Graduaciones) -->
     <?php if (stripos($post['category_name'], 'gallery') !== false || stripos($post['category_name'], 'Graduaciones') !== false): ?>
     <div class="upload-form">
-        <h4>Upload Gallery Image</h4>
+        <h4>Upload Gallery Images (Multiple)</h4>
         <form action="add_attachment.php" method="POST" enctype="multipart/form-data">
             <input type="hidden" name="post_id" value="<?php echo $post_id; ?>">
             <input type="hidden" name="type" value="gallery_image">
-            <input type="file" name="file_upload" accept="image/*" required>
-            <button type="submit">Upload Image</button>
+            <input type="file" name="file_upload[]" accept="image/*" multiple required>
+            <button type="submit">Upload All Images</button>
         </form>
     </div>
     <?php endif; ?>

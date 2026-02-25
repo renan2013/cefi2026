@@ -11,40 +11,47 @@ if (!$post_id || !$type) {
     exit;
 }
 
-// Handle file uploads
-if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] === UPLOAD_ERR_OK) {
-    $upload_dir = __DIR__ . '/../../public/uploads/attachments/';
-    // Ensure the directory exists
-    if (!is_dir($upload_dir)) {
-        mkdir($upload_dir, 0777, true);
+// Handle file uploads (Multiple support)
+if (isset($_FILES['file_upload'])) {
+    $files = $_FILES['file_upload'];
+    $uploaded_count = 0;
+    
+    // Check if it's multiple files or just one
+    $file_array = is_array($files['name']) ? $files['name'] : [$files['name']];
+    
+    for ($i = 0; $i < count($file_array); $i++) {
+        $error_code = is_array($files['error']) ? $files['error'][$i] : $files['error'];
+        
+        if ($error_code === UPLOAD_ERR_OK) {
+            $tmp_name = is_array($files['tmp_name']) ? $files['tmp_name'][$i] : $files['tmp_name'];
+            $name = is_array($files['name']) ? $files['name'][$i] : $files['name'];
+            
+            $upload_dir = __DIR__ . '/../../public/uploads/attachments/';
+            if (!is_dir($upload_dir)) mkdir($upload_dir, 0777, true);
+
+            $file_name = uniqid($type . '_', true) . '-' . basename($name);
+            $target_file = $upload_dir . $file_name;
+
+            if (move_uploaded_file($tmp_name, $target_file)) {
+                try {
+                    $stmt = $pdo->prepare("INSERT INTO attachments (id_post, type, value, file_name) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$post_id, $type, $file_name, $file_name]);
+                    $uploaded_count++;
+                } catch (PDOException $e) {
+                    $error = 'Error de base de datos: ' . $e->getMessage();
+                    break;
+                }
+            }
+        }
     }
-
-    $file_name = uniqid($type . '_', true) . '-' . basename($_FILES['file_upload']['name']);
-    $target_file = $upload_dir . $file_name;
-
-    if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
-        $value = $file_name; // Guardar solo el nombre del archivo
-    } else {
-        $error = 'Fallo al subir el archivo.';
+    
+    if ($uploaded_count > 0 && empty($error)) {
+        header('Location: attachments.php?post_id=' . $post_id . '&success=' . urlencode("$uploaded_count archivos subidos correctamente."));
+        exit;
+    } else if (empty($error)) {
+        $error = 'No se pudo subir ningún archivo.';
     }
 } else if ($type === 'youtube') {
-    $value = $_POST['text_value'] ?? '';
-    // Basic validation for YouTube URL/ID
-    if (empty($value)) {
-        $error = 'URL o ID de YouTube es obligatorio.';
-    }
-} else {
-    $error = 'No se ha subido ningún archivo o el tipo no es YouTube.';
-}
-
-if (empty($error)) {
-    try {
-        $stmt = $pdo->prepare("INSERT INTO attachments (id_post, type, value, file_name) VALUES (?, ?, ?, ?)");
-        $stmt->execute([$post_id, $type, $value, $value]); 
-        
-        header('Location: attachments.php?post_id=' . $post_id . '&success=' . urlencode('Adjunto añadido exitosamente.'));
-        exit;
-    } catch (PDOException $e) {
         $error = 'Error de base de datos: ' . $e->getMessage();
     }
 }
