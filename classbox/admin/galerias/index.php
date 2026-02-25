@@ -29,7 +29,7 @@ try {
 
 <div class="table-header">
     <h3>Listado de Galerías (Graduaciones)</h3>
-    <a href="../posts/create.php" class="btn-create">+ Crear Nueva Galería</a>
+    <a href="create.php" class="btn-create">+ Crear Nueva Galería</a>
 </div>
 
 <table>
