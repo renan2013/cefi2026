@@ -26,7 +26,7 @@
                     ?>
                     <div class="col-lg-3 col-md-6 wow zoomIn" data-wow-delay="<?php echo $delay; ?>s">
                         <a class="position-relative d-block overflow-hidden category-card" href="despliegue_escuelas.php?id=<?php echo $cat['id_category']; ?>">
-                            <img class="img-fluid w-100 h-100" src="<?php echo htmlspecialchars($cat_img); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>" style="height: 250px !important; object-fit: cover;">
+                            <img class="img-fluid w-100 h-100" src="<?php echo htmlspecialchars($cat_img); ?>" alt="<?php echo htmlspecialchars($cat['name']); ?>" style="height: 180px !important; object-fit: cover;">
                             <div class="category-gradient" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);"></div>
                             <div class="text-center position-absolute bottom-0 start-0 w-100 py-2 px-3" style="margin: 1px; z-index: 2;">
                                 <h5 class="m-0 text-white text-center"><?php echo htmlspecialchars($cat['name']); ?> - <?php echo $cat['total_posts']; ?></h5>
