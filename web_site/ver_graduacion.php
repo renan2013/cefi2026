@@ -42,8 +42,8 @@ try {
                     </ol>
                 </nav>
 
-                <h1 class="display-5 fw-bold mb-3"><?php echo htmlspecialchars($grad['title']); ?></h1>
-                <p class="lead text-muted mb-4"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
+                <h2 class="fw-bold mb-3"><?php echo htmlspecialchars($grad['title']); ?></h2>
+                <p class="text-muted mb-4"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
 
                 <?php if (!empty($gallery)): ?>
                     <!-- Main Carousel -->
@@ -183,6 +183,17 @@ try {
     margin-right: 10px;
     border-radius: 50%;
 }
+.mfp-fullscreen {
+    position: fixed;
+    right: 60px;
+    top: 15px;
+    z-index: 1046;
+    color: #FFF;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0.7;
+}
+.mfp-fullscreen:hover { opacity: 1; }
 </style>
 
 <!-- Magnific Popup JS -->
@@ -210,15 +221,42 @@ try {
             $('.popup-gallery').magnificPopup({
                 delegate: 'a',
                 type: 'image',
+                tLoading: 'Cargando imagen #%curr%...',
                 gallery: {
                     enabled: true,
                     navigateByImgClick: true,
-                    preload: [0,1]
+                    preload: [0,1],
+                    tPrev: 'Anterior',
+                    tNext: 'Siguiente',
+                    tCounter: '<span class="mfp-counter">%curr% de %total%</span>'
                 },
                 image: {
                     tError: '<a href="%url%">La imagen</a> no pudo ser cargada.',
                     titleSrc: function(item) {
                         return item.el.attr('title') || '';
+                    }
+                },
+                callbacks: {
+                    open: function() {
+                        // Add fullscreen button on open
+                        $('body').append('<div class="mfp-fullscreen" id="mfp-fs-btn" title="Pantalla Completa"><i class="fa fa-expand"></i></div>');
+                        $('#mfp-fs-btn').on('click', function() {
+                            if (!document.fullscreenElement) {
+                                document.documentElement.requestFullscreen();
+                                $(this).html('<i class="fa fa-compress"></i>');
+                            } else {
+                                if (document.exitFullscreen) {
+                                    document.exitFullscreen();
+                                    $(this).html('<i class="fa fa-expand"></i>');
+                                }
+                            }
+                        });
+                    },
+                    close: function() {
+                        $('#mfp-fs-btn').remove();
+                        if (document.fullscreenElement) {
+                            document.exitFullscreen();
+                        }
                     }
                 },
                 mainClass: 'mfp-with-zoom mfp-img-mobile',
