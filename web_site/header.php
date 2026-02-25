@@ -76,12 +76,13 @@
                             echo '<a href="#" class="nav-link dropdown-toggle ' . $activeClass . '" data-bs-toggle="dropdown">' . htmlspecialchars($menu['title']) . '</a>';
                             echo '<div class="dropdown-menu fade-down m-0">';
                             
-                            // If it's "Escuelas", fetch categories
-                            if ($menu['title'] === 'Escuelas') {
+                            // If it's "Escuelas" or "Galerías/Graduaciones", fetch categories
+                            if ($menu['title'] === 'Escuelas' || $menu['title'] === 'Galerías' || $menu['title'] === 'Graduaciones') {
                                 try {
                                     $stmt_cat = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
                                     while ($category = $stmt_cat->fetch()) {
-                                        echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                                        $link = ($menu['title'] === 'Escuelas') ? 'despliegue_escuelas.php' : 'graduaciones.php';
+                                        echo '<a href="' . $link . '?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
                                     }
                                 } catch (PDOException $e) {
                                     echo '<a href="#" class="dropdown-item text-danger">Error categorías</a>';
