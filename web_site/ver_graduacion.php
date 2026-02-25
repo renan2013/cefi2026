@@ -27,6 +27,9 @@ try {
 }
 ?>
 
+<!-- Magnific Popup CSS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
@@ -52,14 +55,17 @@ try {
                         <?php endforeach; ?>
                     </div>
 
-                    <!-- Full Grid of Images -->
+                    <!-- Full Grid of Images with Lightbox Support -->
                     <h3 class="mb-4">Galería de Fotos</h3>
-                    <div class="row g-3">
-                        <?php foreach ($gallery as $img): ?>
+                    <div class="row g-3 popup-gallery">
+                        <?php foreach ($gallery as $img): 
+                            $img_url = '../classbox/public/uploads/attachments/' . $img['value'];
+                            ?>
                             <div class="col-md-4 col-sm-6">
                                 <div class="gallery-item shadow-sm rounded overflow-hidden">
-                                    <a href="../classbox/public/uploads/attachments/<?php echo $img['value']; ?>" target="_blank">
-                                        <img src="../classbox/public/uploads/attachments/<?php echo $img['value']; ?>" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Foto Graduación">
+                                    <a href="<?php echo $img_url; ?>" title="<?php echo htmlspecialchars($grad['title']); ?>">
+                                        <img src="<?php echo $img_url; ?>" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Foto Graduación">
+                                        <div class="gallery-overlay"><i class="fa fa-search-plus text-white fs-4"></i></div>
                                     </a>
                                 </div>
                             </div>
@@ -118,6 +124,71 @@ try {
         </div>
     </div>
 </div>
+
+<style>
+.graduation-carousel .item img {
+    height: 500px;
+    object-fit: contain;
+    background-color: #111;
+}
+.gallery-item {
+    position: relative;
+    transition: transform 0.3s ease;
+}
+.gallery-item:hover {
+    transform: scale(1.05);
+}
+.gallery-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.gallery-item:hover .gallery-overlay { opacity: 1; }
+@media (max-width: 991px) {
+    .graduation-carousel .item img { height: 350px; }
+}
+</style>
+
+<!-- Magnific Popup JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
+
+<script>
+$(document).ready(function(){
+  // Initialize Carousel
+  $(".graduation-carousel").owlCarousel({
+      items: 1,
+      nav: true,
+      dots: true,
+      autoplay: true,
+      autoplayTimeout: 5000,
+      loop: true,
+      navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+      animateOut: 'fadeOut'
+  });
+
+  // Initialize Lightbox Gallery
+  $('.popup-gallery').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {
+          enabled: true,
+          navigateByImgClick: true,
+          preload: [0,1],
+          tPrev: 'Anterior',
+          tNext: 'Siguiente',
+          tCounter: '<span class="mfp-counter">%curr% de %total%</span>'
+      },
+      image: {
+          tError: '<a href="%url%">La imagen</a> no pudo ser cargada.',
+          titleSrc: function(item) {
+              return item.el.attr('title');
+          }
+      }
+  });
+});
+</script>
 
 <style>
 .graduation-carousel .item img {
