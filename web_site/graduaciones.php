@@ -43,7 +43,18 @@ try {
             <?php else: ?>
                 <?php foreach ($graduations as $index => $grad): 
                     $delay = (0.1 * ($index % 3)) + 0.1;
-                    $image_path = !empty($grad['main_image']) ? '../classbox/public/uploads/images/' . $grad['main_image'] : 'img/course-1.jpg';
+                    
+                    // Intelligent image path detection
+                    $main_img = $grad['main_image'];
+                    if (!empty($main_img)) {
+                        if (strpos($main_img, 'public/uploads/images/') !== false) {
+                            $image_path = '../classbox/' . $main_img;
+                        } else {
+                            $image_path = '../classbox/public/uploads/images/' . $main_img;
+                        }
+                    } else {
+                        $image_path = 'img/course-1.jpg'; // Default placeholder
+                    }
                     ?>
                     <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="<?php echo $delay; ?>s">
                         <div class="card h-100 shadow-sm border-0 overflow-hidden graduation-post">
