@@ -2,12 +2,16 @@
 include 'header.php'; // Includes db_connect.php
 
 try {
-    // Fetch all posts that have at least one gallery_image attachment
+    // Fetch posts that:
+    // 1. Belong to a category named 'Graduaciones'
+    // 2. OR have at least one gallery_image or youtube attachment
     $stmt_posts = $pdo->prepare("
-        SELECT DISTINCT p.id_post, p.title, p.synopsis, p.main_image, p.created_at, p.id_category
+        SELECT DISTINCT p.id_post, p.title, p.synopsis, p.main_image, p.created_at
         FROM posts p
-        JOIN attachments a ON p.id_post = a.id_post
-        WHERE a.type = 'gallery_image'
+        LEFT JOIN categories c ON p.id_category = c.id_category
+        LEFT JOIN attachments a ON p.id_post = a.id_post
+        WHERE c.name LIKE '%Graduaciones%' 
+           OR a.type IN ('gallery_image', 'youtube')
         ORDER BY p.created_at DESC
     ");
     $stmt_posts->execute();
