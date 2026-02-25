@@ -149,6 +149,40 @@ try {
 @media (max-width: 991px) {
     .graduation-carousel .item img { height: 350px; }
 }
+
+/* Lightbox Custom Styles */
+.mfp-arrow {
+    background: rgba(0,0,0,0.2) !important;
+    border-radius: 50%;
+    width: 60px !important;
+    height: 60px !important;
+    margin-top: -30px !important;
+}
+.mfp-arrow:before {
+    border-top-width: 15px !important;
+    border-bottom-width: 15px !important;
+    margin-top: 15px !important;
+}
+.mfp-arrow-left:before { border-right-width: 20px !important; margin-left: 15px !important; }
+.mfp-arrow-right:before { border-left-width: 20px !important; margin-left: 25px !important; }
+
+.mfp-counter {
+    top: 15px !important;
+    right: 60px !important;
+    font-family: 'Heebo', sans-serif;
+    font-weight: 600;
+}
+.mfp-close {
+    background: #2D8FE2 !important;
+    color: white !important;
+    opacity: 1 !important;
+    width: 40px !important;
+    height: 40px !important;
+    line-height: 40px !important;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
 </style>
 
 <!-- Magnific Popup JS -->
