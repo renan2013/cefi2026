@@ -78,7 +78,7 @@
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
                         <img src="img/logo_cefi_blanco.svg" alt="CEFI Logo" style="height: 65px;">
                         <div class="ms-3 text-white d-flex flex-column">
-                            <span class="fw-bold h4 m-0">CEFI</span>
+                            <span class="fw-bold h4 m-0" style="color: #FFFFFF !important;">CEFI</span>
                             <small class="phone-text">+506 8992-9180</small>
                         </div>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
