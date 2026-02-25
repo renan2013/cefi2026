@@ -4,22 +4,22 @@ $page_title = 'Gestor de Galerías';
 require_once __DIR__ . '/../partials/header.php';
 require_once __DIR__ . '/../../config/database.php';
 
-// Fetch the 'Graduaciones' category or create a 'Galerías' category if it doesn't exist
-// For now, let's list all posts in the 'Graduaciones' category as these are our galleries.
+// Fetch all posts that belong to gallery-related categories
+// or specifically have gallery/video attachments.
 try {
-    $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name LIKE '%Graduaciones%' LIMIT 1");
-    $stmt_cat->execute();
-    $category = $stmt_cat->fetch();
-    $id_graduaciones = $category ? $category['id_category'] : 0;
-
     $stmt = $pdo->prepare("
-        SELECT p.id_post, p.title, p.created_at, 
+        SELECT DISTINCT p.id_post, p.title, p.created_at, 
         (SELECT COUNT(*) FROM attachments WHERE id_post = p.id_post AND type = 'gallery_image') as photo_count
         FROM posts p
-        WHERE p.id_category = ?
+        JOIN categories c ON p.id_category = c.id_category
+        LEFT JOIN attachments a ON p.id_post = a.id_post
+        WHERE c.name LIKE '%Graduaciones%' 
+           OR c.name LIKE '%Diplomado%'
+           OR c.name LIKE '%Galería%'
+           OR a.type IN ('gallery_image', 'youtube')
         ORDER BY p.created_at DESC
     ");
-    $stmt->execute([$id_graduaciones]);
+    $stmt->execute();
     $galerias = $stmt->fetchAll();
 
 } catch (PDOException $e) {
@@ -28,7 +28,7 @@ try {
 ?>
 
 <div class="table-header">
-    <h3>Listado de Galerías (Graduaciones)</h3>
+    <h3>Listado de Galerías (Graduaciones y Diplomados)</h3>
     <a href="create.php" class="btn-create">+ Crear Nueva Galería</a>
 </div>
 
@@ -44,7 +44,7 @@ try {
     <tbody>
         <?php if (empty($galerias)): ?>
             <tr>
-                <td colspan="4" style="text-align:center;">No hay galerías creadas. Crea una publicación en la categoría "Graduaciones" para empezar.</td>
+                <td colspan="4" style="text-align:center;">No hay galerías creadas. Crea una publicación en categorías de Galería, Graduaciones o Diplomado para empezar.</td>
             </tr>
         <?php else: ?>
             <?php foreach ($galerias as $gal): ?>
