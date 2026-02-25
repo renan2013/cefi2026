@@ -155,39 +155,50 @@ try {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
 
 <script>
-$(document).ready(function(){
-  // Initialize Carousel
-  $(".graduation-carousel").owlCarousel({
-      items: 1,
-      nav: true,
-      dots: true,
-      autoplay: true,
-      autoplayTimeout: 5000,
-      loop: true,
-      navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
-      animateOut: 'fadeOut'
-  });
+(function($) {
+    $(document).ready(function(){
+        // Initialize Carousel
+        if ($.fn.owlCarousel) {
+            $(".graduation-carousel").owlCarousel({
+                items: 1,
+                nav: true,
+                dots: true,
+                autoplay: true,
+                autoplayTimeout: 5000,
+                loop: true,
+                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+                animateOut: 'fadeOut'
+            });
+        }
 
-  // Initialize Lightbox Gallery
-  $('.popup-gallery').magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery: {
-          enabled: true,
-          navigateByImgClick: true,
-          preload: [0,1],
-          tPrev: 'Anterior',
-          tNext: 'Siguiente',
-          tCounter: '<span class="mfp-counter">%curr% de %total%</span>'
-      },
-      image: {
-          tError: '<a href="%url%">La imagen</a> no pudo ser cargada.',
-          titleSrc: function(item) {
-              return item.el.attr('title');
-          }
-      }
-  });
-});
+        // Initialize Lightbox Gallery
+        if ($.fn.magnificPopup) {
+            $('.popup-gallery').magnificPopup({
+                delegate: 'a',
+                type: 'image',
+                gallery: {
+                    enabled: true,
+                    navigateByImgClick: true,
+                    preload: [0,1]
+                },
+                image: {
+                    tError: '<a href="%url%">La imagen</a> no pudo ser cargada.',
+                    titleSrc: function(item) {
+                        return item.el.attr('title') || '';
+                    }
+                },
+                mainClass: 'mfp-with-zoom mfp-img-mobile',
+                zoom: {
+                    enabled: true,
+                    duration: 300,
+                    opener: function(element) {
+                        return element.find('img');
+                    }
+                }
+            });
+        }
+    });
+})(jQuery);
 </script>
 
 <style>
