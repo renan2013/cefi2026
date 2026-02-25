@@ -57,6 +57,35 @@
                 background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") !important;
             }
         }
+
+        /* Floating WhatsApp Button for Mobile */
+        .btn-whatsapp-float {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            bottom: 20px;
+            right: 20px;
+            background-color: #25d366;
+            color: #FFF;
+            border-radius: 50px;
+            text-align: center;
+            font-size: 30px;
+            box-shadow: 2px 2px 3px #999;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        .btn-whatsapp-float:hover {
+            background-color: #128c7e;
+            color: #FFF;
+            transform: scale(1.1);
+        }
+        @media (min-width: 992px) {
+            .btn-whatsapp-float { display: none; }
+        }
     </style>
 
     <!-- JavaScript Libraries -->
@@ -155,3 +184,8 @@
         </div>
     </nav>
     <!-- Navbar End -->
+
+    <!-- Floating WhatsApp Button Mobile -->
+    <a href="https://wa.me/50689929180" class="btn-whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
