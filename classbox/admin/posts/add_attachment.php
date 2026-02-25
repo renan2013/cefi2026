@@ -23,7 +23,7 @@ if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] === UPLOAD_
     $target_file = $upload_dir . $file_name;
 
     if (move_uploaded_file($_FILES['file_upload']['tmp_name'], $target_file)) {
-        $value = 'public/uploads/attachments/' . $file_name;
+        $value = $file_name; // Guardar solo el nombre del archivo
     } else {
         $error = 'Fallo al subir el archivo.';
     }
@@ -39,8 +39,8 @@ if (isset($_FILES['file_upload']) && $_FILES['file_upload']['error'] === UPLOAD_
 
 if (empty($error)) {
     try {
-        $stmt = $pdo->prepare("INSERT INTO attachments (id_post, type, value, file_name, file_path) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$post_id, $type, $value, $value, $value]); // For YouTube, file_name and file_path store the URL/ID
+        $stmt = $pdo->prepare("INSERT INTO attachments (id_post, type, value, file_name) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$post_id, $type, $value, $value]); 
         
         header('Location: attachments.php?post_id=' . $post_id . '&success=' . urlencode('Adjunto añadido exitosamente.'));
         exit;
