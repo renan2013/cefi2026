@@ -54,12 +54,29 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
-                    <h4 class="text-white mb-3">Graduaciones</h4>
+                    <h4 class="text-white mb-3"><a href="graduaciones.php" style="color: inherit; text-decoration: none;">Graduaciones</a></h4>
                     <div class="row g-2 pt-2">
-                        <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="img/course-1.jpg" alt="">
-                        </div>
-                        
+                        <?php
+                        try {
+                            // Fetch the latest 6 gallery images from any post
+                            $stmt_grad_f = $pdo->query("SELECT value, id_post FROM attachments WHERE type = 'gallery_image' ORDER BY id_attachment DESC LIMIT 6");
+                            $grads_f = $stmt_grad_f->fetchAll();
+
+                            if (empty($grads_f)): ?>
+                                <p class="text-muted small">No hay fotos de graduaciones aún.</p>
+                            <?php else: 
+                                foreach ($grads_f as $grad_img): ?>
+                                    <div class="col-4">
+                                        <a href="ver_graduacion.php?id=<?php echo $grad_img['id_post']; ?>">
+                                            <img class="img-fluid bg-light p-1" src="../classbox/public/uploads/attachments/<?php echo $grad_img['value']; ?>" alt="Graduación" style="height: 60px; width: 100%; object-fit: cover;">
+                                        </a>
+                                    </div>
+                                <?php endforeach; 
+                            endif;
+                        } catch (PDOException $e) {
+                            echo '<p class="text-danger small">Error galería</p>';
+                        }
+                        ?>
                     </div>
                 </div>
                 
