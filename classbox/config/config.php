@@ -7,7 +7,7 @@ define('DB_NAME', 'u822406629_classboxnuevo');
 define('DB_CHARSET', 'utf8mb4');
 
 // -- APPLICATION PATHS --
-define('BASE_URL', 'https://unela.ac.cr/classbox'); 
+define('BASE_URL', 'https://ceficr.com/web_cefi_2026/classbox'); 
 define('ROOT_PATH', __DIR__);
 
 // -- OTHER SETTINGS --
