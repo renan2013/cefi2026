@@ -53,7 +53,14 @@ require_once __DIR__ . '/../partials/header.php';
     <h3>Add New Attachment</h3>
     
     <!-- Form for Gallery Images (Multiple) - FIRST -->
-    <?php if (stripos($post['category_name'], 'gallery') !== false || stripos($post['category_name'], 'Graduaciones') !== false): ?>
+    <?php 
+    $cat_name = $post['category_name'];
+    $show_gallery = stripos($cat_name, 'gallery') !== false || 
+                    stripos($cat_name, 'Graduaciones') !== false || 
+                    stripos($cat_name, 'Diplomado') !== false || 
+                    stripos($cat_name, 'Galería') !== false;
+    
+    if ($show_gallery): ?>
     <div class="upload-form">
         <h4>Upload Gallery Images (Multiple)</h4>
         <form action="add_attachment.php" method="POST" enctype="multipart/form-data">
