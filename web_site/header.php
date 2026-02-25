@@ -140,11 +140,22 @@
                             $filter_op = $is_gallery_menu ? "LIKE" : "NOT LIKE";
                             $filter_conn = $is_gallery_menu ? "OR" : "AND";
 
-                            $stmt_cat = $pdo->query("SELECT id_category, name FROM categories 
-                                WHERE LOWER(name) $filter_op '%graduacion%' 
-                                $filter_conn LOWER(name) $filter_op '%diplomado%' 
-                                $filter_conn LOWER(name) $filter_op '%galería%' 
-                                ORDER BY name ASC");
+                            $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c";
+                            if ($is_gallery_menu) {
+                                // For Galleries, only show categories that HAVE posts
+                                $sql_cat .= " JOIN posts p ON c.id_category = p.id_category 
+                                              WHERE (LOWER(c.name) LIKE '%graduacion%' 
+                                              OR LOWER(c.name) LIKE '%diplomado%' 
+                                              OR LOWER(c.name) LIKE '%galería%')";
+                            } else {
+                                // For Escuelas, keep existing filter
+                                $sql_cat .= " WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
+                                              AND LOWER(c.name) NOT LIKE '%diplomado%' 
+                                              AND LOWER(c.name) NOT LIKE '%galería%'";
+                            }
+                            $sql_cat .= " ORDER BY c.name ASC";
+                            
+                            $stmt_cat = $pdo->query($sql_cat);
                             
                             while ($category = $stmt_cat->fetch()) {
                                 $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';

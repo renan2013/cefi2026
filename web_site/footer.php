@@ -1,4 +1,4 @@
-    <!-- Footer Start -->
+<!-- Footer Start -->
     <div class="container-fluid text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid py-5">
             <div class="row g-5">
@@ -16,21 +16,30 @@
                             echo '<a class="btn btn-link" href="' . htmlspecialchars($menu_f['url']) . '">' . htmlspecialchars($menu_f['title']) . '</a>';
                             
                             $is_gallery_menu = ($menu_f['title'] === 'Galerías' || $menu_f['title'] === 'Graduaciones');
-                            $filter_op = $is_gallery_menu ? "LIKE" : "NOT LIKE";
-                            $filter_conn = $is_gallery_menu ? "OR" : "AND";
 
+                            // Dynamic categories with content filter
                             if ($menu_f['title'] === 'Escuelas' || $is_gallery_menu) {
-                                $stmt_cat_f = $pdo->query("SELECT name, id_category FROM categories 
-                                    WHERE LOWER(name) $filter_op '%graduacion%' 
-                                    $filter_conn LOWER(name) $filter_op '%diplomado%' 
-                                    $filter_conn LOWER(name) $filter_op '%galería%' 
-                                    ORDER BY name ASC");
+                                $sql_cat_f = "SELECT DISTINCT c.id_category, c.name FROM categories c";
+                                if ($is_gallery_menu) {
+                                    $sql_cat_f .= " JOIN posts p ON c.id_category = p.id_category 
+                                                  WHERE (LOWER(c.name) LIKE '%graduacion%' 
+                                                  OR LOWER(c.name) LIKE '%diplomado%' 
+                                                  OR LOWER(c.name) LIKE '%galería%')";
+                                } else {
+                                    $sql_cat_f .= " WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
+                                                  AND LOWER(c.name) NOT LIKE '%diplomado%' 
+                                                  AND LOWER(c.name) NOT LIKE '%galería%'";
+                                }
+                                $sql_cat_f .= " ORDER BY c.name ASC";
+                                
+                                $stmt_cat_f = $pdo->query($sql_cat_f);
                                 while ($cat_f = $stmt_cat_f->fetch()) {
                                     $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
                                     echo '<a class="btn btn-link ps-4" href="' . $link . '?id=' . $cat_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($cat_f['name']) . '</a>';
                                 }
                             }
 
+                            // Manual submenus (filtered)
                             $stmt_sub_f = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
                             $stmt_sub_f->execute([$menu_f['id_menu']]);
                             while ($sub_f = $stmt_sub_f->fetch()) {
