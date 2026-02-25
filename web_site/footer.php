@@ -1,4 +1,4 @@
-<!-- Footer Start -->
+    <!-- Footer Start -->
     <div class="container-fluid text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container-fluid py-5">
             <div class="row g-5">
@@ -19,7 +19,6 @@
                             $filter_op = $is_gallery_menu ? "LIKE" : "NOT LIKE";
                             $filter_conn = $is_gallery_menu ? "OR" : "AND";
 
-                            // Dynamic categories
                             if ($menu_f['title'] === 'Escuelas' || $is_gallery_menu) {
                                 $stmt_cat_f = $pdo->query("SELECT name, id_category FROM categories 
                                     WHERE LOWER(name) $filter_op '%graduacion%' 
@@ -32,7 +31,6 @@
                                 }
                             }
 
-                            // Manual submenus (filtered)
                             $stmt_sub_f = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
                             $stmt_sub_f->execute([$menu_f['id_menu']]);
                             while ($sub_f = $stmt_sub_f->fetch()) {
@@ -40,9 +38,7 @@
                                 echo '<a class="btn btn-link ps-4" href="' . htmlspecialchars($sub_f['url']) . '" style="font-size: 0.9em;">- ' . htmlspecialchars($sub_f['title']) . '</a>';
                             }
                         }
-                    } catch (PDOException $e) {
-                        echo '<p class="text-danger">Error menú</p>';
-                    }
+                    } catch (PDOException $e) { echo '<p class="text-danger">Error menú</p>'; }
                     ?>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -54,9 +50,7 @@
                         <a class="btn btn-outline-light btn-social mx-1" href="https://www.facebook.com/CEFI.COSTARICA?mibextid=ZbWKwL" target="_blank"><i class="fab fa-facebook-f"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="https://www.instagram.com/cefi_cr?igsh=ZnNrZDRhdTB6Z3I0" target="_blank"><i class="fab fa-instagram"></i></a>
                         <a class="btn btn-outline-light btn-social mx-1" href="https://youtube.com/@ceficr?si=Prh18hZuQhWG6hdY" target="_blank"><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social mx-1" href="https://www.tiktok.com/@cefi_cr?_t=8jw1rg8zAJh&_r=1" target="_blank">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" /></svg>
-                        </a>
+                        <a class="btn btn-outline-light btn-social mx-1" href="https://www.tiktok.com/@cefi_cr?_t=8jw1rg8zAJh&_r=1" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16"><path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" /></svg></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6">
@@ -64,26 +58,14 @@
                     <div class="row g-2 pt-2">
                         <?php
                         try {
-                            $stmt_grad_f = $pdo->query("
-                                SELECT a.value, a.id_post 
-                                FROM attachments a
-                                INNER JOIN (
-                                    SELECT id_post, MAX(id_attachment) as max_id
-                                    FROM attachments 
-                                    WHERE type = 'gallery_image' 
-                                    GROUP BY id_post
-                                ) as latest_pics ON a.id_attachment = latest_pics.max_id
-                                ORDER BY a.id_post DESC 
-                                LIMIT 4
-                            ");
-                            $grads_f = $stmt_grad_f->fetchAll();
-                            foreach ($grads_f as $grad_img): ?>
+                            $stmt_grad_f = $pdo->query("SELECT a.value, a.id_post FROM attachments a INNER JOIN (SELECT id_post, MAX(id_attachment) as max_id FROM attachments WHERE type = 'gallery_image' GROUP BY id_post) as latest_pics ON a.id_attachment = latest_pics.max_id ORDER BY a.id_post DESC LIMIT 4");
+                            while ($grad_img = $stmt_grad_f->fetch()) { ?>
                                 <div class="col-6">
                                     <a href="ver_graduacion.php?id=<?php echo $grad_img['id_post']; ?>">
                                         <img class="img-fluid bg-light p-1" src="../classbox/public/uploads/attachments/<?php echo $grad_img['value']; ?>" alt="Graduación" style="height: 80px; width: 100%; object-fit: cover;">
                                     </a>
                                 </div>
-                            <?php endforeach;
+                            <?php }
                         } catch (PDOException $e) { echo '<p class="text-danger small">Error galería</p>'; }
                         ?>
                     </div>
@@ -93,7 +75,8 @@
         <div class="container-fluid"><div class="copyright"><div class="row"><div class="col-md-6 text-center text-md-start mb-3 mb-md-0">developed by renangalvan.net - +506 87777849 - Administrado por Classbox</div></div></div></div>
     </div>
     <!-- Footer End -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+
+    <!-- JavaScript Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="lib/wow/wow.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
