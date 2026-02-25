@@ -53,27 +53,42 @@
         <div class="collapse navbar-collapse align-items-center" id="navbarCollapse">
             <?php $currentPage = basename($_SERVER['PHP_SELF']); ?>
             <div class="navbar-nav ms-auto p-4 p-lg-0">
-                <a href="index.php" class="nav-item nav-link <?php echo ($currentPage == 'index.php') ? 'active' : ''; ?>">Inicio</a>
-                <a href="about.php" class="nav-item nav-link <?php echo ($currentPage == 'about.php') ? 'active' : ''; ?>">Quienes somos</a>
-                <a href="about.php" class="nav-item nav-link <?php echo ($currentPage == '') ? 'active' : ''; ?>">CEFI Virtual</a>
-                
-                <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle <?php echo (in_array($currentPage, ['team.php', 'testimonial.php', '404.php'])) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Escuelas</a>
-                    <div class="dropdown-menu fade-down m-0">
-                        <?php
-                        // Fetch categories from the database
-                        try {
-                            $stmt = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
-                            while ($category = $stmt->fetch()) {
-                                echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                <?php
+                try {
+                    // Fetch top-level menu items
+                    $stmt = $pdo->query("SELECT id_menu, title, url FROM menus WHERE parent_id IS NULL ORDER BY display_order ASC");
+                    $main_menus = $stmt->fetchAll();
+
+                    foreach ($main_menus as $menu) {
+                        // Check for children (submenus)
+                        $stmt_sub = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
+                        $stmt_sub->execute([$menu['id_menu']]);
+                        $sub_menus = $stmt_sub->fetchAll();
+
+                        $activeClass = ($currentPage == $menu['url']) ? 'active' : '';
+
+                        if (empty($sub_menus)) {
+                            // Simple link
+                            echo '<a href="' . htmlspecialchars($menu['url']) . '" class="nav-item nav-link ' . $activeClass . '">' . htmlspecialchars($menu['title']) . '</a>';
+                        } else {
+                            // Dropdown
+                            echo '<div class="nav-item dropdown">';
+                            echo '<a href="#" class="nav-link dropdown-toggle ' . $activeClass . '" data-bs-toggle="dropdown">' . htmlspecialchars($menu['title']) . '</a>';
+                            echo '<div class="dropdown-menu fade-down m-0">';
+                            foreach ($sub_menus as $sub) {
+                                echo '<a href="' . htmlspecialchars($sub['url']) . '" class="dropdown-item">' . htmlspecialchars($sub['title']) . '</a>';
                             }
-                        } catch (PDOException $e) {
-                            echo '<a href="#" class="dropdown-item">Error al cargar escuelas</a>';
+                            
+                            // Special case: If the menu is "Escuelas", we might want to still show categories 
+                            // or the user can manage them directly in the menus table.
+                            echo '</div>';
+                            echo '</div>';
                         }
-                        ?>
-                    </div>
-                </div>
-                <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contacto</a>
+                    }
+                } catch (PDOException $e) {
+                    echo '<span class="nav-item nav-link text-danger">Error al cargar menú</span>';
+                }
+                ?>
             </div>
             <div class="d-flex align-items-center">
                 <a class="btn btn-sm-square mx-1 text-white" href="https://www.facebook.com/CEFI.COSTARICA?mibextid=ZbWKwL" target="_blank" title="Síguenos en Facebook">
