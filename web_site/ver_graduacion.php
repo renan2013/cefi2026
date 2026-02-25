@@ -14,68 +14,126 @@ try {
         exit;
     }
 
-    // Fetch gallery images
-    $stmt_images = $pdo->prepare("SELECT value, file_name FROM attachments WHERE id_post = ? AND type = 'gallery_image' ORDER BY id_attachment DESC");
-    $stmt_images->execute([$id_post]);
-    $gallery = $stmt_images->fetchAll();
+    // Fetch all attachments for this graduation
+    $stmt_attach = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_post = ? ORDER BY id_attachment DESC");
+    $stmt_attach->execute([$id_post]);
+    $attachments = $stmt_attach->fetchAll();
+
+    $gallery = array_filter($attachments, function($a) { return $a['type'] === 'gallery_image'; });
+    $videos = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
 
 } catch (PDOException $e) {
     die("Error al cargar la galería: " . $e->getMessage());
 }
 ?>
 
-<!-- Gallery Detail Start -->
 <div class="container-xxl py-5">
     <div class="container">
-        <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Graduación</h6>
-            <h1 class="mb-5"><?php echo htmlspecialchars($grad['title']); ?></h1>
-            <p class="lead text-muted mx-auto" style="max-width: 800px;"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
-        </div>
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="graduaciones.php">Graduaciones</a></li>
+                <li class="breadcrumb-item active"><?php echo htmlspecialchars($grad['title']); ?></li>
+            </ol>
+        </nav>
 
-        <div class="row g-4 mb-5">
-            <?php if (empty($gallery)): ?>
-                <div class="col-12 text-center text-muted">
-                    <p>Aún no se han añadido fotos a esta galería.</p>
-                </div>
-            <?php else: ?>
-                <?php foreach ($gallery as $index => $img): 
-                    $delay = (0.1 * ($index % 4)) + 0.1;
-                    $image_path = '../classbox/public/uploads/attachments/' . $img['value'];
-                    ?>
-                    <div class="col-lg-3 col-md-4 col-sm-6 wow zoomIn" data-wow-delay="<?php echo $delay; ?>s">
-                        <div class="card shadow-sm border-0 h-100 overflow-hidden gallery-card">
-                            <a href="<?php echo $image_path; ?>" target="_blank" class="gallery-link">
-                                <img src="<?php echo $image_path; ?>" class="img-fluid w-100 h-100" alt="Foto Graduación" style="object-fit: cover; height: 200px;">
-                                <div class="gallery-overlay">
-                                    <i class="fa fa-search-plus text-white fs-4"></i>
-                                </div>
-                            </a>
-                        </div>
+        <div class="row g-5">
+            <!-- Left Side: Image Carousel -->
+            <div class="col-lg-8">
+                <h1 class="mb-3"><?php echo htmlspecialchars($grad['title']); ?></h1>
+                <p class="text-muted mb-4"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
+
+                <?php if (empty($gallery)): ?>
+                    <div class="bg-light p-5 text-center rounded">
+                        <i class="fa fa-camera-retro fs-1 text-muted mb-3"></i>
+                        <p>Aún no hay fotos disponibles para esta graduación.</p>
                     </div>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-        
-        <div class="text-center">
-            <a href="graduaciones.php" class="btn btn-primary px-5 py-3"><i class="fa fa-arrow-left me-2"></i> Volver a Graduaciones</a>
+                <?php else: ?>
+                    <div class="owl-carousel graduation-carousel mb-3">
+                        <?php foreach ($gallery as $img): ?>
+                            <div class="item">
+                                <img src="../classbox/public/uploads/attachments/<?php echo $img['value']; ?>" class="img-fluid rounded shadow" alt="Graduación">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    
+                    <!-- Thumbnails / Navigation helper -->
+                    <div class="row g-2 mt-2">
+                        <?php foreach (array_slice($gallery, 0, 6) as $img): ?>
+                            <div class="col-2">
+                                <img src="../classbox/public/uploads/attachments/<?php echo $img['value']; ?>" class="img-fluid rounded" style="height: 60px; object-fit: cover; opacity: 0.7;">
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                <?php endif; ?>
+
+                <div class="mt-5">
+                    <?php echo $grad['content']; ?>
+                </div>
+            </div>
+
+            <!-- Right Side: Video List -->
+            <div class="col-lg-4">
+                <div class="bg-light p-4 rounded shadow-sm sticky-top" style="top: 100px;">
+                    <h4 class="mb-4 border-bottom pb-2"><i class="fa fa-video text-primary me-2"></i>Videos del Evento</h4>
+                    
+                    <?php if (empty($videos)): ?>
+                        <p class="text-muted small">No se han subido videos de esta ceremonia.</p>
+                    <?php else: ?>
+                        <div class="video-list">
+                            <?php foreach ($videos as $vid): 
+                                // Extract YouTube ID
+                                if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid['value'], $match)) {
+                                    $yid = $match[1];
+                                }
+                                ?>
+                                <div class="video-item mb-4">
+                                    <?php if (isset($yid)): ?>
+                                        <div class="ratio ratio-16x9 mb-2 rounded overflow-hidden shadow-sm">
+                                            <iframe src="https://www.youtube.com/embed/<?php echo $yid; ?>" title="Video Graduación" allowfullscreen></iframe>
+                                        </div>
+                                    <?php endif; ?>
+                                    <h6 class="small mb-0 text-dark"><?php echo htmlspecialchars($vid['file_name'] ?: 'Video de la Ceremonia'); ?></h6>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <hr>
+                    <div class="d-grid gap-2">
+                        <a href="https://wa.me/50689929180?text=Hola%2C%20quisiera%20m%C3%A1s%20informaci%C3%B3n%20sobre%20las%20pr%C3%B3ximas%20graduaciones" class="btn btn-success" target="_blank">
+                            <i class="fab fa-whatsapp me-2"></i>Consultar por WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
 
 <style>
-.gallery-card { transition: all 0.3s ease; border-radius: 8px; }
-.gallery-card:hover { transform: scale(1.02); }
-.gallery-link { position: relative; display: block; overflow: hidden; cursor: pointer; }
-.gallery-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.4);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.3s ease;
+.graduation-carousel .item img {
+    height: 500px;
+    object-fit: contain;
+    background-color: #000;
 }
-.gallery-link:hover .gallery-overlay { opacity: 1; }
+@media (max-width: 991px) {
+    .graduation-carousel .item img { height: 350px; }
+}
+.video-item h6 { font-weight: 600; }
 </style>
-<!-- Gallery Detail End -->
+
+<script>
+$(document).ready(function(){
+  $(".graduation-carousel").owlCarousel({
+      items: 1,
+      nav: true,
+      dots: true,
+      autoplay: true,
+      loop: true,
+      navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+      animateOut: 'fadeOut'
+  });
+});
+</script>
 
 <?php include 'footer.php'; ?>
