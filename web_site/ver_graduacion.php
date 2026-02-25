@@ -57,15 +57,15 @@ try {
 
                     <!-- Full Grid of Images with Lightbox Support -->
                     <h3 class="mb-4">Galería de Fotos</h3>
-                    <div class="row g-3 popup-gallery">
+                    <div class="row g-2 popup-gallery">
                         <?php foreach ($gallery as $img): 
                             $img_url = '../classbox/public/uploads/attachments/' . $img['value'];
                             ?>
-                            <div class="col-md-4 col-sm-6">
+                            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
                                 <div class="gallery-item shadow-sm rounded overflow-hidden">
                                     <a href="<?php echo $img_url; ?>" title="<?php echo htmlspecialchars($grad['title']); ?>">
-                                        <img src="<?php echo $img_url; ?>" class="img-fluid w-100" style="height: 200px; object-fit: cover;" alt="Foto Graduación">
-                                        <div class="gallery-overlay"><i class="fa fa-search-plus text-white fs-4"></i></div>
+                                        <img src="<?php echo $img_url; ?>" class="img-fluid w-100" style="height: 120px; object-fit: cover;" alt="Foto Graduación">
+                                        <div class="gallery-overlay"><i class="fa fa-search-plus text-white fs-6"></i></div>
                                     </a>
                                 </div>
                             </div>
