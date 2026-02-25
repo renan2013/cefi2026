@@ -67,7 +67,7 @@
 
                         $activeClass = ($currentPage == $menu['url']) ? 'active' : '';
 
-                        if (empty($sub_menus)) {
+                        if (empty($sub_menus) && $menu['title'] !== 'Escuelas') {
                             // Simple link
                             echo '<a href="' . htmlspecialchars($menu['url']) . '" class="nav-item nav-link ' . $activeClass . '">' . htmlspecialchars($menu['title']) . '</a>';
                         } else {
@@ -75,12 +75,24 @@
                             echo '<div class="nav-item dropdown">';
                             echo '<a href="#" class="nav-link dropdown-toggle ' . $activeClass . '" data-bs-toggle="dropdown">' . htmlspecialchars($menu['title']) . '</a>';
                             echo '<div class="dropdown-menu fade-down m-0">';
+                            
+                            // If it's "Escuelas", fetch categories
+                            if ($menu['title'] === 'Escuelas') {
+                                try {
+                                    $stmt_cat = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
+                                    while ($category = $stmt_cat->fetch()) {
+                                        echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                                    }
+                                } catch (PDOException $e) {
+                                    echo '<a href="#" class="dropdown-item text-danger">Error categorías</a>';
+                                }
+                            }
+
+                            // Also show manually added submenus from the menus table
                             foreach ($sub_menus as $sub) {
                                 echo '<a href="' . htmlspecialchars($sub['url']) . '" class="dropdown-item">' . htmlspecialchars($sub['title']) . '</a>';
                             }
                             
-                            // Special case: If the menu is "Escuelas", we might want to still show categories 
-                            // or the user can manage them directly in the menus table.
                             echo '</div>';
                             echo '</div>';
                         }
