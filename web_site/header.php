@@ -40,14 +40,14 @@
                 max-width: 70%;
             }
             .navbar-brand img {
-                height: 50px !important;
+                height: 45px !important;
             }
-            .navbar-brand small {
-                font-size: 0.7rem;
-                display: none; /* Hide phone on very small screens to fit toggle */
+            .phone-text {
+                font-size: 0.65rem;
+                display: none; 
             }
-            @media (min-width: 400px) {
-                .navbar-brand small { display: inline-block; }
+            @media (min-width: 380px) {
+                .phone-text { display: inline-block; }
             }
             .navbar-toggler {
                 border-color: rgba(255,255,255,0.5) !important;
@@ -77,7 +77,10 @@
     <nav class="navbar navbar-expand-lg navbar-light shadow sticky-top p-0">
                     <a href="index.php" class="navbar-brand d-flex align-items-center px-4 px-lg-5">
                         <img src="img/logo_cefi_blanco.svg" alt="CEFI Logo" style="height: 65px;">
-                        <small class="ms-3 text-white">CEFI +506 8992-9180</small>
+                        <div class="ms-3 text-white d-flex flex-column">
+                            <span class="fw-bold h4 m-0">CEFI</span>
+                            <small class="phone-text">+506 8992-9180</small>
+                        </div>
                     </a>        <button type="button" class="navbar-toggler me-4" data-bs-toggle="collapse" data-bs-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
