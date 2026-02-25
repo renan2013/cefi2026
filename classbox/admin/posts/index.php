@@ -72,13 +72,46 @@ $post_count = count($posts);
                         <!-- Debug: id_post for edit link: <?php echo htmlspecialchars($post['id_post']); ?> -->
                         <a href="attachments.php?post_id=<?php echo $post['id_post']; ?>" class="btn-attach "><i class="fa-solid fa-paperclip me-2"></i> Adjuntos</a>
                         <a href="edit.php?id=<?php echo $post['id_post']; ?>">Editar</a>
-                        <a href="delete.php?id=<?php echo $post['id_post']; ?>" class="delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta publicación y todos sus adjuntos?');">Eliminar</a>
+                        <button type="button" class="btn-link delete" style="background:none; border:none; color:#dc3545; cursor:pointer; padding:0; font-size:inherit;" onclick="confirmDelete(<?php echo $post['id_post']; ?>, '<?php echo addslashes($post['title']); ?>')">Eliminar</button>
                     </td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>
     </tbody>
 </table>
+
+<script>
+// Show alerts based on URL parameters
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const error = urlParams.get('error');
+
+    if (success) {
+        Swal.fire({ icon: 'success', title: '¡Hecho!', text: success, timer: 3000, showConfirmButton: false });
+    }
+    if (error) {
+        Swal.fire({ icon: 'error', title: 'Error', text: error });
+    }
+});
+
+function confirmDelete(id, title) {
+    Swal.fire({
+        title: '¿Eliminar publicación?',
+        text: `Vas a borrar "${title}" y todos sus archivos adjuntos. Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `delete.php?id=${id}`;
+        }
+    });
+}
+</script>
 
 <style>
 .table-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
