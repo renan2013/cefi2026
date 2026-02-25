@@ -43,8 +43,7 @@ try {
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="graduaciones.php">Graduaciones</a></li>
-                        <li class="breadcrumb-item text-primary"><?php echo htmlspecialchars($grad['category_name']); ?></li>
-                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($grad['title']); ?></li>
+                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($grad['category_name']); ?></li>
                     </ol>
                 </nav>
 
