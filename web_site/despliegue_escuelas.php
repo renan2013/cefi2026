@@ -25,8 +25,14 @@ try {
         <div class="row g-4">
             <?php
             try {
-                // Fetch posts for this category
-                $stmt_posts = $pdo->prepare("SELECT id_post, title, synopsis, main_image FROM posts WHERE id_category = ? ORDER BY created_at DESC");
+                // Fetch posts for this category, EXCLUDING those that are galleries (have gallery_image attachments)
+                $stmt_posts = $pdo->prepare("
+                    SELECT p.id_post, p.title, p.synopsis, p.main_image 
+                    FROM posts p 
+                    WHERE p.id_category = ? 
+                    AND p.id_post NOT IN (SELECT id_post FROM attachments WHERE type = 'gallery_image')
+                    ORDER BY p.created_at DESC
+                ");
                 $stmt_posts->execute([$id_category]);
                 $posts = $stmt_posts->fetchAll();
 
