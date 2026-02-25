@@ -130,8 +130,8 @@ require_once __DIR__ . '/../partials/header.php';
                 <li>
                     <span><?php echo htmlspecialchars($category['name']); ?></span>
                     <div class="category-actions">
-                        <button class="btn-edit" onclick="editCategory(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Editar</button>
-                        <a href="delete_category.php?id=<?php echo $category['id_category']; ?>" class="btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría? Solo podrás eliminarla si no tiene publicaciones.');">Eliminar</a>
+                        <button type="button" class="btn-edit" onclick="editCategory(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Editar</button>
+                        <button type="button" class="btn-delete" onclick="confirmDelete(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Eliminar</button>
                     </div>
                 </li>
             <?php endforeach; ?>
@@ -146,13 +146,57 @@ require_once __DIR__ . '/../partials/header.php';
 </form>
 
 <script>
-function editCategory(id, currentName) {
-    const newName = prompt('Editar nombre de la categoría:', currentName);
-    if (newName && newName.trim() !== '' && newName !== currentName) {
-        document.getElementById('edit-id').value = id;
-        document.getElementById('edit-name').value = newName.trim();
-        document.getElementById('edit-category-form').submit();
+// Show alerts based on URL parameters
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const error = urlParams.get('error');
+
+    if (success) {
+        Swal.fire({ icon: 'success', title: '¡Éxito!', text: success, timer: 3000, showConfirmButton: false });
     }
+    if (error) {
+        Swal.fire({ icon: 'error', title: 'Atención', text: error });
+    }
+});
+
+function editCategory(id, currentName) {
+    Swal.fire({
+        title: 'Editar Categoría',
+        input: 'text',
+        inputValue: currentName,
+        showCancelButton: true,
+        confirmButtonText: 'Guardar',
+        cancelButtonText: 'Cancelar',
+        inputValidator: (value) => {
+            if (!value || value.trim() === '') {
+                return '¡Debes ingresar un nombre!';
+            }
+        }
+    }).then((result) => {
+        if (result.isConfirmed && result.value.trim() !== currentName) {
+            document.getElementById('edit-id').value = id;
+            document.getElementById('edit-name').value = result.value.trim();
+            document.getElementById('edit-category-form').submit();
+        }
+    });
+}
+
+function confirmDelete(id, name) {
+    Swal.fire({
+        title: '¿Estás seguro?',
+        text: `Vas a eliminar la categoría "${name}". Esta acción no se puede deshacer.`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#dc3545',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, eliminar',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            window.location.href = `delete_category.php?id=${id}`;
+        }
+    });
 }
 </script>
 
