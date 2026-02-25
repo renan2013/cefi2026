@@ -50,7 +50,7 @@ try {
                     <li class="breadcrumb-item active text-primary"><?php echo htmlspecialchars($post['category_name']); ?></li>
                 </ol>
             </nav>
-            <h2 class="fw-bold mb-3 text-primary"><?php echo htmlspecialchars($post['title']); ?></h2>
+            <h2 class="fw-bold mb-3" style="color: #07609c;"><?php echo htmlspecialchars($post['title']); ?></h2>
             <p class="lead text-muted"><?php echo htmlspecialchars($post['synopsis']); ?></p>
             
             <hr class="my-4">
