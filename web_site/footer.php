@@ -11,8 +11,25 @@
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-3">Menu</h4>
-                    <a class="btn btn-link" href="">Inicio</a>
-                    
+                    <?php
+                    try {
+                        // Fetch top-level menu items (same logic as header)
+                        $stmt_footer = $pdo->query("SELECT id_menu, title, url FROM menus WHERE parent_id IS NULL ORDER BY display_order ASC");
+                        while ($menu_f = $stmt_footer->fetch()) {
+                            echo '<a class="btn btn-link" href="' . htmlspecialchars($menu_f['url']) . '">' . htmlspecialchars($menu_f['title']) . '</a>';
+                            
+                            // If it has submenus, we can list them too or just keep top level. 
+                            // Following "replica" instruction, let's add a small indent for submenus if any.
+                            $stmt_sub_f = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
+                            $stmt_sub_f->execute([$menu_f['id_menu']]);
+                            while ($sub_f = $stmt_sub_f->fetch()) {
+                                echo '<a class="btn btn-link ps-4" href="' . htmlspecialchars($sub_f['url']) . '" style="font-size: 0.9em;">- ' . htmlspecialchars($sub_f['title']) . '</a>';
+                            }
+                        }
+                    } catch (PDOException $e) {
+                        echo '<p class="text-danger">Error menú</p>';
+                    }
+                    ?>
                 </div>
                 <div class="col-lg-3 col-md-6">
                     <h4 class="text-white mb-3">Contacto</h4>
