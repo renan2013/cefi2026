@@ -111,9 +111,11 @@ require_once __DIR__ . '/../partials/header.php';
 <!-- Form to add new categories -->
 <div class="category-adder styled-form">
     <h4>Añadir Nueva Categoría</h4>
-    <form action="create_category.php" method="POST">
+    <form action="create_category.php" method="POST" enctype="multipart/form-data">
         <div class="form-group">
-            <input type="text" name="category_name" placeholder="Nuevo nombre de categoría" required class="form-control">
+            <input type="text" name="category_name" placeholder="Nuevo nombre de categoría" required class="form-control mb-2">
+            <label class="small fw-bold">Imagen de la Categoría (para portada):</label>
+            <input type="file" name="category_image" accept="image/*" class="form-control mb-2">
             <button type="submit" class="btn-submit">Añadir</button>
         </div>
     </form>
@@ -140,9 +142,10 @@ require_once __DIR__ . '/../partials/header.php';
 </div>
 
 <!-- Hidden edit form -->
-<form id="edit-category-form" action="edit_category.php" method="POST" style="display:none;">
+<form id="edit-category-form" action="edit_category.php" method="POST" enctype="multipart/form-data" style="display:none;">
     <input type="hidden" name="id_category" id="edit-id">
-    <input type="hidden" name="category_name" id="edit-name">
+    <input type="text" name="category_name" id="edit-name">
+    <input type="file" name="category_image" id="edit-image">
 </form>
 
 <script>
@@ -163,20 +166,35 @@ document.addEventListener('DOMContentLoaded', function() {
 function editCategory(id, currentName) {
     Swal.fire({
         title: 'Editar Categoría',
-        input: 'text',
-        inputValue: currentName,
+        html: `
+            <input id="swal-input1" class="swal2-input" value="${currentName}" placeholder="Nombre de categoría">
+            <div class="mt-3">
+                <label class="small fw-bold">Actualizar Imagen:</label>
+                <input id="swal-input2" type="file" class="swal2-file" accept="image/*">
+            </div>
+        `,
         showCancelButton: true,
         confirmButtonText: 'Guardar',
         cancelButtonText: 'Cancelar',
-        inputValidator: (value) => {
-            if (!value || value.trim() === '') {
-                return '¡Debes ingresar un nombre!';
+        preConfirm: () => {
+            const name = document.getElementById('swal-input1').value;
+            const file = document.getElementById('swal-input2').files[0];
+            if (!name || name.trim() === '') {
+                Swal.showValidationMessage('¡Debes ingresar un nombre!');
+                return false;
             }
+            return { name: name.trim(), file: file };
         }
     }).then((result) => {
-        if (result.isConfirmed && result.value.trim() !== currentName) {
+        if (result.isConfirmed) {
             document.getElementById('edit-id').value = id;
-            document.getElementById('edit-name').value = result.value.trim();
+            document.getElementById('edit-name').value = result.value.name;
+            if (result.value.file) {
+                // Transfer file to hidden form
+                const dataTransfer = new DataTransfer();
+                dataTransfer.items.add(result.value.file);
+                document.getElementById('edit-image').files = dataTransfer.files;
+            }
             document.getElementById('edit-category-form').submit();
         }
     });
