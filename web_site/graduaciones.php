@@ -2,15 +2,15 @@
 include 'header.php'; // Includes db_connect.php
 
 try {
-    // Fetch the ID of the 'Graduaciones' category
-    $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name LIKE '%Graduaciones%' LIMIT 1");
-    $stmt_cat->execute();
-    $category = $stmt_cat->fetch();
-    $id_category = $category ? $category['id_category'] : 0;
-
-    // Fetch all graduation posts
-    $stmt_posts = $pdo->prepare("SELECT id_post, title, synopsis, main_image FROM posts WHERE id_category = ? ORDER BY created_at DESC");
-    $stmt_posts->execute([$id_category]);
+    // Fetch all posts that have at least one gallery_image attachment
+    $stmt_posts = $pdo->prepare("
+        SELECT DISTINCT p.id_post, p.title, p.synopsis, p.main_image, p.created_at, p.id_category
+        FROM posts p
+        JOIN attachments a ON p.id_post = a.id_post
+        WHERE a.type = 'gallery_image'
+        ORDER BY p.created_at DESC
+    ");
+    $stmt_posts->execute();
     $graduations = $stmt_posts->fetchAll();
 
 } catch (PDOException $e) {
