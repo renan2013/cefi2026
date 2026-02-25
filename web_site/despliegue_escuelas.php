@@ -41,7 +41,18 @@ try {
                 } else {
                     foreach ($posts as $index => $post) {
                         $delay = (0.1 * ($index % 4)) + 0.1;
-                        $image_path = !empty($post['main_image']) ? '../classbox/public/uploads/images/' . $post['main_image'] : 'img/course-1.jpg';
+                        
+                        // Intelligent image path detection
+                        $main_img = $post['main_image'];
+                        if (!empty($main_img)) {
+                            if (strpos($main_img, 'public/uploads/images/') !== false) {
+                                $image_path = '../classbox/' . $main_img;
+                            } else {
+                                $image_path = '../classbox/public/uploads/images/' . $main_img;
+                            }
+                        } else {
+                            $image_path = 'img/course-1.jpg'; // Default placeholder
+                        }
                         ?>
                         <!-- Card de curso -->
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="<?php echo $delay; ?>s">
