@@ -4,8 +4,13 @@ include 'header.php'; // Includes db_connect.php
 $id_post = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 try {
-    // Fetch post details
-    $stmt = $pdo->prepare("SELECT title, synopsis, content FROM posts WHERE id_post = ?");
+    // Fetch post details and category name
+    $stmt = $pdo->prepare("
+        SELECT p.title, p.synopsis, p.content, c.name as category_name 
+        FROM posts p 
+        JOIN categories c ON p.id_category = c.id_category 
+        WHERE p.id_post = ?
+    ");
     $stmt->execute([$id_post]);
     $grad = $stmt->fetch();
 
@@ -38,6 +43,7 @@ try {
                 <nav aria-label="breadcrumb" class="mb-4">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="graduaciones.php">Graduaciones</a></li>
+                        <li class="breadcrumb-item text-primary"><?php echo htmlspecialchars($grad['category_name']); ?></li>
                         <li class="breadcrumb-item active"><?php echo htmlspecialchars($grad['title']); ?></li>
                     </ol>
                 </nav>
