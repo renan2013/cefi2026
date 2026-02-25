@@ -22,6 +22,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $content = $_POST['content'] ?? '';
     $orden = $_POST['orden'] ?? 0; // Captura el nuevo campo 'orden'
     $main_image_path = '';
+    
+    // Instructor fields
+    $instructor_name = $_POST['instructor_name'] ?? '';
+    $instructor_title = $_POST['instructor_title'] ?? '';
+    $show_in_instructors = isset($_POST['show_in_instructors']) ? 1 : 0;
+    $instructor_photo = '';
 
     if (empty($title) || empty($category_id)) {
         $error = 'El título y la categoría son obligatorios.';
@@ -33,18 +39,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $target_file = $upload_dir . $file_name;
 
             if (move_uploaded_file($_FILES['main_image']['tmp_name'], $target_file)) {
-                $main_image_path = 'public/uploads/images/' . $file_name;
+                $main_image_path = $file_name; // Guardar solo nombre
             } else {
                 $error = 'Fallo al subir la imagen principal.';
+            }
+        }
+
+        // Handle Instructor Photo Upload
+        if (empty($error) && isset($_FILES['instructor_photo']) && $_FILES['instructor_photo']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = __DIR__ . '/../../public/uploads/images/';
+            $file_name = uniqid('inst_', true) . '-' . basename($_FILES['instructor_photo']['name']);
+            if (move_uploaded_file($_FILES['instructor_photo']['tmp_name'], $upload_dir . $file_name)) {
+                $instructor_photo = $file_name;
             }
         }
 
         if (empty($error)) {
             try {
                 $stmt = $pdo->prepare(
-                    "INSERT INTO posts (title, id_category, synopsis, content, main_image, id_user, orden) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO posts (title, id_category, synopsis, content, main_image, id_user, orden, instructor_name, instructor_title, instructor_photo, show_in_instructors) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
                 );
-                $stmt->execute([$title, $category_id, $synopsis, $content, $main_image_path, $_SESSION['user_id'], $orden]);
+                $stmt->execute([$title, $category_id, $synopsis, $content, $main_image_path, $_SESSION['user_id'], $orden, $instructor_name, $instructor_title, $instructor_photo, $show_in_instructors]);
                 
                 header('Location: index.php');
                 exit;
@@ -100,6 +115,28 @@ require_once __DIR__ . '/../partials/header.php';
         <label for="orden">Orden de Visualización</label>
         <input type="number" id="orden" name="orden" value="0" class="form-control">
         <small>Número para ordenar las publicaciones (menor número = primero).</small>
+    </div>
+
+    <div class="instructor-section styled-form mt-4" style="border: 1px solid #ddd; background: #fdfdfd;">
+        <h5>Información del Instructor (Opcional)</h5>
+        <div class="form-group">
+            <label for="instructor_name">Nombre del Instructor</label>
+            <input type="text" id="instructor_name" name="instructor_name" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="instructor_title">Título / Especialidad</label>
+            <input type="text" id="instructor_title" name="instructor_title" class="form-control" placeholder="Ej: Máster en Diseño Web">
+        </div>
+        <div class="form-group">
+            <label for="instructor_photo">Foto del Instructor</label>
+            <input type="file" id="instructor_photo" name="instructor_photo" accept="image/*" class="form-control">
+        </div>
+        <div class="form-group">
+            <label style="display: inline-flex; align-items: center; cursor: pointer;">
+                <input type="checkbox" name="show_in_instructors" style="width: auto; margin-right: 10px;"> 
+                <span>Mostrar en la sección de Instructores del sitio web</span>
+            </label>
+        </div>
     </div>
 
     <div class="form-actions">
