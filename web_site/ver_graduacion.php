@@ -132,88 +132,45 @@ try {
     object-fit: contain;
     background-color: #111;
 }
-.graduation-carousel.owl-carousel {
-    position: relative;
-}
+.graduation-carousel.owl-carousel { position: relative; }
 .graduation-carousel .owl-nav {
-    position: absolute;
-    top: 50%;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    transform: translateY(-50%);
-    pointer-events: none;
-    z-index: 10;
+    position: absolute; top: 50%; width: 100%; display: flex;
+    justify-content: space-between; transform: translateY(-50%);
+    pointer-events: none; z-index: 10;
 }
-.graduation-carousel .owl-nav button.owl-prev,
-.graduation-carousel .owl-nav button.owl-next {
-    background: rgba(45, 143, 226, 0.7) !important;
-    color: white !important;
-    width: 45px;
-    height: 45px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0 10px;
-    pointer-events: auto;
-    transition: all 0.3s ease;
+.graduation-carousel .owl-nav button.owl-prev, .graduation-carousel .owl-nav button.owl-next {
+    background: rgba(45, 143, 226, 0.7) !important; color: white !important;
+    width: 45px; height: 45px; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; margin: 0 10px;
+    pointer-events: auto; transition: all 0.3s ease;
 }
-.graduation-carousel .owl-nav button:hover {
-    background: rgba(45, 143, 226, 1) !important;
-    transform: scale(1.1);
-}
+.graduation-carousel .owl-nav button:hover { background: rgba(45, 143, 226, 1) !important; transform: scale(1.1); }
 
 /* Gallery Grid Styles */
-.gallery-item {
-    position: relative;
-    transition: transform 0.3s ease;
-}
-.gallery-item:hover {
-    transform: scale(1.05);
-}
+.gallery-item { position: relative; transition: transform 0.3s ease; }
+.gallery-item:hover { transform: scale(1.05); }
 .gallery-overlay {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4);
-    display: flex; align-items: center; justify-content: center;
-    opacity: 0; transition: opacity 0.3s ease;
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.4); display: flex; align-items: center;
+    justify-content: center; opacity: 0; transition: opacity 0.3s ease;
 }
 .gallery-item:hover .gallery-overlay { opacity: 1; }
 
 /* Lightbox Custom Styles */
-.mfp-arrow {
-    background: rgba(0,0,0,0.2) !important;
-    border-radius: 50%;
-    width: 60px !important;
-    height: 60px !important;
-}
-.mfp-counter { top: 15px !important; right: 60px !important; font-weight: 600; }
+.mfp-arrow { background: rgba(0,0,0,0.2) !important; border-radius: 50%; width: 60px !important; height: 60px !important; }
+.mfp-counter { top: 15px !important; right: 60px !important; font-weight: 600; color: #FFF; }
 .mfp-close {
-    background: #2D8FE2 !important;
-    color: white !important;
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 50%;
-    margin-top: 10px;
-    margin-right: 10px;
-    opacity: 1 !important;
+    background: #2D8FE2 !important; color: white !important;
+    width: 40px !important; height: 40px !important;
+    border-radius: 50%; margin-top: 10px; margin-right: 10px; opacity: 1 !important;
 }
-.mfp-fullscreen {
-    position: fixed;
-    right: 60px;
-    top: 15px;
-    z-index: 1046;
-    color: #FFF;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0.7;
+.mfp-fullscreen-btn {
+    position: absolute; right: 60px; top: 15px; z-index: 1050;
+    color: #FFF; font-size: 22px; cursor: pointer; opacity: 0.8; transition: opacity 0.3s;
 }
-.mfp-fullscreen:hover { opacity: 1; }
+.mfp-fullscreen-btn:hover { opacity: 1; }
 
-@media (max-width: 991px) {
-    .graduation-carousel .item img { height: 350px; }
-}
+@media (max-width: 991px) { .graduation-carousel .item img { height: 350px; } }
 </style>
 
 <!-- Magnific Popup JS -->
@@ -225,13 +182,8 @@ try {
         // Initialize Carousel
         if ($.fn.owlCarousel) {
             $(".graduation-carousel").owlCarousel({
-                items: 1,
-                nav: true,
-                dots: true,
-                autoplay: true,
-                autoplayTimeout: 5000,
-                loop: true,
-                navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
+                items: 1, nav: true, dots: true, autoplay: true, autoplayTimeout: 5000,
+                loop: true, navText: ['<i class="fa fa-chevron-left"></i>', '<i class="fa fa-chevron-right"></i>'],
                 animateOut: 'fadeOut'
             });
         }
@@ -241,14 +193,13 @@ try {
             $('.popup-gallery').magnificPopup({
                 delegate: 'a',
                 type: 'image',
-                gallery: {
-                    enabled: true,
-                    navigateByImgClick: true,
-                    preload: [0,1]
-                },
+                gallery: { enabled: true, navigateByImgClick: true, preload: [0,1] },
                 callbacks: {
                     open: function() {
-                        $('body').append('<div class="mfp-fullscreen" id="mfp-fs-btn" title="Pantalla Completa"><i class="fa fa-expand"></i></div>');
+                        var mfp = $.magnificPopup.instance;
+                        // Inject fullscreen button into the container
+                        mfp.container.append('<div class="mfp-fullscreen-btn" id="mfp-fs-btn" title="Pantalla Completa"><i class="fa fa-expand"></i></div>');
+                        
                         $('#mfp-fs-btn').on('click', function() {
                             if (!document.fullscreenElement) {
                                 document.documentElement.requestFullscreen();
@@ -262,17 +213,13 @@ try {
                         });
                     },
                     close: function() {
-                        $('#mfp-fs-btn').remove();
                         if (document.fullscreenElement) document.exitFullscreen();
                     }
                 },
                 mainClass: 'mfp-with-zoom mfp-img-mobile',
                 zoom: {
-                    enabled: true,
-                    duration: 300,
-                    opener: function(element) {
-                        return element.find('img');
-                    }
+                    enabled: true, duration: 300,
+                    opener: function(element) { return element.find('img'); }
                 }
             });
         }
