@@ -5,21 +5,21 @@ if (isset($_GET['id'])) {
     $category_id = $_GET['id'];
 
     try {
-        // Start a transaction
-        $pdo->beginTransaction();
+        // Check if there are posts in this category
+        $stmt_check = $pdo->prepare("SELECT COUNT(*) FROM posts WHERE id_category = ?");
+        $stmt_check->execute([$category_id]);
+        $post_count = $stmt_check->fetchColumn();
 
-        // First, delete all posts associated with this category
-        $stmt_posts = $pdo->prepare("DELETE FROM posts WHERE id_category = ?");
-        $stmt_posts->execute([$category_id]);
+        if ($post_count > 0) {
+            header('Location: create.php?error=' . urlencode("No se puede eliminar la categoría porque tiene $post_count publicaciones asociadas. Elimina las publicaciones primero."));
+            exit;
+        }
 
-        // Then, delete the category itself
+        // Delete the category itself
         $stmt_category = $pdo->prepare("DELETE FROM categories WHERE id_category = ?");
         $stmt_category->execute([$category_id]);
 
-        // Commit the transaction
-        $pdo->commit();
-
-        header('Location: create.php?success=Category and associated posts deleted.');
+        header('Location: create.php?success=' . urlencode('Categoría eliminada exitosamente.'));
         exit;
     } catch (PDOException $e) {
         // Rollback the transaction on error

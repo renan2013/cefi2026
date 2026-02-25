@@ -119,7 +119,7 @@ require_once __DIR__ . '/../partials/header.php';
     </form>
 </div>
 
-<!-- List existing categories with delete buttons -->
+<!-- List existing categories with edit/delete buttons -->
 <div class="styled-form" style="margin-top: 20px;">
     <h4>Categorías Existentes</h4>
     <?php if (empty($categories)): ?>
@@ -128,20 +128,43 @@ require_once __DIR__ . '/../partials/header.php';
         <ul class="category-list">
             <?php foreach ($categories as $category): ?>
                 <li>
-                    <?php echo htmlspecialchars($category['name']); ?>
-                    <a href="delete_category.php?id=<?php echo $category['id_category']; ?>" class="btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría? Esto también eliminará todas las publicaciones asociadas.');">Eliminar</a>
+                    <span><?php echo htmlspecialchars($category['name']); ?></span>
+                    <div class="category-actions">
+                        <button class="btn-edit" onclick="editCategory(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Editar</button>
+                        <a href="delete_category.php?id=<?php echo $category['id_category']; ?>" class="btn-delete" onclick="return confirm('¿Estás seguro de que quieres eliminar esta categoría? Solo podrás eliminarla si no tiene publicaciones.');">Eliminar</a>
+                    </div>
                 </li>
             <?php endforeach; ?>
         </ul>
     <?php endif; ?>
 </div>
 
+<!-- Hidden edit form -->
+<form id="edit-category-form" action="edit_category.php" method="POST" style="display:none;">
+    <input type="hidden" name="id_category" id="edit-id">
+    <input type="hidden" name="category_name" id="edit-name">
+</form>
+
+<script>
+function editCategory(id, currentName) {
+    const newName = prompt('Editar nombre de la categoría:', currentName);
+    if (newName && newName.trim() !== '' && newName !== currentName) {
+        document.getElementById('edit-id').value = id;
+        document.getElementById('edit-name').value = newName.trim();
+        document.getElementById('edit-category-form').submit();
+    }
+}
+</script>
+
 <style>
     .category-list { list-style: none; padding: 0; }
     .category-list li { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #eee; }
     .category-list li:last-child { border-bottom: none; }
+    .category-actions { display: flex; gap: 8px; }
     .btn-delete { background-color: #dc3545; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 0.9em; }
     .btn-delete:hover { background-color: #c82333; }
+    .btn-edit { background-color: #2D8FE2; color: white; padding: 5px 10px; border: none; border-radius: 4px; font-size: 0.9em; cursor: pointer; }
+    .btn-edit:hover { background-color: #1A74D2; }
 </style>
 
 <!-- TinyMCE -->
