@@ -1,9 +1,9 @@
 <?php
 // -- DATABASE CONNECTION --
 define('DB_HOST', 'localhost');
-define('DB_USER', 'u419870110_Merlin');
-define('DB_PASS', 'Unelaweb2025!');
-define('DB_NAME', 'u419870110_Merlin');
+define('DB_USER', 'u822406629_classboxnuevo');
+define('DB_PASS', 'Classbox2026!');
+define('DB_NAME', 'u822406629_classboxnuevo');
 define('DB_CHARSET', 'utf8mb4');
 
 // -- APPLICATION PATHS --
