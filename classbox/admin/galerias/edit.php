@@ -10,7 +10,7 @@ $success = '';
 
 // Fetch current details
 try {
-    $stmt = $pdo->prepare("SELECT title, synopsis FROM posts WHERE id_post = ?");
+    $stmt = $pdo->prepare("SELECT title, synopsis, main_image FROM posts WHERE id_post = ?");
     $stmt->execute([$id_post]);
     $post = $stmt->fetch();
 
@@ -32,16 +32,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = trim($_POST['title'] ?? '');
     $synopsis = trim($_POST['synopsis'] ?? '');
     $video_url = trim($_POST['video_url'] ?? '');
+    $main_image_path = $post['main_image'];
 
     if (empty($title)) {
         $error = 'El título es obligatorio.';
     } else {
+        // Handle Main Image Upload
+        if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
+            $upload_dir = __DIR__ . '/../../public/uploads/images/';
+            $file_name = uniqid('gallery_', true) . '-' . basename($_FILES['main_image']['name']);
+            $target_file = $upload_dir . $file_name;
+            if (move_uploaded_file($_FILES['main_image']['tmp_name'], $target_file)) {
+                $main_image_path = $file_name;
+            }
+        }
+
         try {
             $pdo->beginTransaction();
 
             // 1. Update post basic info
-            $stmt_upd = $pdo->prepare("UPDATE posts SET title = ?, synopsis = ? WHERE id_post = ?");
-            $stmt_upd->execute([$title, $synopsis, $id_post]);
+            $stmt_upd = $pdo->prepare("UPDATE posts SET title = ?, synopsis = ?, main_image = ? WHERE id_post = ?");
+            $stmt_upd->execute([$title, $synopsis, $main_image_path, $id_post]);
 
             // 2. Handle video URL
             if (!empty($video_url)) {
@@ -72,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="styled-form">
     <h3>Editar Galería: <?php echo htmlspecialchars($post['title']); ?></h3>
-    <form action="edit.php?id=<?php echo $id_post; ?>" method="POST">
+    <form action="edit.php?id=<?php echo $id_post; ?>" method="POST" enctype="multipart/form-data">
         <?php if ($error): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endif; ?>
@@ -80,6 +91,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="form-group">
             <label for="title">Título de la Graduación</label>
             <input type="text" id="title" name="title" value="<?php echo htmlspecialchars($post['title']); ?>" required class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="main_image">Imagen Principal (Miniatura)</label>
+            <?php if ($post['main_image']): ?>
+                <div class="mb-2">
+                    <img src="../../public/uploads/images/<?php echo htmlspecialchars($post['main_image']); ?>" style="height: 100px; border-radius: 4px; display: block; margin-bottom: 10px;">
+                </div>
+            <?php endif; ?>
+            <input type="file" id="main_image" name="main_image" accept="image/*" class="form-control">
+            <small>Sube una nueva imagen si deseas cambiar la portada.</small>
         </div>
 
         <div class="form-group">
