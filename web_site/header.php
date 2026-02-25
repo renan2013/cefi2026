@@ -1,3 +1,4 @@
+<?php require_once 'db_connect.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 
@@ -59,9 +60,17 @@
                 <div class="nav-item dropdown">
                     <a href="#" class="nav-link dropdown-toggle <?php echo (in_array($currentPage, ['team.php', 'testimonial.php', '404.php'])) ? 'active' : ''; ?>" data-bs-toggle="dropdown">Escuelas</a>
                     <div class="dropdown-menu fade-down m-0">
-                        <a href="" class="dropdown-item">1</a>
-                        <a href="" class="dropdown-item">2</a>
-                        <a href="" class="dropdown-item">3</a>
+                        <?php
+                        // Fetch categories from the database
+                        try {
+                            $stmt = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
+                            while ($category = $stmt->fetch()) {
+                                echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                            }
+                        } catch (PDOException $e) {
+                            echo '<a href="#" class="dropdown-item">Error al cargar escuelas</a>';
+                        }
+                        ?>
                     </div>
                 </div>
                 <a href="contact.php" class="nav-item nav-link <?php echo ($currentPage == 'contact.php') ? 'active' : ''; ?>">Contacto</a>
