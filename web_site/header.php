@@ -63,57 +63,44 @@
                     $main_menus = $stmt->fetchAll();
 
                     foreach ($main_menus as $menu) {
-                        // Check for children (submenus)
+                        $activeClass = ($currentPage == $menu['url']) ? 'active' : '';
                         $stmt_sub = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
                         $stmt_sub->execute([$menu['id_menu']]);
                         $sub_menus = $stmt_sub->fetchAll();
 
-                        $activeClass = ($currentPage == $menu['url']) ? 'active' : '';
-
-                        if (empty($sub_menus) && $menu['title'] !== 'Escuelas') {
-                            // Simple link
+                        if (empty($sub_menus) && $menu['title'] !== 'Escuelas' && $menu['title'] !== 'Galerías' && $menu['title'] !== 'Graduaciones') {
                             echo '<a href="' . htmlspecialchars($menu['url']) . '" class="nav-item nav-link ' . $activeClass . '">' . htmlspecialchars($menu['title']) . '</a>';
                         } else {
-                            // Dropdown
                             echo '<div class="nav-item dropdown">';
                             echo '<a href="#" class="nav-link dropdown-toggle ' . $activeClass . '" data-bs-toggle="dropdown">' . htmlspecialchars($menu['title']) . '</a>';
                             echo '<div class="dropdown-menu fade-down m-0">';
                             
-                            // If it's "Escuelas", exclude gallery-related categories
-                            if ($menu['title'] === 'Escuelas') {
-                                try {
-                                    $stmt_cat = $pdo->query("SELECT id_category, name FROM categories WHERE name NOT LIKE '%Graduaciones%' AND name NOT LIKE '%Diplomado%' AND name NOT LIKE '%Galería%' ORDER BY name ASC");
-                                    while ($category = $stmt_cat->fetch()) {
-                                        echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
-                                    }
-                                } catch (PDOException $e) {
-                                    echo '<a href="#" class="dropdown-item text-danger">Error categorías</a>';
-                                }
+                            // Filter logic
+                            $is_gallery_menu = ($menu['title'] === 'Galerías' || $menu['title'] === 'Graduaciones');
+                            $filter_op = $is_gallery_menu ? "LIKE" : "NOT LIKE";
+                            $filter_conn = $is_gallery_menu ? "OR" : "AND";
+
+                            $stmt_cat = $pdo->query("SELECT id_category, name FROM categories 
+                                WHERE LOWER(name) $filter_op '%graduacion%' 
+                                $filter_conn LOWER(name) $filter_op '%diplomado%' 
+                                $filter_conn LOWER(name) $filter_op '%galería%' 
+                                ORDER BY name ASC");
+                            
+                            while ($category = $stmt_cat->fetch()) {
+                                $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
+                                echo '<a href="' . $link . '?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
                             }
 
-                            // If it's "Galerías" or "Graduaciones", show ONLY those categories
-                            if ($menu['title'] === 'Galerías' || $menu['title'] === 'Graduaciones') {
-                                try {
-                                    $stmt_cat = $pdo->query("SELECT id_category, name FROM categories WHERE name LIKE '%Graduaciones%' OR name LIKE '%Diplomado%' OR name LIKE '%Galería%' ORDER BY name ASC");
-                                    while ($category = $stmt_cat->fetch()) {
-                                        echo '<a href="graduaciones.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
-                                    }
-                                } catch (PDOException $e) {
-                                    echo '<a href="#" class="dropdown-item text-danger">Error categorías</a>';
-                                }
-                            }
-
-                            // Also show manually added submenus from the menus table
+                            // Manual submenus
                             foreach ($sub_menus as $sub) {
+                                if ($menu['title'] === 'Escuelas' && (stripos($sub['title'], 'Diplomado') !== false || stripos($sub['title'], 'Graduacion') !== false)) continue;
                                 echo '<a href="' . htmlspecialchars($sub['url']) . '" class="dropdown-item">' . htmlspecialchars($sub['title']) . '</a>';
                             }
-                            
-                            echo '</div>';
-                            echo '</div>';
+                            echo '</div></div>';
                         }
                     }
                 } catch (PDOException $e) {
-                    echo '<span class="nav-item nav-link text-danger">Error al cargar menú</span>';
+                    echo '<span class="nav-item nav-link text-danger">Error menú</span>';
                 }
                 ?>
             </div>
