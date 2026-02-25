@@ -148,19 +148,19 @@ try {
 
 /* Lightbox Custom Styles */
 .mfp-arrow { background: rgba(0,0,0,0.2) !important; border-radius: 50%; width: 60px !important; height: 60px !important; }
-.mfp-counter { top: 15px !important; right: 100px !important; font-weight: 600; color: #FFF; font-size: 14px; }
+.mfp-counter { top: 15px !important; right: 80px !important; font-weight: 600; color: #FFF; font-size: 14px; }
 .mfp-close {
     background: #2D8FE2 !important; color: white !important;
     width: 44px !important; height: 44px !important;
     line-height: 44px !important;
     border-radius: 50%; 
-    top: 5px !important; right: 5px !important;
+    top: 5px !important; right: -15px !important;
     opacity: 1 !important; padding: 0 !important;
     text-align: center !important;
     margin: 0 !important;
 }
 .mfp-fullscreen-btn {
-    position: absolute; right: 55px; top: 15px; z-index: 1050;
+    position: absolute; right: 35px; top: 15px; z-index: 1050;
     color: #FFF; font-size: 24px; cursor: pointer; opacity: 0.8; transition: opacity 0.3s;
 }
 .mfp-fullscreen-btn:hover { opacity: 1; }
