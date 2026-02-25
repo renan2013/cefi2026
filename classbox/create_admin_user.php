@@ -8,8 +8,9 @@ require_once 'config/database.php';
 
 // --- Configuration ---
 $admin_username = 'admin';
-$admin_password = 'password123'; // You can change this
-$admin_fullname = 'Administrator';
+$admin_password = 'admin'; 
+$admin_fullname = 'Administrador Sistema';
+$admin_role = 'superadmin';
 
 // --- Logic ---
 echo "Attempting to create admin user...\n";
@@ -28,12 +29,24 @@ try {
 
     // Insert the new admin user
     $stmt = $pdo->prepare(
-        "INSERT INTO users (username, password, full_name) VALUES (?, ?, ?)"
+        "INSERT INTO users (username, password, full_name, role) VALUES (?, ?, ?, ?)"
     );
-    $stmt->execute([$admin_username, $hashed_password, $admin_fullname]);
+    $stmt->execute([$admin_username, $hashed_password, $admin_fullname, $admin_role]);
+    $new_user_id = $pdo->lastInsertId();
+
+    // Assign all existing modules to the new superadmin
+    $stmt = $pdo->query("SELECT id_module FROM modules");
+    $modules = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+    if (!empty($modules)) {
+        $stmt_mod = $pdo->prepare("INSERT INTO user_modules (id_user, id_module) VALUES (?, ?)");
+        foreach ($modules as $id_module) {
+            $stmt_mod->execute([$new_user_id, $id_module]);
+        }
+    }
 
     echo "--------------------------------------------------\n";
-    echo "Success! Admin user created.\n";
+    echo "Success! Admin user created and permissions assigned.\n";
     echo "Username: " . $admin_username . "\n";
     echo "Password: " . $admin_password . "\n";
     echo "--------------------------------------------------\n";
