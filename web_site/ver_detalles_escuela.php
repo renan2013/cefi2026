@@ -41,6 +41,17 @@ try {
 }
 ?>
 
+<style>
+.rounded-custom {
+    border-radius: 15px !important;
+}
+.post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+</style>
+
 <div class="container mt-5">
     <div class="row g-4">
         <div class="col-lg-7 col-md-12">
@@ -61,7 +72,7 @@ try {
         </div>
 
         <div class="col-lg-4 offset-lg-1 col-md-12">
-            <div class="card shadow-sm border-0 sticky-top" style="top: 100px;">
+            <div class="card shadow-sm border-0 sticky-top rounded-custom overflow-hidden" style="top: 100px;">
                 <?php if (isset($youtube_id)): ?>
                     <div class="ratio ratio-16x9">
                         <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video del curso" allowfullscreen></iframe>
