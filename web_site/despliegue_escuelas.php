@@ -56,7 +56,7 @@ try {
                         ?>
                         <!-- Card de curso -->
                         <div class="col-lg-3 col-md-6 wow fadeInUp" data-wow-delay="<?php echo $delay; ?>s">
-                            <div class="card h-100 shadow-sm">
+                            <div class="card h-100 shadow-sm border-0 rounded overflow-hidden">
                                 <img src="<?php echo htmlspecialchars($image_path); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($post['title']); ?>" style="height: 200px; object-fit: cover;">
                                 <div class="card-body">
                                     <h5 class="card-title text-left"><?php echo htmlspecialchars($post['title']); ?></h5>
