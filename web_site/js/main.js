@@ -85,13 +85,17 @@
 
     // Testimonials carousel
     $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
+        autoplay: false,
         smartSpeed: 1000,
         center: true,
         margin: 24,
         dots: true,
         loop: true,
-        nav : false,
+        nav : true,
+        navText : [
+            '<i class="fa fa-arrow-left"></i>',
+            '<i class="fa fa-arrow-right"></i>'
+        ],
         responsive: {
             0:{
                 items:1

@@ -25,9 +25,11 @@
                         ?>
                         <div class="testimonial-item text-center px-3">
                             <!-- Video Player Section -->
-                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 320px; margin: 0 auto; border: 5px solid #fff; background: #000; position: relative; height: 500px;">
+                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; background: #000;">
+                                <div class="ratio ratio-9x16" style="background: #000;">
                                 <?php 
-                                    // 1. Detectar si es un enlace de Drive (no un iframe)
+                                    $video_data = trim($test['video_iframe']);
+                                    // 1. Detectar si es un enlace de Drive
                                     if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
                                         if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
                                             $drive_id = $matches[1];
@@ -35,17 +37,17 @@
                                             if (preg_match('/resourcekey=([^\?&]+)/', $video_data, $rk_matches)) {
                                                 $preview_url .= "?resourcekey=" . $rk_matches[1];
                                             }
-                                            echo '<iframe src="' . $preview_url . '" style="width:100%; height:100%; border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                                            echo '<iframe src="' . $preview_url . '" style="border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>';
                                         }
                                     } 
                                     // 2. Si ya es un iframe
                                     elseif (strpos($video_data, '<iframe') !== false) {
                                         $clean_iframe = preg_replace('/width=["\']\d+["\']/', 'width="100%"', $video_data);
                                         $clean_iframe = preg_replace('/height=["\']\d+["\']/', 'height="100%"', $clean_iframe);
-                                        $clean_iframe = str_replace('<iframe', '<iframe style="width:100%; height:100%; border:none;"', $clean_iframe);
                                         echo $clean_iframe;
                                     }
                                 ?>
+                                </div>
                             </div>
                             
                             <!-- Student Info Section -->
