@@ -132,8 +132,14 @@
 }
 
 .navbar-light .navbar-nav .nav-link:hover,
-.navbar-light .navbar-nav .nav-link.active {
-    color: var(--color-acento-claro);
+.navbar-light .navbar-nav .nav-link.active,
+.navbar-light .navbar-nav .nav-item.dropdown:hover > .nav-link {
+    color: var(--color-acento-claro) !important;
+}
+
+.navbar-light.sticky-top .nav-link:hover,
+.navbar-light.sticky-top .nav-item.dropdown:hover > .nav-link {
+    color: var(--color-acento-claro) !important;
 }
 
 @media (max-width: 991.98px) {
