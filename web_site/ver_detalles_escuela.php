@@ -4,9 +4,9 @@ include 'header.php'; // Includes db_connect.php
 $id_post = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 try {
-    // Fetch post details and its category name
+    // Fetch post details, its category name and category image
     $stmt = $pdo->prepare("
-        SELECT p.*, c.name as category_name 
+        SELECT p.*, c.name as category_name, c.image as category_image 
         FROM posts p 
         JOIN categories c ON p.id_category = c.id_category 
         WHERE p.id_post = ?
@@ -29,6 +29,7 @@ try {
     $youtube_video = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
     $youtube_url = !empty($youtube_video) ? reset($youtube_video)['value'] : null;
 
+    $youtube_id = null;
     // Process YouTube URL to embed format
     if ($youtube_url) {
         if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
@@ -36,7 +37,20 @@ try {
         }
     }
 
-} catch (PDOException $e) {
+    // Determine fallback image if no video
+    $image_path = 'img/course-1.jpg'; // Default fallback
+    if (!empty($post['main_image'])) {
+        $main_img = $post['main_image'];
+        if (strpos($main_img, 'public/uploads/images/') !== false) {
+            $image_path = '../classbox/' . $main_img;
+        } else {
+            $image_path = '../classbox/public/uploads/images/' . $main_img;
+        }
+    } elseif (!empty($post['category_image'])) {
+        $image_path = '../classbox/public/uploads/images/' . $post['category_image'];
+    }
+
+    } catch (PDOException $e) {
     die("Error al cargar los detalles: " . $e->getMessage());
 }
 ?>
@@ -73,19 +87,11 @@ try {
 
         <div class="col-lg-4 offset-lg-1 col-md-12">
             <div class="card shadow-sm border-0 sticky-top rounded-custom overflow-hidden" style="top: 100px;">
-                <?php if (isset($youtube_id)): ?>
+                <?php if ($youtube_id): ?>
                     <div class="ratio ratio-16x9">
                         <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video del curso" allowfullscreen></iframe>
                     </div>
-                <?php elseif (!empty($post['main_image'])): 
-                    // Intelligent image path detection
-                    $main_img = $post['main_image'];
-                    if (strpos($main_img, 'public/uploads/images/') !== false) {
-                        $image_path = '../classbox/' . $main_img;
-                    } else {
-                        $image_path = '../classbox/public/uploads/images/' . $main_img;
-                    }
-                    ?>
+                <?php else: ?>
                     <img src="<?php echo htmlspecialchars($image_path); ?>" class="card-img-top" alt="Imagen del curso">
                 <?php endif; ?>
                 
