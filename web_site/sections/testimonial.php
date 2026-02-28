@@ -41,28 +41,12 @@
                                     // 2. Si ya es un iframe
                                     elseif (strpos($video_data, '<iframe') !== false) {
                                         $clean_iframe = preg_replace('/width=["\']\d+["\']/', 'width="100%"', $video_data);
-                                        $clean_iframe = preg_replace('/height=["\']\d+["\']/', 'height="100%"', $video_data);
+                                        $clean_iframe = preg_replace('/height=["\']\d+["\']/', 'height="100%"', $clean_iframe);
                                         $clean_iframe = str_replace('<iframe', '<iframe style="width:100%; height:100%; border:none;"', $clean_iframe);
                                         echo $clean_iframe;
-                                    } else {
-                                        echo '<p class="text-white p-3 small">Formato de video no soportado</p>';
                                     }
                                 ?>
                             </div>
-                            
-                            <!-- Student Info Section -->
-                            <div class="testimonial-info">
-                                <h5 class="mb-1 fw-bold text-dark"><?php echo htmlspecialchars($test['nombre']); ?></h5>
-                                <span class="text-primary text-uppercase small fw-bold"><?php echo htmlspecialchars($test['profesion']); ?></span>
-                            </div>
-                        </div>
-                    <?php endforeach;
-                endif;
-            } catch (PDOException $e) {
-                echo '<p class="text-danger">Error al cargar testimonios</p>';
-            }
-            ?>
-        </div>
                             
                             <!-- Student Info Section -->
                             <div class="testimonial-info">
@@ -81,18 +65,8 @@
 </div>
 
 <style>
-/* Diseño limpio para el carrusel de videos */
-.testimonial-video {
-    background-color: #000;
-}
-.testimonial-video iframe {
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
-}
-/* Personalización de los puntos del carrusel */
-.testimonial-carousel .owl-dots {
-    margin-top: 30px;
-}
+.testimonial-video { background-color: #000; }
+.testimonial-video iframe { width: 100% !important; height: 100% !important; border: none; }
+.testimonial-carousel .owl-dots { margin-top: 30px; }
 </style>
 <!-- Testimonial End -->
