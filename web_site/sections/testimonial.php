@@ -8,8 +8,8 @@
         <div class="owl-carousel testimonial-carousel position-relative">
             <?php
             try {
-                // Fetch testimonials from database
-                $stmt_test = $pdo->query("SELECT * FROM testimonios ORDER BY created_at DESC");
+                // Fetch testimonials prioritizing those with video (video_iframe IS NOT NULL first)
+                $stmt_test = $pdo->query("SELECT * FROM testimonios ORDER BY (video_iframe IS NOT NULL AND video_iframe != '') DESC, created_at DESC");
                 $testimonios_home = $stmt_test->fetchAll();
 
                 if (empty($testimonios_home)): ?>
@@ -23,10 +23,31 @@
                     </div>
                 <?php else:
                     foreach ($testimonios_home as $test):
+                        $has_video = !empty($test['video_iframe']);
                         $t_img = !empty($test['foto']) ? '../classbox/public/uploads/images/' . $test['foto'] : 'img/testimonial-1.jpg';
                         ?>
                         <div class="testimonial-item text-center">
-                            <img class="border rounded-circle p-2 mx-auto mb-3" src="<?php echo htmlspecialchars($t_img); ?>" style="width: 80px; height: 80px; object-fit: cover;">
+                            <?php if ($has_video): ?>
+                                <!-- Video Container -->
+                                <div class="testimonial-video mb-3 shadow-sm rounded overflow-hidden" style="max-width: 350px; margin: 0 auto;">
+                                    <div class="ratio ratio-9x16">
+                                        <?php 
+                                            // Limpiar el iframe de Drive para que sea responsivo si es necesario
+                                            $iframe = $test['video_iframe'];
+                                            if (strpos($iframe, '<iframe') !== false) {
+                                                // Asegurar que use clases de Bootstrap
+                                                echo $iframe;
+                                            } else {
+                                                echo '<p class="text-muted p-3">Video no disponible</p>';
+                                            }
+                                        ?>
+                                    </div>
+                                </div>
+                            <?php else: ?>
+                                <!-- Photo Container -->
+                                <img class="border rounded-circle p-2 mx-auto mb-3" src="<?php echo htmlspecialchars($t_img); ?>" style="width: 80px; height: 80px; object-fit: cover;">
+                            <?php endif; ?>
+
                             <h5 class="mb-0"><?php echo htmlspecialchars($test['nombre']); ?></h5>
                             <p><?php echo htmlspecialchars($test['profesion']); ?></p>
                             <div class="testimonial-text bg-light text-center p-4">
@@ -42,4 +63,16 @@
         </div>
     </div>
 </div>
+
+<style>
+/* Asegurar que el iframe ocupe todo el contenedor ratio */
+.testimonial-video iframe {
+    width: 100% !important;
+    height: 100% !important;
+}
+/* Estilo para los testimonios con video en el carrusel */
+.testimonial-carousel .owl-item img {
+    display: inline-block; /* Permitir que las fotos de testimonios normales no se estiren */
+}
+</style>
 <!-- Testimonial End -->

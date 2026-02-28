@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = trim($_POST['nombre'] ?? '');
     $profesion = trim($_POST['profesion'] ?? '');
     $comentario = trim($_POST['comentario'] ?? '');
+    $video_iframe = trim($_POST['video_iframe'] ?? '');
     $foto = '';
 
     if (empty($nombre) || empty($comentario)) {
@@ -24,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         try {
-            $stmt = $pdo->prepare("INSERT INTO testimonios (nombre, profesion, comentario, foto) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$nombre, $profesion, $comentario, $foto]);
+            $stmt = $pdo->prepare("INSERT INTO testimonios (nombre, profesion, comentario, foto, video_iframe) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$nombre, $profesion, $comentario, $foto, $video_iframe]);
             header('Location: index.php?success=' . urlencode('Testimonio añadido con éxito.'));
             exit;
         } catch (PDOException $e) {
@@ -58,6 +59,12 @@ require_once __DIR__ . '/../partials/header.php';
         <div class="form-group">
             <label for="comentario">Comentario / Testimonio</label>
             <textarea id="comentario" name="comentario" rows="5" required class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="video_iframe">Código de Video de Google Drive (Opcional)</label>
+            <textarea id="video_iframe" name="video_iframe" rows="3" class="form-control" placeholder="Pega aquí el código <iframe> de Drive..."></textarea>
+            <small>Si añades un video, se mostrará en lugar de la foto en el sitio web.</small>
         </div>
 
         <div class="form-group">
