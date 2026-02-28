@@ -8,11 +8,11 @@ try {
 ?>
 
 <style>
-    /* Relación de aspecto más ancha (4:5) para que no se vea tan estirado */
+    /* Proporción 1:1 para ganar anchura */
     .custom-ratio-9-16 { 
         position: relative; 
         width: 100%; 
-        padding-top: 125%; /* Relación 4:5 */
+        padding-top: 100%; /* Proporción 1:1 */
         background: #000; 
     }
     .custom-ratio-9-16 iframe { 
@@ -63,11 +63,9 @@ try {
                     
                     if (empty($final_url)) continue;
                 ?>
-                    <div class="testimonial-item text-center px-3">
-                        <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
-                             data-video-url="<?php echo htmlspecialchars($final_url); ?>"
-                             style="max-width: 220px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
-                            
+                                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
+                                                 data-video-url="<?php echo htmlspecialchars($final_url); ?>"
+                                                 style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">                            
                             <div class="custom-ratio-9-16">
                                 <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
                                 <div class="video-overlay-play">
