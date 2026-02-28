@@ -1,6 +1,6 @@
 <?php
 session_start();
-$page_title = 'Gestor de Galerías';
+$page_title = 'Gestor de Graduaciones';
 require_once __DIR__ . '/../partials/header.php';
 require_once __DIR__ . '/../../config/database.php';
 
@@ -28,8 +28,8 @@ try {
 ?>
 
 <div class="table-header">
-    <h3>Listado de Galerías (Graduaciones y Diplomados)</h3>
-    <a href="create.php" class="btn-create">+ Crear Nueva Galería</a>
+    <h3>Listado de Graduaciones</h3>
+    <a href="create.php" class="btn-create">+ Crear Nueva Graduación</a>
 </div>
 
 <table>

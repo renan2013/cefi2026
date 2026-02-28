@@ -164,7 +164,7 @@ require_once(dirname(__FILE__) . '/../../auth/check_auth.php');
             // --- Module Definitions for Sidebar ---
             $module_links = [
                 'posts' => ['icon' => 'fa-newspaper', 'link' => 'posts/index.php', 'title' => 'Publicaciones'],
-                'galerias' => ['icon' => 'fa-images', 'link' => 'galerias/index.php', 'title' => 'Galerías'],
+                'galerias' => ['icon' => 'fa-images', 'link' => 'galerias/index.php', 'title' => 'Graduaciones'],
                 'testimonios' => ['icon' => 'fa-comment-dots', 'link' => 'testimonios/index.php', 'title' => 'Testimonios'],
                 'admisiones' => ['icon' => 'fa-user-plus', 'link' => 'admisiones/index.php', 'title' => 'Admisiones'],
                 'menus' => ['icon' => 'fa-bars', 'link' => 'menus/index.php', 'title' => 'Menús'],
