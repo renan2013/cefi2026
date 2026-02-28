@@ -25,18 +25,25 @@
                         ?>
                         <div class="testimonial-item text-center px-3">
                             <!-- Video Player Section -->
-                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 450px; margin: 0 auto; border: 5px solid #fff;">
+                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 320px; margin: 0 auto; border: 5px solid #fff; background: #000;">
                                 <div class="ratio ratio-9x16">
                                     <?php 
-                                        // Inteligencia para convertir link compartido de Drive en reproductor
+                                        $video_data = trim($test['video_iframe']);
+                                        // Detectar si es un enlace de Drive (no un iframe)
                                         if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
-                                            if (preg_match('/\/file\/d\/([^\/]+)/', $video_data, $matches)) {
+                                            // Extraer ID de Drive (varios formatos)
+                                            if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
                                                 echo '<iframe src="https://drive.google.com/file/d/' . $matches[1] . '/preview" allow="autoplay" allowfullscreen></iframe>';
+                                            } else {
+                                                echo '<p class="text-white p-3 small">Enlace de Drive no reconocido</p>';
                                             }
                                         } elseif (strpos($video_data, '<iframe') !== false) {
-                                            echo $video_data; // Iframe directo
+                                            // Limpiar el iframe pegado para asegurar que no tenga anchos fijos que rompan el diseño
+                                            $clean_iframe = preg_replace('/width="\d+"/', 'width="100%"', $video_data);
+                                            $clean_iframe = preg_replace('/height="\d+"/', 'height="100%"', $clean_iframe);
+                                            echo $clean_iframe;
                                         } else {
-                                            echo '<p class="text-muted p-3">Video no disponible</p>';
+                                            echo '<p class="text-white p-3 small">Formato de video no soportado</p>';
                                         }
                                     ?>
                                 </div>
