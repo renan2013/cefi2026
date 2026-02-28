@@ -86,8 +86,9 @@ try {
                                 
                                 <div class="custom-ratio-9-16">
                                     <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
-                                    <!-- Overlay para capturar el click -->
+                                    <!-- Overlay para capturar el click y centrar el icono -->
                                     <div class="video-overlay-play">
+                                        <i class="fa fa-play-circle text-white" style="font-size: 4rem; opacity: 0.9;"></i>
                                     </div>
                                 </div>
                             </div>
