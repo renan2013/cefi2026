@@ -1,11 +1,12 @@
 <?php
 try {
-    // 1. Contar el total de testimonios únicos con video
-    $stmt_count = $pdo->query("SELECT COUNT(DISTINCT video_iframe) as total FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != ''");
-    $total_testimonios = $stmt_count->fetch()['total'];
+    // 1. Contar el total de testimonios con video (forma compatible)
+    $stmt_count = $pdo->query("SELECT COUNT(*) as total FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != ''");
+    $res_count = $stmt_count->fetch();
+    $total_testimonios = $res_count ? $res_count['total'] : 0;
 
-    // 2. Obtener solo los últimos 6 para la página de inicio
-    $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' GROUP BY video_iframe, nombre ORDER BY created_at DESC LIMIT 6");
+    // 2. Obtener solo los últimos 6 (Eliminamos GROUP BY para compatibilidad total)
+    $stmt_test = $pdo->query("SELECT id_testimonio, nombre, profesion, video_iframe FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' ORDER BY created_at DESC LIMIT 6");
     $testimonios_video = $stmt_test->fetchAll();
 } catch (PDOException $e) {
     $testimonios_video = [];
@@ -17,7 +18,7 @@ try {
     .custom-ratio-9-16 { 
         position: relative; 
         width: 100%; 
-        padding-top: 100%; /* Proporción 1:1 */
+        padding-top: 100%; 
         background: #000; 
     }
     .custom-ratio-9-16 iframe { 
@@ -28,7 +29,6 @@ try {
         height: 100% !important; 
         border: none; 
     }
-    /* Overlay invisible solo para capturar el click */
     .video-overlay-play { 
         position: absolute; 
         top: 0; 
@@ -74,7 +74,7 @@ try {
         <?php else: ?>
             <div class="row g-4">
                 <?php foreach ($testimonios_video as $test):
-                    $video_data = trim($test['video_iframe']);
+                    $video_data = trim($test['video_iframe'] ?? '');
                     $final_url = "";
                     
                     if (preg_match('/src=["\']([^"\']+)["\']/', $video_data, $matches)) {
@@ -143,7 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = $(this).attr('data-video-url');
         if(!url) return;
         document.getElementById('modalIframe').src = url;
-        const videoModal = new bootstrap.Modal(document.getElementById('testimonialVideoModal'));
+        const videoModalElement = document.getElementById('testimonialVideoModal');
+        const videoModal = new bootstrap.Modal(videoModalElement);
         videoModal.show();
     });
     $('#testimonialVideoModal').on('hidden.bs.modal', function () {
