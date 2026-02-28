@@ -32,11 +32,19 @@
                                 <div class="testimonial-video mb-3 shadow-sm rounded overflow-hidden" style="max-width: 350px; margin: 0 auto;">
                                     <div class="ratio ratio-9x16">
                                         <?php 
-                                            // Limpiar el iframe de Drive para que sea responsivo si es necesario
-                                            $iframe = $test['video_iframe'];
-                                            if (strpos($iframe, '<iframe') !== false) {
-                                                // Asegurar que use clases de Bootstrap
-                                                echo $iframe;
+                                            $video_data = $test['video_iframe'];
+                                            // Si es un enlace de Drive (no un iframe)
+                                            if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
+                                                // Extraer el ID del video y convertirlo a formato preview
+                                                if (preg_match('/\/file\/d\/([^\/]+)/', $video_data, $matches)) {
+                                                    $drive_id = $matches[1];
+                                                    echo '<iframe src="https://drive.google.com/file/d/' . $drive_id . '/preview" allow="autoplay"></iframe>';
+                                                } else {
+                                                    echo '<p class="text-muted p-3">Enlace de Drive no válido</p>';
+                                                }
+                                            } elseif (strpos($video_data, '<iframe') !== false) {
+                                                // Si ya es un iframe, lo mostramos (el CSS se encarga del tamaño)
+                                                echo $video_data;
                                             } else {
                                                 echo '<p class="text-muted p-3">Video no disponible</p>';
                                             }
