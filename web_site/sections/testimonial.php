@@ -53,7 +53,7 @@ try {
                     <div class="testimonial-item text-center px-3">
                         <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
                              data-video-url="<?php echo htmlspecialchars($final_url); ?>"
-                             style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
+                             style="max-width: 140px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
                             
                             <div class="custom-ratio-9-16">
                                 <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
