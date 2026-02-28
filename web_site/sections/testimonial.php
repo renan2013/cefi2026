@@ -1,8 +1,8 @@
 <?php
-try {
-    $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' ORDER BY created_at DESC");
-    $testimonios_video = $stmt_test->fetchAll();
-} catch (PDOException $e) {
+            try {
+                // Fetch ONLY unique testimonials with video (Group by video to avoid duplicates)
+                $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' GROUP BY video_iframe, nombre ORDER BY created_at DESC");
+                $testimonios_video = $stmt_test->fetchAll();} catch (PDOException $e) {
     $testimonios_video = [];
 }
 ?>
