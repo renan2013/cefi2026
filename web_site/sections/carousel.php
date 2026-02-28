@@ -26,7 +26,6 @@
                         <div class="row justify-content-start">
                             <div class="col-sm-10 col-lg-8" style="margin-top: auto;">
                                 <h3 class="display-4 text-white animated slideInDown" style="font-size: 2.2rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);"><?php echo htmlspecialchars($slide['title']); ?></h3>
-                                <p class="fs-5 text-white mb-4 pb-2"><?php echo htmlspecialchars($slide['synopsis']); ?></p>
                                 <a href="<?php echo $detail_page; ?>?id=<?php echo $slide['id_post']; ?>" class="btn btn-primary py-md-3 px-md-5 animated slideInRight">Ver Detalles</a>
                             </div>
                         </div>
