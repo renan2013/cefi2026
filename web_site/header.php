@@ -128,7 +128,7 @@
                         $stmt_sub->execute([$menu['id_menu']]);
                         $sub_menus = $stmt_sub->fetchAll();
 
-                        if (empty($sub_menus) && $menu['title'] !== 'Escuelas' && $menu['title'] !== 'Galerías' && $menu['title'] !== 'Graduaciones') {
+                        if (empty($sub_menus) && $menu['title'] !== 'Categorías' && $menu['title'] !== 'Galerías' && $menu['title'] !== 'Graduaciones') {
                             echo '<a href="' . htmlspecialchars($menu['url']) . '" class="nav-item nav-link ' . $activeClass . '">' . htmlspecialchars($menu['title']) . '</a>';
                         } else {
                             echo '<div class="nav-item dropdown">';
@@ -137,9 +137,8 @@
                             
                             // Filter logic
                             $is_gallery_menu = ($menu['title'] === 'Galerías' || $menu['title'] === 'Graduaciones');
-                            $filter_op = $is_gallery_menu ? "LIKE" : "NOT LIKE";
-                            $filter_conn = $is_gallery_menu ? "OR" : "AND";
-
+                            $is_categories_menu = ($menu['title'] === 'Categorías');
+                            
                             $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c";
                             if ($is_gallery_menu) {
                                 // For Galleries, only show categories that HAVE posts
@@ -152,14 +151,16 @@
                             
                             $stmt_cat = $pdo->query($sql_cat);
                             
-                            while ($category = $stmt_cat->fetch()) {
-                                $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
-                                echo '<a href="' . $link . '?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                            if ($is_categories_menu || $is_gallery_menu) {
+                                while ($category = $stmt_cat->fetch()) {
+                                    $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
+                                    echo '<a href="' . $link . '?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                                }
                             }
 
                             // Manual submenus
                             foreach ($sub_menus as $sub) {
-                                if ($menu['title'] === 'Escuelas' && (stripos($sub['title'], 'Diplomado') !== false || stripos($sub['title'], 'Graduacion') !== false)) continue;
+                                if (($menu['title'] === 'Categorías') && (stripos($sub['title'], 'Diplomado') !== false || stripos($sub['title'], 'Graduacion') !== false)) continue;
                                 echo '<a href="' . htmlspecialchars($sub['url']) . '" class="dropdown-item">' . htmlspecialchars($sub['title']) . '</a>';
                             }
                             echo '</div></div>';

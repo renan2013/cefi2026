@@ -18,7 +18,7 @@
                             $is_gallery_menu = ($menu_f['title'] === 'Galerías' || $menu_f['title'] === 'Graduaciones');
 
                             // Dynamic categories with content filter
-                            if ($menu_f['title'] === 'Escuelas' || $is_gallery_menu) {
+                            if ($menu_f['title'] === 'Categorías' || $is_gallery_menu) {
                                 $sql_cat_f = "SELECT DISTINCT c.id_category, c.name FROM categories c";
                                 if ($is_gallery_menu) {
                                     $sql_cat_f .= " JOIN posts p ON c.id_category = p.id_category 
@@ -43,7 +43,7 @@
                             $stmt_sub_f = $pdo->prepare("SELECT title, url FROM menus WHERE parent_id = ? ORDER BY display_order ASC");
                             $stmt_sub_f->execute([$menu_f['id_menu']]);
                             while ($sub_f = $stmt_sub_f->fetch()) {
-                                if ($menu_f['title'] === 'Escuelas' && (stripos($sub_f['title'], 'Diplomado') !== false || stripos($sub_f['title'], 'Graduacion') !== false)) continue;
+                                if ($menu_f['title'] === 'Categorías' && (stripos($sub_f['title'], 'Diplomado') !== false || stripos($sub_f['title'], 'Graduacion') !== false)) continue;
                                 echo '<a class="btn btn-link ps-4" href="' . htmlspecialchars($sub_f['url']) . '" style="font-size: 0.9em;">- ' . htmlspecialchars($sub_f['title']) . '</a>';
                             }
                         }

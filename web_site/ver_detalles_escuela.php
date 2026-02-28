@@ -57,7 +57,7 @@ try {
         <div class="col-lg-7 col-md-12">
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item">Escuelas</li>
+                    <li class="breadcrumb-item">Categorías</li>
                     <li class="breadcrumb-item active text-primary"><?php echo htmlspecialchars($post['category_name']); ?></li>
                 </ol>
             </nav>
