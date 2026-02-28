@@ -1,7 +1,5 @@
 <?php
 session_start();
-$page_title = 'Crear Nueva Galería';
-require_once __DIR__ . '/../partials/header.php';
 require_once __DIR__ . '/../../config/database.php';
 
 $error = '';
@@ -14,12 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $main_image_path = '';
 
     if (empty($title)) {
-        $error = 'El título de la galería es obligatorio.';
+        $error = 'El título de la graduación es obligatorio.';
     } else {
         // Handle Main Image Upload
         if (isset($_FILES['main_image']) && $_FILES['main_image']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = __DIR__ . '/../../public/uploads/images/';
-            $file_name = uniqid('gallery_', true) . '-' . basename($_FILES['main_image']['name']);
+            $file_name = uniqid('grad_cover_', true) . '-' . basename($_FILES['main_image']['name']);
             $target_file = $upload_dir . $file_name;
             if (move_uploaded_file($_FILES['main_image']['tmp_name'], $target_file)) {
                 $main_image_path = $file_name;
@@ -29,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo->beginTransaction();
             
-            // ... (Asegurar categoría)
+            // 1. Asegurar categoría 'Graduaciones'
             $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name = 'Graduaciones' LIMIT 1");
             $stmt_cat->execute();
             $category = $stmt_cat->fetch();
             $id_category = $category ? $category['id_category'] : 0;
             if (!$category) {
-                $pdo->exec("INSERT INTO categories (name) VALUES ('Graduaciones')");
+                $pdo->prepare("INSERT INTO categories (name) VALUES ('Graduaciones')")->execute();
                 $id_category = $pdo->lastInsertId();
             }
 
@@ -51,19 +49,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             $pdo->commit();
-            header('Location: index.php?success=' . urlencode('Galería creada con éxito. Ahora puedes añadir las fotos.'));
+            header('Location: index.php?success=' . urlencode('Graduación creada con éxito. Ahora puedes añadir las fotos.'));
             exit;
 
         } catch (PDOException $e) {
-            $pdo->rollBack();
+            if ($pdo->inTransaction()) $pdo->rollBack();
             $error = 'Error de base de datos: ' . $e->getMessage();
         }
     }
 }
+
+$page_title = 'Crear Nueva Graduación';
+require_once __DIR__ . '/../partials/header.php';
 ?>
 
 <div class="styled-form">
-    <h3>Nueva Galería de Graduación</h3>
+    <h3>Nueva Graduación</h3>
     <form action="create.php" method="POST" enctype="multipart/form-data">
         <?php if ($error): ?>
             <div class="alert alert-danger"><?php echo $error; ?></div>
@@ -92,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="form-actions">
-            <button type="submit" class="btn-submit">Crear Galería y Continuar</button>
+            <button type="submit" class="btn-submit">Crear Graduación y Continuar</button>
             <a href="index.php" class="btn-cancel">Cancelar</a>
         </div>
     </form>
