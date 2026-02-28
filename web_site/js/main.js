@@ -90,7 +90,7 @@
         center: true,
         margin: 24,
         dots: true,
-        loop: true,
+        loop: false,
         nav : true,
         navText : [
             '<i class="fa fa-arrow-left"></i>',
