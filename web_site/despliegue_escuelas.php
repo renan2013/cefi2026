@@ -25,12 +25,15 @@ try {
         <div class="row g-4">
             <?php
             try {
-                // Fetch posts for this category, EXCLUDING those that are galleries (have gallery_image attachments)
+                // Fetch posts for this category, EXCLUDING any post from categories related to graduations, diplomas or galleries
                 $stmt_posts = $pdo->prepare("
                     SELECT p.id_post, p.title, p.synopsis, p.main_image 
                     FROM posts p 
+                    JOIN categories c ON p.id_category = c.id_category
                     WHERE p.id_category = ? 
-                    AND p.id_post NOT IN (SELECT id_post FROM attachments WHERE type = 'gallery_image')
+                    AND LOWER(c.name) NOT LIKE '%graduacion%' 
+                    AND LOWER(c.name) NOT LIKE '%diplomado%' 
+                    AND LOWER(c.name) NOT LIKE '%galería%'
                     ORDER BY p.created_at DESC
                 ");
                 $stmt_posts->execute([$id_category]);
