@@ -191,7 +191,7 @@
                     </svg>
                 </a>
             </div>
-            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-4 px-lg-5 d-none d-lg-block"><span style="position: relative; top: -10px;">whatsapp<i class="fab fa-whatsapp ms-3"></i></span></a>
+            <a href="https://wa.me/50689929180" class="btn btn-primary btn-whatsapp-large py-3 px-lg-3 d-none d-lg-block"><span>whatsapp<i class="fab fa-whatsapp ms-2"></i></span></a>
         </div>
     </nav>
     <!-- Navbar End -->
