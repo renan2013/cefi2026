@@ -17,7 +17,7 @@ try {
 <!-- Cursos Start -->
 <div class="container-xxl py-5">
     <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-        <h6 class="section-title bg-white text-center text-primary px-3">Escuela</h6>
+        <h6 class="section-title bg-white text-center text-primary px-3">Categoría</h6>
         <h1 class="mb-5"><?php echo htmlspecialchars($nombre_escuela); ?></h1>
     </div>
 
