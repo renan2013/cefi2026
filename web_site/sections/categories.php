@@ -8,14 +8,16 @@
         <div class="row g-3">
             <?php
             try {
-                // Fetch all categories and count their REAL posts (excluding sliders)
+                // Fetch categories that have at least one REAL post (excluding sliders and former graduation posts)
                 $stmt_cats = $pdo->query("
                     SELECT c.id_category, c.name, c.image, 
                     (SELECT COUNT(*) FROM posts p 
                      WHERE p.id_category = c.id_category 
                      AND p.id_post NOT IN (SELECT id_post FROM attachments WHERE type = 'slider_image')
+                     AND LOWER(c.name) NOT LIKE '%graduacion%'
                     ) as total_posts
                     FROM categories c
+                    HAVING total_posts > 0
                     ORDER BY c.name ASC
                 ");
                 $categories_home = $stmt_cats->fetchAll();
