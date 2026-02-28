@@ -1,3 +1,53 @@
+<style>
+/* Estilos para el Carrusel de Testimonios de Video */
+.custom-ratio-9-16 {
+    position: relative;
+    width: 100%;
+    padding-top: 177.77%;
+    background: #000;
+}
+.custom-ratio-9-16 iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
+.video-overlay-play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    z-index: 10;
+}
+.video-clickable:hover .video-overlay-play {
+    background: rgba(0,0,0,0.4);
+}
+.video-clickable:hover .video-overlay-play i {
+    transform: scale(1.2);
+}
+.testimonial-carousel .owl-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+}
+.testimonial-carousel .owl-nav button { 
+    font-size: 20px !important; 
+    color: #007bff !important; 
+    background: none !important;
+    border: none !important;
+}
+.testimonial-carousel .owl-dots { margin-top: 30px; }
+</style>
+
 <!-- Testimonial Start -->
 <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
     <div class="container">
@@ -8,6 +58,7 @@
         <div class="owl-carousel testimonial-carousel position-relative">
             <?php
             try {
+                // Fetch ONLY testimonials with video
                 $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' ORDER BY created_at DESC");
                 $testimonios_video = $stmt_test->fetchAll();
 
@@ -23,7 +74,7 @@
                         $video_data = trim($test['video_iframe']);
                         $preview_url = "";
                         
-                        // Extraer URL para el Modal
+                        // Extraer URL del video para el modal
                         if (strpos($video_data, 'drive.google.com') !== false) {
                             if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
                                 $drive_id = $matches[1];
@@ -35,6 +86,8 @@
                         } elseif (preg_match('/src=["\']([^"\']+)["\']/', $video_data, $src_matches)) {
                             $preview_url = $src_matches[1];
                         }
+                        
+                        if (empty($preview_url)) continue;
                         ?>
                         <div class="testimonial-item text-center px-3">
                             <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
@@ -43,7 +96,6 @@
                                 
                                 <div class="custom-ratio-9-16">
                                     <iframe src="<?php echo $preview_url; ?>" style="pointer-events: none;"></iframe>
-                                    <!-- Overlay para capturar el click y mostrar icono de play -->
                                     <div class="video-overlay-play">
                                         <i class="fa fa-play-circle text-white" style="font-size: 3rem; opacity: 0.8;"></i>
                                     </div>
@@ -84,60 +136,16 @@
 <script>
 function openVideoModal(url) {
     if(!url) return;
-    const modal = new bootstrap.Modal(document.getElementById('testimonialVideoModal'));
+    const modalElement = document.getElementById('testimonialVideoModal');
     const iframe = document.getElementById('modalIframe');
-    // Añadimos autoplay para que empiece al abrir
     const finalUrl = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
     iframe.src = finalUrl;
+    const modal = new bootstrap.Modal(modalElement);
     modal.show();
 }
 
-// Limpiar el iframe al cerrar para detener el video
 document.getElementById('testimonialVideoModal').addEventListener('hidden.bs.modal', function () {
     document.getElementById('modalIframe').src = '';
 });
 </script>
-
-<style>
-.custom-ratio-9-16 {
-    position: relative;
-    width: 100%;
-    padding-top: 177.77%;
-    background: #000;
-}
-.custom-ratio-9-16 iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    border: none;
-}
-.video-overlay-play {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.2);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    z-index: 10;
-}
-.video-clickable:hover .video-overlay-play {
-    background: rgba(0,0,0,0.4);
-}
-.video-clickable:hover .video-overlay-play i {
-    transform: scale(1.2);
-}
-.testimonial-carousel .owl-nav {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 15px;
-}
-.testimonial-carousel .owl-nav button { font-size: 20px !important; color: var(--primary) !important; }
-</style>
 <!-- Testimonial End -->
