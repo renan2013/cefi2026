@@ -29,18 +29,35 @@
                                 <div class="ratio ratio-9x16">
                                     <?php 
                                         $video_data = trim($test['video_iframe']);
-                                        // Detectar si es un enlace de Drive (no un iframe)
+                                        
+                                        // 1. Detectar si es un enlace de Drive (no un iframe)
                                         if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
-                                            // Extraer ID de Drive (varios formatos)
+                                            // Extraer ID de Drive
                                             if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
-                                                echo '<iframe src="https://drive.google.com/file/d/' . $matches[1] . '/preview" allow="autoplay" allowfullscreen></iframe>';
+                                                $drive_id = $matches[1];
+                                                $preview_url = "https://drive.google.com/file/d/" . $drive_id . "/preview";
+                                                
+                                                // Preservar el resourcekey si existe
+                                                if (preg_match('/resourcekey=([^\?&]+)/', $video_data, $rk_matches)) {
+                                                    $preview_url .= "?resourcekey=" . $rk_matches[1];
+                                                }
+                                                
+                                                echo '<iframe src="' . $preview_url . '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
                                             } else {
                                                 echo '<p class="text-white p-3 small">Enlace de Drive no reconocido</p>';
                                             }
-                                        } elseif (strpos($video_data, '<iframe') !== false) {
-                                            // Limpiar el iframe pegado para asegurar que no tenga anchos fijos que rompan el diseño
-                                            $clean_iframe = preg_replace('/width="\d+"/', 'width="100%"', $video_data);
-                                            $clean_iframe = preg_replace('/height="\d+"/', 'height="100%"', $clean_iframe);
+                                        } 
+                                        // 2. Si ya es un iframe
+                                        elseif (strpos($video_data, '<iframe') !== false) {
+                                            // Limpiar anchos y altos fijos para que sea responsivo (soporta comillas simples o dobles)
+                                            $clean_iframe = preg_replace('/width=["\']\d+["\']/', 'width="100%"', $video_data);
+                                            $clean_iframe = preg_replace('/height=["\']\d+["\']/', 'height="100%"', $clean_iframe);
+                                            
+                                            // Asegurar parámetros de visualización
+                                            if (strpos($clean_iframe, 'allowfullscreen') === false) {
+                                                $clean_iframe = str_replace('><', ' allowfullscreen><', $clean_iframe);
+                                            }
+                                            
                                             echo $clean_iframe;
                                         } else {
                                             echo '<p class="text-white p-3 small">Formato de video no soportado</p>';
