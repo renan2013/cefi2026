@@ -1,221 +1,102 @@
 <?php
 include 'header.php'; // Includes db_connect.php
 
-$id_post = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 try {
-    // Fetch post details and category name
-    $stmt = $pdo->prepare("
-        SELECT p.title, p.synopsis, p.content, c.name as category_name 
-        FROM posts p 
-        JOIN categories c ON p.id_category = c.id_category 
-        WHERE p.id_post = ?
-    ");
-    $stmt->execute([$id_post]);
+    // 1. Fetch graduation details from independent table
+    $stmt = $pdo->prepare("SELECT * FROM graduaciones WHERE id_graduacion = ?");
+    $stmt->execute([$id]);
     $grad = $stmt->fetch();
 
     if (!$grad) {
-        header('Location: graduaciones.php');
+        header('Location: 404.php');
         exit;
     }
 
-    // Fetch all attachments for this graduation
-    $stmt_attach = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_post = ? ORDER BY id_attachment DESC");
-    $stmt_attach->execute([$id_post]);
-    $attachments = $stmt_attach->fetchAll();
-
-    $gallery = array_filter($attachments, function($a) { return $a['type'] === 'gallery_image'; });
-    $videos = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
+    // 2. Fetch photos from graduaciones_fotos table
+    $stmt_photos = $pdo->prepare("SELECT file_path FROM graduaciones_fotos WHERE id_graduacion = ? ORDER BY display_order ASC");
+    $stmt_photos->execute([$id]);
+    $photos = $stmt_photos->fetchAll();
 
 } catch (PDOException $e) {
-    die("Error al cargar la galería: " . $e->getMessage());
+    die("Error al cargar detalles de la graduación: " . $e->getMessage());
 }
 ?>
 
-<!-- Magnific Popup CSS -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css">
+<!-- Graduation Header Start -->
+<div class="container-fluid bg-primary py-5 mb-5 page-header" style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/carousel-1.jpg'); background-size: cover;">
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-10 text-center">
+                <h1 class="display-3 text-white animated slideInDown"><?php echo htmlspecialchars($grad['title']); ?></h1>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb justify-content-center">
+                        <li class="breadcrumb-item"><a class="text-white" href="index.php">Inicio</a></li>
+                        <li class="breadcrumb-item"><a class="text-white" href="graduaciones.php">Graduaciones</a></li>
+                        <li class="breadcrumb-item text-white active" aria-current="page"><?php echo htmlspecialchars($grad['title']); ?></li>
+                    </ol>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Graduation Header End -->
 
 <div class="container-xxl py-5">
     <div class="container">
         <div class="row g-5">
-            <!-- Left Side: Images (Carousel + Grid) -->
-            <div class="col-lg-8">
-                <nav aria-label="breadcrumb" class="mb-4">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="graduaciones.php">Graduaciones</a></li>
-                        <li class="breadcrumb-item active"><?php echo htmlspecialchars($grad['category_name']); ?></li>
-                    </ol>
-                </nav>
-
-                <h2 class="fw-bold mb-3"><?php echo htmlspecialchars($grad['title']); ?></h2>
-                <p class="text-muted mb-4"><?php echo htmlspecialchars($grad['synopsis']); ?></p>
-
-                <?php if (!empty($gallery)): ?>
-                    <!-- Full Grid of Images with Lightbox Support -->
-                    <div class="row g-2 popup-gallery">
-                        <?php foreach ($gallery as $img): 
-                            $img_url = '../classbox/public/uploads/attachments/' . $img['value'];
+            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
+                <h6 class="section-title bg-white text-start text-primary pe-3">Detalles de la Ceremonia</h6>
+                <h1 class="mb-4"><?php echo htmlspecialchars($grad['title']); ?></h1>
+                <p class="mb-4"><?php echo nl2br(htmlspecialchars($grad['synopsis'])); ?></p>
+                
+                <?php if (!empty($grad['video_url'])): ?>
+                    <!-- Video Section -->
+                    <div class="mb-5">
+                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Video de la Ceremonia</h4>
+                        <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
+                            <?php 
+                                $video_id = '';
+                                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $grad['video_url'], $matches)) {
+                                    $video_id = $matches[1];
+                                }
                             ?>
-                            <div class="col-lg-2 col-md-3 col-sm-4 col-6">
-                                <div class="gallery-item shadow-sm rounded overflow-hidden">
-                                    <a href="<?php echo $img_url; ?>" title="<?php echo htmlspecialchars($grad['title']); ?>">
-                                        <img src="<?php echo $img_url; ?>" class="img-fluid w-100" style="height: 120px; object-fit: cover;" alt="Foto Graduación">
-                                        <div class="gallery-overlay"><i class="fa fa-search-plus text-white fs-6"></i></div>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php else: ?>
-                    <div class="bg-light p-5 text-center rounded">
-                        <i class="fa fa-camera-retro fs-1 text-muted mb-3"></i>
-                        <p>No hay fotos disponibles para esta graduación.</p>
+                            <iframe src="https://www.youtube.com/embed/<?php echo $video_id; ?>" allowfullscreen></iframe>
+                        </div>
                     </div>
                 <?php endif; ?>
 
-                <div class="mt-5">
-                    <?php echo $grad['content']; ?>
-                </div>
-            </div>
-
-            <!-- Right Side: Video Playlist (Sticky) -->
-            <div class="col-lg-4">
-                <div class="sticky-top" style="top: 100px;">
-                    <div class="bg-dark p-4 rounded shadow">
-                        <h4 class="text-white mb-4 border-bottom border-secondary pb-2">
-                            <i class="fa fa-video text-primary me-2"></i>Videos
-                        </h4>
-                        
-                        <?php if (empty($videos)): ?>
-                            <p class="text-muted small">No hay videos de esta ceremonia.</p>
-                        <?php else: ?>
-                            <div class="video-playlist">
-                                <?php foreach ($videos as $vid): 
-                                    if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid['value'], $match)) {
-                                        $yid = $match[1];
-                                    }
-                                    ?>
-                                    <div class="video-card mb-4">
-                                        <?php if (isset($yid)): ?>
-                                            <div class="ratio ratio-16x9 mb-2 rounded overflow-hidden">
-                                                <iframe src="https://www.youtube.com/embed/<?php echo $yid; ?>" title="Video Graduación" allowfullscreen></iframe>
-                                            </div>
-                                        <?php endif; ?>
-                                        <p class="small text-light mb-0"><?php echo htmlspecialchars($vid['file_name'] ?: 'Ceremonia de Graduación'); ?></p>
-                                    </div>
-                                <?php endforeach; ?>
+                <!-- Photo Gallery Section -->
+                <?php if (!empty($photos)): ?>
+                    <h4 class="mb-3"><i class="fa fa-images text-primary me-2"></i>Galería de Fotos</h4>
+                    <div class="row g-3">
+                        <?php foreach ($photos as $photo): ?>
+                            <div class="col-lg-3 col-md-4 col-sm-6">
+                                <a href="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo['file_path']); ?>" data-lightbox="graduation-gallery" class="d-block shadow-sm rounded overflow-hidden photo-item">
+                                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo['file_path']); ?>" class="img-fluid" alt="Foto de graduación" style="height: 200px; width: 100%; object-fit: cover;">
+                                </a>
                             </div>
-                        <?php endif; ?>
-
-                        <hr class="border-secondary">
-                        <div class="d-grid gap-2">
-                            <a href="https://wa.me/50689929180" class="btn btn-success" target="_blank">
-                                <i class="fab fa-whatsapp me-2"></i>Información de Matrícula
-                            </a>
-                        </div>
+                        <?php endforeach; ?>
                     </div>
-                </div>
+                <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
 
+<!-- Lightbox2 for gallery -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
 <style>
-/* Main Carousel Styles */
-.graduation-carousel .item img {
-    height: 500px;
-    object-fit: contain;
-    background-color: #111;
+.photo-item {
+    transition: transform 0.3s ease;
 }
-.graduation-carousel.owl-carousel { position: relative; }
-.graduation-carousel .owl-nav {
-    position: absolute; top: 50%; width: 100%; display: flex;
-    justify-content: space-between; transform: translateY(-50%);
-    pointer-events: none; z-index: 10;
+.photo-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
 }
-.graduation-carousel .owl-nav button.owl-prev, .graduation-carousel .owl-nav button.owl-next {
-    background: rgba(45, 143, 226, 0.7) !important; color: white !important;
-    width: 45px; height: 45px; border-radius: 50%; display: flex;
-    align-items: center; justify-content: center; margin: 0 10px;
-    pointer-events: auto; transition: all 0.3s ease;
-}
-.graduation-carousel .owl-nav button:hover { background: rgba(45, 143, 226, 1) !important; transform: scale(1.1); }
-
-/* Gallery Grid Styles */
-.gallery-item { position: relative; transition: transform 0.3s ease; }
-.gallery-item:hover { transform: scale(1.05); }
-.gallery-overlay {
-    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.4); display: flex; align-items: center;
-    justify-content: center; opacity: 0; transition: opacity 0.3s ease;
-}
-.gallery-item:hover .gallery-overlay { opacity: 1; }
-
-/* Lightbox Custom Styles */
-.mfp-arrow { background: rgba(0,0,0,0.2) !important; border-radius: 50%; width: 60px !important; height: 60px !important; }
-.mfp-counter { top: 25px !important; right: 72px !important; font-weight: 600; color: #FFF; font-size: 14px; }
-.mfp-close {
-    background: #2D8FE2 !important; color: white !important;
-    width: 44px !important; height: 44px !important;
-    line-height: 44px !important;
-    border-radius: 50%; 
-    top: 15px !important; right: -23px !important;
-    opacity: 1 !important; padding: 0 !important;
-    text-align: center !important;
-    margin: 0 !important;
-}
-.mfp-fullscreen-btn {
-    position: absolute; right: 27px; top: 25px; z-index: 1050;
-    color: #FFF; font-size: 24px; cursor: pointer; opacity: 0.8; transition: opacity 0.3s;
-}
-.mfp-fullscreen-btn:hover { opacity: 1; }
-
-@media (max-width: 991px) { .graduation-carousel .item img { height: 350px; } }
 </style>
-
-<!-- Magnific Popup JS -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-
-<script>
-(function($) {
-    $(document).ready(function(){
-        // Initialize Lightbox Gallery
-        if ($.fn.magnificPopup) {
-            $('.popup-gallery').magnificPopup({
-                delegate: 'a',
-                type: 'image',
-                gallery: { enabled: true, navigateByImgClick: true, preload: [0,1] },
-                callbacks: {
-                    open: function() {
-                        var mfp = $.magnificPopup.instance;
-                        // Inject fullscreen button into the container
-                        mfp.container.append('<div class="mfp-fullscreen-btn" id="mfp-fs-btn" title="Pantalla Completa"><i class="fa fa-expand"></i></div>');
-                        
-                        $('#mfp-fs-btn').on('click', function() {
-                            if (!document.fullscreenElement) {
-                                document.documentElement.requestFullscreen();
-                                $(this).html('<i class="fa fa-compress"></i>');
-                            } else {
-                                if (document.exitFullscreen) {
-                                    document.exitFullscreen();
-                                    $(this).html('<i class="fa fa-expand"></i>');
-                                }
-                            }
-                        });
-                    },
-                    close: function() {
-                        if (document.fullscreenElement) document.exitFullscreen();
-                    }
-                },
-                mainClass: 'mfp-with-zoom mfp-img-mobile',
-                zoom: {
-                    enabled: true, duration: 300,
-                    opener: function(element) { return element.find('img'); }
-                }
-            });
-        }
-    });
-})(jQuery);
-</script>
 
 <?php include 'footer.php'; ?>

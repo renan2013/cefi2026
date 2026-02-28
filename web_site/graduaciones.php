@@ -2,21 +2,13 @@
 include 'header.php'; // Includes db_connect.php
 
 try {
-    // Fetch posts that belong to gallery-related categories
-    // or specifically have gallery/video attachments.
-    $stmt_posts = $pdo->prepare("
-        SELECT DISTINCT p.id_post, p.title, p.synopsis, p.main_image, p.created_at, c.name as cat_name
-        FROM posts p
-        JOIN categories c ON p.id_category = c.id_category
-        LEFT JOIN attachments a ON p.id_post = a.id_post
-        WHERE c.name LIKE '%Graduaciones%' 
-           OR c.name LIKE '%Diplomado%'
-           OR c.name LIKE '%Galería%'
-           OR a.type IN ('gallery_image', 'youtube')
-        ORDER BY p.created_at DESC
+    // Fetch ONLY from the independent graduaciones table
+    $stmt_grad = $pdo->query("
+        SELECT id_graduacion as id_post, title, synopsis, main_image, created_at 
+        FROM graduaciones 
+        ORDER BY created_at DESC
     ");
-    $stmt_posts->execute();
-    $graduations = $stmt_posts->fetchAll();
+    $graduations = $stmt_grad->fetchAll();
 
 } catch (PDOException $e) {
     die("Error al cargar graduaciones: " . $e->getMessage());
