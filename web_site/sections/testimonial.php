@@ -91,11 +91,11 @@
                         ?>
                         <div class="testimonial-item text-center px-3">
                             <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
-                                 onclick="openVideoModal('<?php echo $preview_url; ?>')"
+                                 onclick="openVideoModal('<?php echo addslashes($preview_url); ?>')" 
                                  style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
                                 
                                 <div class="custom-ratio-9-16">
-                                    <iframe src="<?php echo $preview_url; ?>" style="pointer-events: none;"></iframe>
+                                    <iframe src="<?php echo htmlspecialchars($preview_url); ?>" style="pointer-events: none;"></iframe>
                                     <div class="video-overlay-play">
                                         <i class="fa fa-play-circle text-white" style="font-size: 3rem; opacity: 0.8;"></i>
                                     </div>
