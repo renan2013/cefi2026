@@ -8,10 +8,15 @@
         <div class="row g-3">
             <?php
             try {
-                // Listar TODAS las categorías de la tabla sin ninguna restricción
+                // Contar solo publicaciones que NO pertenecen a graduaciones/diplomados aislados
                 $stmt_cats = $pdo->query("
                     SELECT c.id_category, c.name, c.image, 
-                    (SELECT COUNT(*) FROM posts p WHERE p.id_category = c.id_category) as total_posts
+                    (SELECT COUNT(*) FROM posts p 
+                     JOIN categories c2 ON p.id_category = c2.id_category
+                     WHERE p.id_category = c.id_category 
+                     AND LOWER(c2.name) NOT LIKE '%graduacion%' 
+                     AND LOWER(c2.name) NOT LIKE '%diplomado%' 
+                     AND LOWER(c2.name) NOT LIKE '%galería%') as total_posts
                     FROM categories c
                     ORDER BY c.name ASC
                 ");
