@@ -139,22 +139,28 @@
                             $is_gallery_menu = ($menu['title'] === 'Galerías' || $menu['title'] === 'Graduaciones');
                             $is_categories_menu = ($menu['title'] === 'Categorías');
                             
-                            $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c";
                             if ($is_gallery_menu) {
-                                // For Galleries, only show categories that HAVE posts
-                                $sql_cat .= " JOIN posts p ON c.id_category = p.id_category 
-                                              WHERE (LOWER(c.name) LIKE '%graduacion%' 
-                                              OR LOWER(c.name) LIKE '%diplomado%' 
-                                              OR LOWER(c.name) LIKE '%galería%')";
-                            }
-                            $sql_cat .= " ORDER BY c.name ASC";
-                            
-                            $stmt_cat = $pdo->query($sql_cat);
-                            
-                            if ($is_categories_menu || $is_gallery_menu) {
+                                // For Graduaciones, list POSTS directly (not categories)
+                                $sql_grad = "SELECT p.id_post, p.title FROM posts p 
+                                             JOIN categories c ON p.id_category = c.id_category 
+                                             WHERE (LOWER(c.name) LIKE '%graduacion%' 
+                                             OR LOWER(c.name) LIKE '%diplomado%' 
+                                             OR LOWER(c.name) LIKE '%galería%')
+                                             ORDER BY p.id_post DESC LIMIT 15";
+                                $stmt_grad = $pdo->query($sql_grad);
+                                while ($grad = $stmt_grad->fetch()) {
+                                    echo '<a href="ver_graduacion.php?id=' . $grad['id_post'] . '" class="dropdown-item">' . htmlspecialchars($grad['title']) . '</a>';
+                                }
+                            } elseif ($is_categories_menu) {
+                                // For Categorías, list CATEGORIES excluding graduations
+                                $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c 
+                                            WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
+                                            AND LOWER(c.name) NOT LIKE '%diplomado%' 
+                                            AND LOWER(c.name) NOT LIKE '%galería%'
+                                            ORDER BY c.name ASC";
+                                $stmt_cat = $pdo->query($sql_cat);
                                 while ($category = $stmt_cat->fetch()) {
-                                    $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
-                                    echo '<a href="' . $link . '?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
+                                    echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';
                                 }
                             }
 
