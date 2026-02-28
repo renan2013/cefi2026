@@ -75,10 +75,9 @@ $post_count = count($posts);
                     <td><?php echo date('F j, Y', strtotime($post['created_at'])); ?></td>
                     <td><?php echo htmlspecialchars($post['author_name'] ?? 'Desconocido'); ?></td>
                     <td class="actions">
-                        <!-- Debug: id_post for edit link: <?php echo htmlspecialchars($post['id_post']); ?> -->
-                        <a href="attachments.php?post_id=<?php echo $post['id_post']; ?>" class="btn-attach "><i class="fa-solid fa-paperclip me-2"></i> Adjuntos</a>
-                        <a href="edit.php?id=<?php echo $post['id_post']; ?>">Editar</a>
-                        <button type="button" class="btn-link delete" style="background:none; border:none; color:#dc3545; cursor:pointer; padding:0; font-size:inherit;" onclick="confirmDelete(<?php echo $post['id_post']; ?>, '<?php echo addslashes($post['title']); ?>')">Eliminar</button>
+                        <a href="attachments.php?post_id=<?php echo $post['id_post']; ?>" class="btn-attach" title="Adjuntos"><i class="fa-solid fa-paperclip"></i></a>
+                        <a href="edit.php?id=<?php echo $post['id_post']; ?>" class="btn-edit-icon" title="Editar"><i class="fa-solid fa-pen-to-square"></i></a>
+                        <button type="button" class="btn-delete-icon" title="Eliminar" onclick="confirmDelete(<?php echo $post['id_post']; ?>, '<?php echo addslashes($post['title']); ?>')"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -143,6 +142,45 @@ function confirmDelete(id, title) {
   transform: scale(1.03);
   box-shadow: 0 4px 10px rgba(45, 143, 226, 0.3);
   color: #fff !important;
+}
+
+.btn-edit-icon {
+  background-color: #ffc107;
+  color: #000 !important;
+  padding: 6px 10px;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-edit-icon:hover {
+  background-color: #e0a800;
+  transform: scale(1.05);
+}
+
+.btn-delete-icon {
+  background-color: #dc3545;
+  color: #fff !important;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9em;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.btn-delete-icon:hover {
+  background-color: #c82333;
+  transform: scale(1.05);
+}
+
+.actions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
 }
 </style>
 
