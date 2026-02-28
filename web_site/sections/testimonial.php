@@ -8,8 +8,22 @@ try {
 ?>
 
 <style>
-    .custom-ratio-9-16 { position: relative; width: 100%; padding-top: 177.77%; background: #000; }
-    .custom-ratio-9-16 iframe { position: absolute; top: 0; left: 0; width: 100% !important; height: 100% !important; border: none; }
+    /* Relación de aspecto más ancha (4:5) para que no se vea tan estirado */
+    .custom-ratio-9-16 { 
+        position: relative; 
+        width: 100%; 
+        padding-top: 125%; /* Relación 4:5 */
+        background: #000; 
+    }
+    .custom-ratio-9-16 iframe { 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        width: 100% !important; 
+        height: 100% !important; 
+        border: none; 
+        object-fit: cover; /* Asegura que llene el espacio sin deformar */
+    }
     .video-overlay-play { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; transition: 0.3s; z-index: 10; }
     .video-clickable:hover .video-overlay-play { background: rgba(0,0,0,0.5); }
     .video-clickable:hover .video-overlay-play i { transform: scale(1.2); }
@@ -36,7 +50,6 @@ try {
                     $video_data = trim($test['video_iframe']);
                     $final_url = "";
                     
-                    // Lógica de extracción de URL ultra-limpia
                     if (preg_match('/src=["\']([^"\']+)["\']/', $video_data, $matches)) {
                         $final_url = $matches[1];
                     } elseif (strpos($video_data, 'drive.google.com') !== false) {
@@ -53,7 +66,7 @@ try {
                     <div class="testimonial-item text-center px-3">
                         <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
                              data-video-url="<?php echo htmlspecialchars($final_url); ?>"
-                             style="max-width: 140px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
+                             style="max-width: 220px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
                             
                             <div class="custom-ratio-9-16">
                                 <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
@@ -81,8 +94,9 @@ try {
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="background-color: #fff; opacity: 1; padding: 10px; border-radius: 50%;"></button>
             </div>
             <div class="modal-body p-0">
-                <div class="custom-ratio-9-16 shadow-lg">
-                    <iframe id="modalIframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                <!-- El modal mantiene la proporción original 9:16 para ver el video completo -->
+                <div style="position: relative; width: 100%; padding-top: 177.77%; background: #000;" class="shadow-lg">
+                    <iframe id="modalIframe" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
             </div>
         </div>
@@ -91,18 +105,13 @@ try {
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    // Manejar el click en los videos del carrusel
     $(document).on('click', '.video-clickable', function() {
         const url = $(this).attr('data-video-url');
         if(!url) return;
-        
-        // No añadimos autoplay si es de Drive para evitar errores de URL
         document.getElementById('modalIframe').src = url;
         const videoModal = new bootstrap.Modal(document.getElementById('testimonialVideoModal'));
         videoModal.show();
     });
-
-    // Detener video al cerrar el modal
     $('#testimonialVideoModal').on('hidden.bs.modal', function () {
         document.getElementById('modalIframe').src = '';
     });
