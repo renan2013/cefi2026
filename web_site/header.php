@@ -140,20 +140,19 @@
                             $is_categories_menu = ($menu['title'] === 'Categorías');
                             
                             if ($is_gallery_menu) {
-                                // For Graduaciones, list POSTS directly (not categories)
+                                // For Graduaciones, list POSTS directly that belong to the system category
                                 $sql_grad = "SELECT p.id_post, p.title FROM posts p 
                                              JOIN categories c ON p.id_category = c.id_category 
-                                             WHERE (LOWER(c.name) LIKE '%graduacion%' 
-                                             OR LOWER(c.name) LIKE '%diplomado%' 
-                                             OR LOWER(c.name) LIKE '%galería%')
+                                             WHERE c.name = '__SYSTEM_GRADUACIONES__'
                                              ORDER BY p.id_post DESC LIMIT 15";
                                 $stmt_grad = $pdo->query($sql_grad);
                                 while ($grad = $stmt_grad->fetch()) {
                                     echo '<a href="ver_graduacion.php?id=' . $grad['id_post'] . '" class="dropdown-item">' . htmlspecialchars($grad['title']) . '</a>';
                                 }
                             } elseif ($is_categories_menu) {
-                                // For Categorías, list ALL CATEGORIES without restrictions
+                                // For Categorías, list ALL categories created by the user (exclude internal ones)
                                 $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c 
+                                            WHERE c.name != '__SYSTEM_GRADUACIONES__'
                                             ORDER BY c.name ASC";
                                 $stmt_cat = $pdo->query($sql_cat);
                                 while ($category = $stmt_cat->fetch()) {

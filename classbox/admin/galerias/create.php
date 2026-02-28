@@ -27,13 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $pdo->beginTransaction();
             
-            // 1. Asegurar categoría 'Graduaciones'
-            $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name = 'Graduaciones' LIMIT 1");
+            // 1. Asegurar categoría interna especial para Graduaciones
+            $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name = '__SYSTEM_GRADUACIONES__' LIMIT 1");
             $stmt_cat->execute();
             $category = $stmt_cat->fetch();
             $id_category = $category ? $category['id_category'] : 0;
             if (!$category) {
-                $pdo->prepare("INSERT INTO categories (name) VALUES ('Graduaciones')")->execute();
+                $pdo->prepare("INSERT INTO categories (name) VALUES ('__SYSTEM_GRADUACIONES__')")->execute();
                 $id_category = $pdo->lastInsertId();
             }
 
