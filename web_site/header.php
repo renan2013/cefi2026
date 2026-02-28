@@ -147,11 +147,6 @@
                                               WHERE (LOWER(c.name) LIKE '%graduacion%' 
                                               OR LOWER(c.name) LIKE '%diplomado%' 
                                               OR LOWER(c.name) LIKE '%galería%')";
-                            } else {
-                                // For Escuelas, keep existing filter
-                                $sql_cat .= " WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
-                                              AND LOWER(c.name) NOT LIKE '%diplomado%' 
-                                              AND LOWER(c.name) NOT LIKE '%galería%'";
                             }
                             $sql_cat .= " ORDER BY c.name ASC";
                             
