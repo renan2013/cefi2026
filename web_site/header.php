@@ -140,20 +140,15 @@
                             $is_categories_menu = ($menu['title'] === 'Categorías');
                             
                             if ($is_gallery_menu) {
-                                // For Graduaciones, list POSTS directly that belong to the system category
-                                $sql_grad = "SELECT p.id_post, p.title FROM posts p 
-                                             JOIN categories c ON p.id_category = c.id_category 
-                                             WHERE c.name = '__SYSTEM_GRADUACIONES__'
-                                             ORDER BY p.id_post DESC LIMIT 15";
+                                // For Graduaciones, list items from the NEW independent table
+                                $sql_grad = "SELECT id_graduacion, title FROM graduaciones ORDER BY created_at DESC LIMIT 15";
                                 $stmt_grad = $pdo->query($sql_grad);
                                 while ($grad = $stmt_grad->fetch()) {
-                                    echo '<a href="ver_graduacion.php?id=' . $grad['id_post'] . '" class="dropdown-item">' . htmlspecialchars($grad['title']) . '</a>';
+                                    echo '<a href="ver_graduacion.php?id=' . $grad['id_graduacion'] . '" class="dropdown-item">' . htmlspecialchars($grad['title']) . '</a>';
                                 }
                             } elseif ($is_categories_menu) {
-                                // For Categorías, list ALL categories created by the user (exclude internal ones)
-                                $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c 
-                                            WHERE c.name != '__SYSTEM_GRADUACIONES__'
-                                            ORDER BY c.name ASC";
+                                // For Categorías, list ALL categories (no more system exclusions needed)
+                                $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c ORDER BY c.name ASC";
                                 $stmt_cat = $pdo->query($sql_cat);
                                 while ($category = $stmt_cat->fetch()) {
                                     echo '<a href="despliegue_escuelas.php?id=' . $category['id_category'] . '" class="dropdown-item">' . htmlspecialchars($category['name']) . '</a>';

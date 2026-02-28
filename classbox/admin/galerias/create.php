@@ -25,35 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         try {
-            $pdo->beginTransaction();
-            
-            // 1. Asegurar categoría interna especial para Graduaciones
-            $stmt_cat = $pdo->prepare("SELECT id_category FROM categories WHERE name = '__SYSTEM_GRADUACIONES__' LIMIT 1");
-            $stmt_cat->execute();
-            $category = $stmt_cat->fetch();
-            $id_category = $category ? $category['id_category'] : 0;
-            if (!$category) {
-                $pdo->prepare("INSERT INTO categories (name) VALUES ('__SYSTEM_GRADUACIONES__')")->execute();
-                $id_category = $pdo->lastInsertId();
-            }
+            // INSERTAR DIRECTAMENTE EN LA TABLA GRADUACIONES
+            $stmt = $pdo->prepare("INSERT INTO graduaciones (title, synopsis, main_image, video_url, id_user) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $synopsis, $main_image_path, $video_url, $_SESSION['user_id']]);
+            $id_graduacion = $pdo->lastInsertId();
 
-            // 2. Insertar la publicación con la imagen principal
-            $stmt = $pdo->prepare("INSERT INTO posts (title, id_category, synopsis, main_image, id_user) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $id_category, $synopsis, $main_image_path, $_SESSION['user_id']]);
-            $id_post = $pdo->lastInsertId();
-
-            // 3. Si hay video, insertarlo como adjunto
-            if (!empty($video_url)) {
-                $stmt_video = $pdo->prepare("INSERT INTO attachments (id_post, type, value) VALUES (?, 'youtube', ?)");
-                $stmt_video->execute([$id_post, $video_url]);
-            }
-
-            $pdo->commit();
             header('Location: index.php?success=' . urlencode('Graduación creada con éxito. Ahora puedes añadir las fotos.'));
             exit;
 
         } catch (PDOException $e) {
-            if ($pdo->inTransaction()) $pdo->rollBack();
             $error = 'Error de base de datos: ' . $e->getMessage();
         }
     }
