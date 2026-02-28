@@ -10,7 +10,8 @@ try {
     $grad = $stmt->fetch();
 
     if (!$grad) {
-        header('Location: 404.php');
+        echo '<div class="container mt-5 text-center"><h1>Graduación no encontrada</h1><a href="graduaciones.php" class="btn btn-primary">Volver al listado</a></div>';
+        include 'footer.php';
         exit;
     }
 
@@ -30,101 +31,117 @@ try {
         elseif ($att['type'] === 'pdf') $pdfs[] = $att['value'];
     }
 
+    // Process Main Video or first attachment video
+    $youtube_url = !empty($grad['video_url']) ? $grad['video_url'] : (!empty($extra_videos) ? $extra_videos[0] : null);
+    if ($youtube_url) {
+        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
+            $youtube_id = $match[1];
+        }
+    }
+
 } catch (PDOException $e) {
     die("Error al cargar detalles de la graduación: " . $e->getMessage());
 }
 ?>
 
-<!-- Graduation Header Start -->
-<div class="container-fluid bg-primary py-5 mb-5 page-header" style="background: linear-gradient(rgba(24, 29, 56, .7), rgba(24, 29, 56, .7)), url('img/carousel-1.jpg'); background-size: cover;">
-    <div class="container py-5">
-        <div class="row justify-content-center">
-            <div class="col-lg-10 text-center">
-                <h1 class="display-3 text-white animated slideInDown"><?php echo htmlspecialchars($grad['title']); ?></h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb justify-content-center">
-                        <li class="breadcrumb-item"><a class="text-white" href="index.php">Inicio</a></li>
-                        <li class="breadcrumb-item"><a class="text-white" href="graduaciones.php">Graduaciones</a></li>
-                        <li class="breadcrumb-item text-white active" aria-current="page"><?php echo htmlspecialchars($grad['title']); ?></li>
-                    </ol>
-                </nav>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Graduation Header End -->
+<style>
+.rounded-custom {
+    border-radius: 15px !important;
+}
+.photo-item {
+    transition: transform 0.3s ease;
+}
+.photo-item:hover {
+    transform: scale(1.05);
+    z-index: 10;
+}
+</style>
 
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="row g-5">
-            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-start text-primary pe-3">Detalles de la Ceremonia</h6>
-                <h1 class="mb-4"><?php echo htmlspecialchars($grad['title']); ?></h1>
-                <p class="mb-4"><?php echo nl2br(htmlspecialchars($grad['synopsis'])); ?></p>
-                
-                <!-- Main Video (from table field) -->
-                <?php if (!empty($grad['video_url'])): ?>
-                    <div class="mb-5">
-                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Video Principal de la Ceremonia</h4>
-                        <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
-                            <?php 
-                                $v_id = '';
-                                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $grad['video_url'], $matches)) { $v_id = $matches[1]; }
-                            ?>
-                            <iframe src="https://www.youtube.com/embed/<?php echo $v_id; ?>" allowfullscreen></iframe>
+<div class="container mt-5">
+    <div class="row g-4">
+        <div class="col-lg-7 col-md-12">
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.php">Inicio</a></li>
+                    <li class="breadcrumb-item"><a href="graduaciones.php">Graduaciones</a></li>
+                    <li class="breadcrumb-item active text-primary">Detalles</li>
+                </ol>
+            </nav>
+            <h2 class="fw-bold mb-3" style="color: #07609c;"><i class="fa fa-graduation-cap me-3"></i><?php echo htmlspecialchars($grad['title']); ?></h2>
+            <p class="lead text-muted"><?php echo nl2br(htmlspecialchars($grad['synopsis'])); ?></p>
+            
+            <hr class="my-4">
+            
+            <!-- Photo Gallery Section -->
+            <?php if (!empty($photos)): ?>
+                <h4 class="mb-3 text-primary"><i class="fa fa-images me-2"></i>Galería de Fotos</h4>
+                <div class="row g-3">
+                    <?php foreach ($photos as $photo): ?>
+                        <div class="col-lg-4 col-md-6">
+                            <a href="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" data-lightbox="graduation-gallery" class="d-block shadow-sm rounded overflow-hidden photo-item">
+                                <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" class="img-fluid" alt="Foto de graduación" style="height: 180px; width: 100%; object-fit: cover;">
+                            </a>
                         </div>
-                    </div>
-                <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
 
-                <!-- Extra Videos (from attachments) -->
-                <?php if (!empty($extra_videos)): ?>
-                    <div class="mb-5">
-                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Otros Videos de la Ceremonia</h4>
-                        <div class="row g-3">
-                            <?php foreach ($extra_videos as $video): ?>
-                                <div class="col-md-6">
-                                    <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
-                                        <?php 
-                                            $ev_id = '';
-                                            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video, $matches)) { $ev_id = $matches[1]; }
-                                        ?>
-                                        <iframe src="https://www.youtube.com/embed/<?php echo $ev_id; ?>" allowfullscreen></iframe>
-                                    </div>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <!-- PDF Files Section -->
-                <?php if (!empty($pdfs)): ?>
-                    <div class="mb-5 bg-light p-4 rounded">
-                        <h4 class="mb-3"><i class="fa fa-file-pdf text-danger me-2"></i>Documentos Descargables</h4>
-                        <div class="row">
-                            <?php foreach ($pdfs as $pdf): ?>
-                                <div class="col-md-4 mb-2">
-                                    <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf); ?>" target="_blank" class="btn btn-outline-danger w-100 text-start">
-                                        <i class="fa fa-download me-2"></i> Ver documento PDF
-                                    </a>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-                <?php endif; ?>
-
-                <!-- Photo Gallery Section -->
-                <?php if (!empty($photos)): ?>
-                    <h4 class="mb-3"><i class="fa fa-images text-primary me-2"></i>Galería de Fotos</h4>
-                    <div class="row g-3">
-                        <?php foreach ($photos as $photo): ?>
-                            <div class="col-lg-3 col-md-4 col-sm-6">
-                                <a href="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" data-lightbox="graduation-gallery" class="d-block shadow-sm rounded overflow-hidden photo-item">
-                                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" class="img-fluid" alt="Foto de graduación" style="height: 200px; width: 100%; object-fit: cover;">
-                                </a>
+            <!-- Extra Videos (if any) -->
+            <?php if (count($extra_videos) > ($grad['video_url'] ? 0 : 1)): ?>
+                <h4 class="mt-5 mb-3 text-primary"><i class="fab fa-youtube me-2"></i>Más Videos</h4>
+                <div class="row g-3">
+                    <?php foreach ($extra_videos as $index => $video): 
+                        if ($youtube_url === $video && $index === 0) continue; // Skip main video
+                        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $video, $v_match)):
+                        ?>
+                        <div class="col-md-6">
+                            <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
+                                <iframe src="https://www.youtube.com/embed/<?php echo $v_match[1]; ?>" allowfullscreen></iframe>
                             </div>
-                        <?php endforeach; ?>
+                        </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
+        <div class="col-lg-4 offset-lg-1 col-md-12">
+            <div class="card shadow-sm border-0 sticky-top rounded-custom overflow-hidden" style="top: 100px;">
+                <?php if (isset($youtube_id)): ?>
+                    <div class="ratio ratio-16x9">
+                        <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video de graduación" allowfullscreen></iframe>
                     </div>
+                <?php elseif (!empty($grad['main_image'])): ?>
+                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($grad['main_image']); ?>" class="card-img-top" alt="Portada de graduación">
+                <?php else: ?>
+                    <img src="img/carousel-1.jpg" class="card-img-top" alt="CEFI">
                 <?php endif; ?>
+                
+                <div class="card-body">
+                    <h5 class="card-title">Recursos del evento</h5>
+                    
+                    <?php if (empty($pdfs)): ?>
+                        <p class="card-text small text-muted">No hay documentos adjuntos disponibles.</p>
+                    <?php else: ?>
+                        <div class="d-grid gap-2">
+                            <?php foreach ($pdfs as $pdf): ?>
+                                <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf); ?>" target="_blank" class="btn btn-outline-primary d-flex justify-content-between align-items-center">
+                                    <span><i class="fa fa-file-pdf me-2"></i> Documento PDF</span>
+                                    <span class="badge bg-secondary">Descargar</span>
+                                </a>
+                            <?php endforeach; ?>
+                        </div>
+                    <?php endif; ?>
+                      
+                    <hr>
+                    <?php 
+                    $whatsapp_msg = urlencode("Hola, me gustaría solicitar más información sobre la graduación: " . $grad['title']);
+                    ?>
+                    <a href="https://wa.me/50689929180?text=<?php echo $whatsapp_msg; ?>" class="btn btn-success btn-lg w-100" target="_blank">Consultar por WhatsApp</a>
+                </div>
+                <div class="card-footer text-center bg-white border-0">
+                    <small class="text-muted">Centro Educativo de Formación Integral</small>
+                </div>
             </div>
         </div>
     </div>
@@ -133,10 +150,5 @@ try {
 <!-- Lightbox2 for gallery -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
-
-<style>
-.photo-item { transition: transform 0.3s ease; }
-.photo-item:hover { transform: scale(1.05); z-index: 10; }
-</style>
 
 <?php include 'footer.php'; ?>
