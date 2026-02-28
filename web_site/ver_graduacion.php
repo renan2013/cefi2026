@@ -14,10 +14,21 @@ try {
         exit;
     }
 
-    // 2. Fetch photos from graduaciones_attachments table
-    $stmt_photos = $pdo->prepare("SELECT value as file_path FROM graduaciones_attachments WHERE id_graduacion = ? AND type = 'gallery_image' ORDER BY id_attachment ASC");
-    $stmt_photos->execute([$id]);
-    $photos = $stmt_photos->fetchAll();
+    // 2. Fetch ALL attachments (Photos, Videos, PDFs)
+    $stmt_att = $pdo->prepare("SELECT type, value FROM graduaciones_attachments WHERE id_graduacion = ? ORDER BY id_attachment ASC");
+    $stmt_att->execute([$id]);
+    $all_attachments = $stmt_att->fetchAll();
+
+    // Organize attachments by type
+    $photos = [];
+    $extra_videos = [];
+    $pdfs = [];
+
+    foreach ($all_attachments as $att) {
+        if ($att['type'] === 'gallery_image') $photos[] = $att['value'];
+        elseif ($att['type'] === 'youtube') $extra_videos[] = $att['value'];
+        elseif ($att['type'] === 'pdf') $pdfs[] = $att['value'];
+    }
 
 } catch (PDOException $e) {
     die("Error al cargar detalles de la graduación: " . $e->getMessage());
@@ -51,18 +62,52 @@ try {
                 <h1 class="mb-4"><?php echo htmlspecialchars($grad['title']); ?></h1>
                 <p class="mb-4"><?php echo nl2br(htmlspecialchars($grad['synopsis'])); ?></p>
                 
+                <!-- Main Video (from table field) -->
                 <?php if (!empty($grad['video_url'])): ?>
-                    <!-- Video Section -->
                     <div class="mb-5">
-                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Video de la Ceremonia</h4>
+                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Video Principal de la Ceremonia</h4>
                         <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
                             <?php 
-                                $video_id = '';
-                                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $grad['video_url'], $matches)) {
-                                    $video_id = $matches[1];
-                                }
+                                $v_id = '';
+                                if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $grad['video_url'], $matches)) { $v_id = $matches[1]; }
                             ?>
-                            <iframe src="https://www.youtube.com/embed/<?php echo $video_id; ?>" allowfullscreen></iframe>
+                            <iframe src="https://www.youtube.com/embed/<?php echo $v_id; ?>" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- Extra Videos (from attachments) -->
+                <?php if (!empty($extra_videos)): ?>
+                    <div class="mb-5">
+                        <h4 class="mb-3"><i class="fab fa-youtube text-danger me-2"></i>Otros Videos de la Ceremonia</h4>
+                        <div class="row g-3">
+                            <?php foreach ($extra_videos as $video): ?>
+                                <div class="col-md-6">
+                                    <div class="ratio ratio-16x9 shadow rounded overflow-hidden">
+                                        <?php 
+                                            $ev_id = '';
+                                            if (preg_match('/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/', $video, $matches)) { $ev_id = $matches[1]; }
+                                        ?>
+                                        <iframe src="https://www.youtube.com/embed/<?php echo $ev_id; ?>" allowfullscreen></iframe>
+                                    </div>
+                                </div>
+                            <?php endforeach; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
+                <!-- PDF Files Section -->
+                <?php if (!empty($pdfs)): ?>
+                    <div class="mb-5 bg-light p-4 rounded">
+                        <h4 class="mb-3"><i class="fa fa-file-pdf text-danger me-2"></i>Documentos Descargables</h4>
+                        <div class="row">
+                            <?php foreach ($pdfs as $pdf): ?>
+                                <div class="col-md-4 mb-2">
+                                    <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf); ?>" target="_blank" class="btn btn-outline-danger w-100 text-start">
+                                        <i class="fa fa-download me-2"></i> Ver documento PDF
+                                    </a>
+                                </div>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -73,8 +118,8 @@ try {
                     <div class="row g-3">
                         <?php foreach ($photos as $photo): ?>
                             <div class="col-lg-3 col-md-4 col-sm-6">
-                                <a href="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo['file_path']); ?>" data-lightbox="graduation-gallery" class="d-block shadow-sm rounded overflow-hidden photo-item">
-                                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo['file_path']); ?>" class="img-fluid" alt="Foto de graduación" style="height: 200px; width: 100%; object-fit: cover;">
+                                <a href="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" data-lightbox="graduation-gallery" class="d-block shadow-sm rounded overflow-hidden photo-item">
+                                    <img src="../classbox/public/uploads/images/<?php echo htmlspecialchars($photo); ?>" class="img-fluid" alt="Foto de graduación" style="height: 200px; width: 100%; object-fit: cover;">
                                 </a>
                             </div>
                         <?php endforeach; ?>
@@ -90,13 +135,8 @@ try {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
 <style>
-.photo-item {
-    transition: transform 0.3s ease;
-}
-.photo-item:hover {
-    transform: scale(1.05);
-    z-index: 10;
-}
+.photo-item { transition: transform 0.3s ease; }
+.photo-item:hover { transform: scale(1.05); z-index: 10; }
 </style>
 
 <?php include 'footer.php'; ?>
