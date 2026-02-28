@@ -134,13 +134,17 @@
 .navbar-light .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link.active,
 .navbar-light .navbar-nav .nav-item.dropdown:hover > .nav-link,
-.navbar-light .navbar-nav .nav-link.show {
+.navbar-light .navbar-nav .nav-link.show,
+.navbar-light .navbar-nav .dropdown-toggle:hover,
+.navbar-light .navbar-nav .dropdown-toggle:focus {
     color: var(--color-acento-claro) !important;
 }
 
 .navbar-light.sticky-top .nav-link:hover,
 .navbar-light.sticky-top .nav-item.dropdown:hover > .nav-link,
-.navbar-light.sticky-top .nav-link.show {
+.navbar-light.sticky-top .nav-link.show,
+.navbar-light.sticky-top .dropdown-toggle:hover,
+.navbar-light.sticky-top .dropdown-toggle:focus {
     color: var(--color-acento-claro) !important;
 }
 
