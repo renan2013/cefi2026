@@ -26,9 +26,8 @@
                         <div class="testimonial-item text-center px-3">
                             <!-- Video Player Section -->
                             <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; background: #000;">
-                                <div class="ratio ratio-9x16" style="background: #000;">
+                                <div class="custom-ratio-9-16">
                                 <?php 
-                                    $video_data = trim($test['video_iframe']);
                                     // 1. Detectar si es un enlace de Drive
                                     if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
                                         if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
@@ -37,7 +36,7 @@
                                             if (preg_match('/resourcekey=([^\?&]+)/', $video_data, $rk_matches)) {
                                                 $preview_url .= "?resourcekey=" . $rk_matches[1];
                                             }
-                                            echo '<iframe src="' . $preview_url . '" style="border:none;" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                                            echo '<iframe src="' . $preview_url . '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
                                         }
                                     } 
                                     // 2. Si ya es un iframe
@@ -67,8 +66,38 @@
 </div>
 
 <style>
+/* Contenedor responsivo manual para 9:16 (Videos verticales de celular) */
+.custom-ratio-9-16 {
+    position: relative;
+    width: 100%;
+    padding-top: 177.77%; /* (16 / 9) * 100 */
+    background: #000;
+}
+.custom-ratio-9-16 iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border: none;
+}
 .testimonial-video { background-color: #000; }
-.testimonial-video iframe { width: 100% !important; height: 100% !important; border: none; }
 .testimonial-carousel .owl-dots { margin-top: 30px; }
+
+/* Estilo para las flechas del carrusel */
+.testimonial-carousel .owl-nav {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+}
+.testimonial-carousel .owl-nav button {
+    font-size: 20px !important;
+    color: var(--primary) !important;
+    transition: 0.3s;
+}
+.testimonial-carousel .owl-nav button:hover {
+    color: #000 !important;
+}
 </style>
 <!-- Testimonial End -->
