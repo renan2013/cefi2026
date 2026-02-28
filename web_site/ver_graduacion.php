@@ -14,8 +14,8 @@ try {
         exit;
     }
 
-    // 2. Fetch photos from graduaciones_fotos table
-    $stmt_photos = $pdo->prepare("SELECT file_path FROM graduaciones_fotos WHERE id_graduacion = ? ORDER BY display_order ASC");
+    // 2. Fetch photos from graduaciones_attachments table
+    $stmt_photos = $pdo->prepare("SELECT value as file_path FROM graduaciones_attachments WHERE id_graduacion = ? AND type = 'gallery_image' ORDER BY id_attachment ASC");
     $stmt_photos->execute([$id]);
     $photos = $stmt_photos->fetchAll();
 
