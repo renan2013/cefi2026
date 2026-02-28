@@ -21,6 +21,7 @@ try {
     <thead>
         <tr>
             <th>Nombre</th>
+            <th>Tipo</th>
             <th>Profesión</th>
             <th>Comentario</th>
             <th>Acciones</th>
@@ -29,12 +30,19 @@ try {
     <tbody>
         <?php if (empty($testimonios)): ?>
             <tr>
-                <td colspan="4" style="text-align:center;">No hay testimonios registrados.</td>
+                <td colspan="5" style="text-align:center;">No hay testimonios registrados.</td>
             </tr>
         <?php else: ?>
             <?php foreach ($testimonios as $t): ?>
                 <tr>
                     <td><strong><?php echo htmlspecialchars($t['nombre']); ?></strong></td>
+                    <td>
+                        <?php if (!empty($t['video_iframe'])): ?>
+                            <span class="badge bg-primary" style="padding: 3px 6px; border-radius: 4px; color: white; font-size: 0.8em; background-color: #007bff;">VIDEO</span>
+                        <?php else: ?>
+                            <span class="badge bg-secondary" style="padding: 3px 6px; border-radius: 4px; color: white; font-size: 0.8em; background-color: #6c757d;">FOTO</span>
+                        <?php endif; ?>
+                    </td>
                     <td><?php echo htmlspecialchars($t['profesion']); ?></td>
                     <td><?php echo htmlspecialchars(substr($t['comentario'], 0, 50)) . '...'; ?></td>
                     <td class="actions">
