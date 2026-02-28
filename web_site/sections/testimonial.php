@@ -8,7 +8,6 @@
         <div class="owl-carousel testimonial-carousel position-relative">
             <?php
             try {
-                // Fetch ONLY testimonials with video
                 $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' ORDER BY created_at DESC");
                 $testimonios_video = $stmt_test->fetchAll();
 
@@ -22,34 +21,35 @@
                 <?php else:
                     foreach ($testimonios_video as $test):
                         $video_data = trim($test['video_iframe']);
+                        $preview_url = "";
+                        
+                        // Extraer URL para el Modal
+                        if (strpos($video_data, 'drive.google.com') !== false) {
+                            if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
+                                $drive_id = $matches[1];
+                                $preview_url = "https://drive.google.com/file/d/" . $drive_id . "/preview";
+                                if (preg_match('/resourcekey=([^\?&]+)/', $video_data, $rk_matches)) {
+                                    $preview_url .= "?resourcekey=" . $rk_matches[1];
+                                }
+                            }
+                        } elseif (preg_match('/src=["\']([^"\']+)["\']/', $video_data, $src_matches)) {
+                            $preview_url = $src_matches[1];
+                        }
                         ?>
                         <div class="testimonial-item text-center px-3">
-                            <!-- Video Player Section -->
-                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden" style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; background: #000;">
+                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
+                                 onclick="openVideoModal('<?php echo $preview_url; ?>')"
+                                 style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
+                                
                                 <div class="custom-ratio-9-16">
-                                <?php 
-                                    // 1. Detectar si es un enlace de Drive
-                                    if (strpos($video_data, 'drive.google.com') !== false && strpos($video_data, '<iframe') === false) {
-                                        if (preg_match('/(?:file\/d\/|id=)([^\/\?&]+)/', $video_data, $matches)) {
-                                            $drive_id = $matches[1];
-                                            $preview_url = "https://drive.google.com/file/d/" . $drive_id . "/preview";
-                                            if (preg_match('/resourcekey=([^\?&]+)/', $video_data, $rk_matches)) {
-                                                $preview_url .= "?resourcekey=" . $rk_matches[1];
-                                            }
-                                            echo '<iframe src="' . $preview_url . '" allow="autoplay; fullscreen" allowfullscreen></iframe>';
-                                        }
-                                    } 
-                                    // 2. Si ya es un iframe
-                                    elseif (strpos($video_data, '<iframe') !== false) {
-                                        $clean_iframe = preg_replace('/width=["\']\d+["\']/', 'width="100%"', $video_data);
-                                        $clean_iframe = preg_replace('/height=["\']\d+["\']/', 'height="100%"', $clean_iframe);
-                                        echo $clean_iframe;
-                                    }
-                                ?>
+                                    <iframe src="<?php echo $preview_url; ?>" style="pointer-events: none;"></iframe>
+                                    <!-- Overlay para capturar el click y mostrar icono de play -->
+                                    <div class="video-overlay-play">
+                                        <i class="fa fa-play-circle text-white" style="font-size: 3rem; opacity: 0.8;"></i>
+                                    </div>
                                 </div>
                             </div>
                             
-                            <!-- Student Info Section -->
                             <div class="testimonial-info">
                                 <h5 class="mb-1 fw-bold text-dark"><?php echo htmlspecialchars($test['nombre']); ?></h5>
                                 <span class="text-primary text-uppercase small fw-bold"><?php echo htmlspecialchars($test['profesion']); ?></span>
@@ -65,12 +65,44 @@
     </div>
 </div>
 
+<!-- Video Modal -->
+<div class="modal fade" id="testimonialVideoModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" style="max-width: 500px;">
+        <div class="modal-content bg-transparent border-0">
+            <div class="modal-header border-0 p-0 mb-2">
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="custom-ratio-9-16 shadow-lg">
+                    <iframe id="modalIframe" src="" allow="autoplay; fullscreen" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function openVideoModal(url) {
+    if(!url) return;
+    const modal = new bootstrap.Modal(document.getElementById('testimonialVideoModal'));
+    const iframe = document.getElementById('modalIframe');
+    // Añadimos autoplay para que empiece al abrir
+    const finalUrl = url.includes('?') ? url + '&autoplay=1' : url + '?autoplay=1';
+    iframe.src = finalUrl;
+    modal.show();
+}
+
+// Limpiar el iframe al cerrar para detener el video
+document.getElementById('testimonialVideoModal').addEventListener('hidden.bs.modal', function () {
+    document.getElementById('modalIframe').src = '';
+});
+</script>
+
 <style>
-/* Contenedor responsivo manual para 9:16 (Videos verticales de celular) */
 .custom-ratio-9-16 {
     position: relative;
     width: 100%;
-    padding-top: 177.77%; /* (16 / 9) * 100 */
+    padding-top: 177.77%;
     background: #000;
 }
 .custom-ratio-9-16 iframe {
@@ -81,23 +113,31 @@
     height: 100% !important;
     border: none;
 }
-.testimonial-video { background-color: #000; }
-.testimonial-carousel .owl-dots { margin-top: 30px; }
-
-/* Estilo para las flechas del carrusel */
+.video-overlay-play {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s;
+    z-index: 10;
+}
+.video-clickable:hover .video-overlay-play {
+    background: rgba(0,0,0,0.4);
+}
+.video-clickable:hover .video-overlay-play i {
+    transform: scale(1.2);
+}
 .testimonial-carousel .owl-nav {
     display: flex;
     justify-content: center;
     margin-top: 20px;
     gap: 15px;
 }
-.testimonial-carousel .owl-nav button {
-    font-size: 20px !important;
-    color: var(--primary) !important;
-    transition: 0.3s;
-}
-.testimonial-carousel .owl-nav button:hover {
-    color: #000 !important;
-}
+.testimonial-carousel .owl-nav button { font-size: 20px !important; color: var(--primary) !important; }
 </style>
 <!-- Testimonial End -->
