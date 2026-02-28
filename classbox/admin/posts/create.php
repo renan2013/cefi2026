@@ -169,7 +169,7 @@ require_once __DIR__ . '/../partials/header.php';
                 <li>
                     <span><?php echo htmlspecialchars($category['name']); ?></span>
                     <div class="category-actions">
-                        <a href="category_attachments.php?id_category=<?php echo $category['id_category']; ?>" class="btn-attach"><i class="fa-solid fa-paperclip"></i> Adjuntos</a>
+                        <!-- <a href="category_attachments.php?id_category=<?php echo $category['id_category']; ?>" class="btn-attach"><i class="fa-solid fa-paperclip"></i> Adjuntos</a> -->
                         <button type="button" class="btn-edit" onclick="editCategory(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Editar</button>
                         <button type="button" class="btn-delete" onclick="confirmDelete(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Eliminar</button>
                     </div>
