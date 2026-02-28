@@ -152,11 +152,8 @@
                                     echo '<a href="ver_graduacion.php?id=' . $grad['id_post'] . '" class="dropdown-item">' . htmlspecialchars($grad['title']) . '</a>';
                                 }
                             } elseif ($is_categories_menu) {
-                                // For Categorías, list CATEGORIES excluding graduations
+                                // For Categorías, list ALL CATEGORIES without restrictions
                                 $sql_cat = "SELECT DISTINCT c.id_category, c.name FROM categories c 
-                                            WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
-                                            AND LOWER(c.name) NOT LIKE '%diplomado%' 
-                                            AND LOWER(c.name) NOT LIKE '%galería%'
                                             ORDER BY c.name ASC";
                                 $stmt_cat = $pdo->query($sql_cat);
                                 while ($category = $stmt_cat->fetch()) {
