@@ -8,11 +8,11 @@ try {
 ?>
 
 <style>
-    /* Proporción 1:1 para ganar anchura */
+    /* Proporción para la miniatura en el index */
     .custom-ratio-9-16 { 
         position: relative; 
         width: 100%; 
-        padding-top: 100%; /* Proporción 1:1 */
+        padding-top: 100%; /* Proporción 1:1 para ganar anchura */
         background: #000; 
     }
     .custom-ratio-9-16 iframe { 
@@ -22,13 +22,26 @@ try {
         width: 100% !important; 
         height: 100% !important; 
         border: none; 
-        object-fit: cover; /* Asegura que llene el espacio sin deformar */
+        object-fit: cover;
     }
     .video-overlay-play { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; transition: 0.3s; z-index: 10; }
     .video-clickable:hover .video-overlay-play { background: rgba(0,0,0,0.5); }
     .video-clickable:hover .video-overlay-play i { transform: scale(1.2); }
     .testimonial-carousel .owl-nav { display: flex; justify-content: center; margin-top: 20px; gap: 15px; }
     .testimonial-carousel .owl-nav button { font-size: 20px !important; color: #007bff !important; }
+    
+    /* Asegurar que la info esté siempre DEBAJO del video */
+    .testimonial-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+    .testimonial-info {
+        margin-top: 15px;
+        width: 100%;
+        text-align: center;
+    }
 </style>
 
 <!-- Testimonial Start -->
@@ -63,9 +76,12 @@ try {
                     
                     if (empty($final_url)) continue;
                 ?>
-                                            <div class="testimonial-video mb-4 shadow rounded overflow-hidden video-clickable" 
-                                                 data-video-url="<?php echo htmlspecialchars($final_url); ?>"
-                                                 style="max-width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">                            
+                    <div class="testimonial-item text-center px-3">
+                        <!-- Bloque del Video -->
+                        <div class="testimonial-video mb-2 shadow rounded overflow-hidden video-clickable" 
+                             data-video-url="<?php echo htmlspecialchars($final_url); ?>"
+                             style="width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
+                            
                             <div class="custom-ratio-9-16">
                                 <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
                                 <div class="video-overlay-play">
@@ -73,6 +89,7 @@ try {
                                 </div>
                             </div>
                         </div>
+                        <!-- Bloque de Información (Forzado debajo) -->
                         <div class="testimonial-info">
                             <h5 class="mb-1 fw-bold text-dark"><?php echo htmlspecialchars($test['nombre']); ?></h5>
                             <span class="text-primary text-uppercase small fw-bold"><?php echo htmlspecialchars($test['profesion']); ?></span>
@@ -92,7 +109,6 @@ try {
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" style="background-color: #fff; opacity: 1; padding: 10px; border-radius: 50%;"></button>
             </div>
             <div class="modal-body p-0">
-                <!-- El modal mantiene la proporción original 9:16 para ver el video completo -->
                 <div style="position: relative; width: 100%; padding-top: 177.77%; background: #000;" class="shadow-lg">
                     <iframe id="modalIframe" src="" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;" allow="autoplay; fullscreen" allowfullscreen></iframe>
                 </div>
