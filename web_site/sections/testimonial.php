@@ -1,10 +1,15 @@
 <?php
 try {
-    // Fetch unique testimonials with video, LIMIT to 6
+    // 1. Contar el total de testimonios únicos con video
+    $stmt_count = $pdo->query("SELECT COUNT(DISTINCT video_iframe) as total FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != ''");
+    $total_testimonios = $stmt_count->fetch()['total'];
+
+    // 2. Obtener solo los últimos 6 para la página de inicio
     $stmt_test = $pdo->query("SELECT * FROM testimonios WHERE video_iframe IS NOT NULL AND video_iframe != '' GROUP BY video_iframe, nombre ORDER BY created_at DESC LIMIT 6");
     $testimonios_video = $stmt_test->fetchAll();
 } catch (PDOException $e) {
     $testimonios_video = [];
+    $total_testimonios = 0;
 }
 ?>
 
@@ -55,7 +60,6 @@ try {
                 <p class="mb-0 text-muted">Próximamente compartiremos los videos de nuestros alumnos.</p>
             </div>
         <?php else: ?>
-            <!-- Cuadrícula estática de 6 videos -->
             <div class="row g-4">
                 <?php foreach ($testimonios_video as $test):
                     $video_data = trim($test['video_iframe']);
@@ -76,19 +80,17 @@ try {
                 ?>
                     <div class="col-lg-4 col-md-6">
                         <div class="testimonial-item text-center">
-                            <!-- Bloque del Video -->
                             <div class="testimonial-video mb-2 shadow rounded overflow-hidden video-clickable" 
                                  data-video-url="<?php echo htmlspecialchars($final_url); ?>"
                                  style="width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
                                 
                                 <div class="custom-ratio-9-16">
                                     <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
+                                    <!-- Overlay para capturar el click -->
                                     <div class="video-overlay-play">
-                                        <i class="fa fa-play-circle text-white" style="font-size: 3.5rem;"></i>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Bloque de Información -->
                             <div class="testimonial-info">
                                 <h5 class="mb-1 fw-bold text-dark"><?php echo htmlspecialchars($test['nombre']); ?></h5>
                                 <span class="text-primary text-uppercase small fw-bold"><?php echo htmlspecialchars($test['profesion']); ?></span>
@@ -97,6 +99,13 @@ try {
                     </div>
                 <?php endforeach; ?>
             </div>
+
+            <?php if ($total_testimonios > 6): ?>
+                <div class="text-center mt-5">
+                    <a href="testimonial.php" class="btn btn-primary py-3 px-5">Ver todos los testimonios</a>
+                </div>
+            <?php endif; ?>
+
         <?php endif; ?>
     </div>
 </div>
