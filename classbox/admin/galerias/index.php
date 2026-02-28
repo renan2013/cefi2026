@@ -8,7 +8,7 @@ require_once __DIR__ . '/../../config/database.php';
 try {
     $stmt = $pdo->prepare("
         SELECT g.id_graduacion, g.title, g.created_at, 
-        (SELECT COUNT(*) FROM graduaciones_fotos WHERE id_graduacion = g.id_graduacion) as photo_count
+        (SELECT COUNT(*) FROM graduaciones_attachments WHERE id_graduacion = g.id_graduacion AND type = 'gallery_image') as photo_count
         FROM graduaciones g
         ORDER BY g.created_at DESC
     ");
