@@ -33,9 +33,21 @@
         height: 100% !important; 
         border: none; 
     }
-    .video-overlay-play { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.3); display: flex; justify-content: center; align-items: center; transition: 0.3s; z-index: 10; }
-    .video-clickable:hover .video-overlay-play { background: rgba(0,0,0,0.5); }
-    .video-clickable:hover .video-overlay-play i { transform: scale(1.2); }
+    /* Overlay invisible solo para capturar el click */
+    .video-overlay-play { 
+        position: absolute; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background: rgba(0,0,0,0.1); 
+        display: flex; 
+        justify-content: center; 
+        align-items: center; 
+        transition: 0.3s; 
+        z-index: 10; 
+    }
+    .video-clickable:hover .video-overlay-play { background: rgba(0,0,0,0.3); }
     
     .testimonial-item {
         display: flex;
@@ -86,13 +98,11 @@
                         <div class="testimonial-item text-center">
                             <div class="testimonial-video mb-2 shadow rounded overflow-hidden video-clickable" 
                                  data-video-url="<?php echo htmlspecialchars($final_url); ?>"
-                                 style="width: 280px; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
+                                 style="width: 350px; max-width: 100%; margin: 0 auto; border: 5px solid #fff; cursor: pointer; position: relative;">
                                 
                                 <div class="custom-ratio-9-16">
                                     <iframe src="<?php echo htmlspecialchars($final_url); ?>" style="pointer-events: none;"></iframe>
-                                    <!-- Overlay para capturar el click y centrar el icono -->
                                     <div class="video-overlay-play">
-                                        <i class="fa fa-play-circle text-white" style="font-size: 4rem; opacity: 0.9;"></i>
                                     </div>
                                 </div>
                             </div>
