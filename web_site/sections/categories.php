@@ -8,10 +8,13 @@
         <div class="row g-3">
             <?php
             try {
-                // Fetch all categories and count their posts
+                // Fetch all categories and count their REAL posts (excluding sliders)
                 $stmt_cats = $pdo->query("
                     SELECT c.id_category, c.name, c.image, 
-                    (SELECT COUNT(*) FROM posts p WHERE p.id_category = c.id_category) as total_posts
+                    (SELECT COUNT(*) FROM posts p 
+                     WHERE p.id_category = c.id_category 
+                     AND p.id_post NOT IN (SELECT id_post FROM attachments WHERE type = 'slider_image')
+                    ) as total_posts
                     FROM categories c
                     ORDER BY c.name ASC
                 ");
