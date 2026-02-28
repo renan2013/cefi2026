@@ -8,14 +8,11 @@
         <div class="row g-3">
             <?php
             try {
-                // Fetch categories excluding gallery types, and count their posts
+                // Fetch all categories and count their posts
                 $stmt_cats = $pdo->query("
                     SELECT c.id_category, c.name, c.image, 
                     (SELECT COUNT(*) FROM posts p WHERE p.id_category = c.id_category) as total_posts
                     FROM categories c
-                    WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
-                      AND LOWER(c.name) NOT LIKE '%diplomado%' 
-                      AND LOWER(c.name) NOT LIKE '%galería%'
                     ORDER BY c.name ASC
                 ");
                 $categories_home = $stmt_cats->fetchAll();
