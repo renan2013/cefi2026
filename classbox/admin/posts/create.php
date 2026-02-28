@@ -169,6 +169,7 @@ require_once __DIR__ . '/../partials/header.php';
                 <li>
                     <span><?php echo htmlspecialchars($category['name']); ?></span>
                     <div class="category-actions">
+                        <a href="category_attachments.php?id_category=<?php echo $category['id_category']; ?>" class="btn-attach"><i class="fa-solid fa-paperclip"></i> Adjuntos</a>
                         <button type="button" class="btn-edit" onclick="editCategory(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Editar</button>
                         <button type="button" class="btn-delete" onclick="confirmDelete(<?php echo $category['id_category']; ?>, '<?php echo addslashes($category['name']); ?>')">Eliminar</button>
                     </div>
@@ -264,6 +265,8 @@ function confirmDelete(id, name) {
     .btn-delete:hover { background-color: #c82333; }
     .btn-edit { background-color: #2D8FE2; color: white; padding: 5px 10px; border: none; border-radius: 4px; font-size: 0.9em; cursor: pointer; }
     .btn-edit:hover { background-color: #1A74D2; }
+    .btn-attach { background-color: #17a2b8; color: white !important; padding: 5px 10px; text-decoration: none; border-radius: 4px; font-size: 0.9em; display: inline-flex; align-items: center; gap: 5px; }
+    .btn-attach:hover { background-color: #138496; }
 </style>
 
 <!-- TinyMCE -->
