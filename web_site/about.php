@@ -51,11 +51,11 @@
                 <?php 
                 $valores = ["Excelencia académica", "Ética", "Puntualidad", "Honestidad", "Innovación", "Responsabilidad", "Respeto", "Emprendedurismo", "Transparencia"];
                 foreach($valores as $index => $valor):
-                    $delay = ($index * 0.1) % 0.5;
+                    $delay = ($index * 0.1);
                 ?>
                 <div class="col-lg-2 col-md-4 col-6 wow zoomIn" data-wow-delay="<?php echo $delay; ?>s">
                     <div class="bg-white rounded shadow-sm p-3 h-100 d-flex align-items-center justify-content-center">
-                        <h6 class="m-0 text-dark" style="font-size: 0.9rem;"><?php echo $valor; ?></h6>
+                        <h6 class="m-0 text-dark" style="font-size: 0.9rem;"><?php echo htmlspecialchars($valor); ?></h6>
                     </div>
                 </div>
                 <?php endforeach; ?>
@@ -76,14 +76,14 @@
                         <div class="btn-sm-square bg-primary text-white rounded-circle me-3"><i class="fa fa-sync"></i></div>
                         <div>
                             <h5 class="mb-2">Mejora Continua</h5>
-                            <p class="mb-0 text-muted">Constantemente nos encontramos en la búsqueda de nuevas herramientas tecnológicas, docentes con amplia experiencia y un personal administrativo con las competencias que se amolden a lo intrínseco y extrínseco del modelo CEFI.</p>
+                            <p class="mb-0 text-muted">Constantemente nos encontramos en la búsqueda de nuevas herramientas tecnológicas y docentes con amplia experiencia.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start">
                         <div class="btn-sm-square bg-primary text-white rounded-circle me-3"><i class="fa fa-globe"></i></div>
                         <div>
                             <h5 class="mb-2">Adaptación al cambio globalizado</h5>
-                            <p class="mb-0 text-muted">Debido a los cambios constantes que viven los actuales mercados nacionales e internacionales y las nuevas tendencias que parecen no detenerse en surgir, CEFI se adapta a nuevos modelos eficientes en educación continua y se apoya de herramientas tecnológicas.</p>
+                            <p class="mb-0 text-muted">CEFI se adapta a nuevos modelos eficientes en educación continua y se apoya de herramientas tecnológicas.</p>
                         </div>
                     </div>
                 </div>
@@ -91,15 +91,15 @@
                     <div class="d-flex align-items-start mb-4">
                         <div class="btn-sm-square bg-primary text-white rounded-circle me-3"><i class="fa fa-book-open"></i></div>
                         <div>
-                            <h5 class="mb-2">Programas de estudio acordes a la realidad</h5>
-                            <p class="mb-0 text-muted">Los cambios y la problemática mundial es analizada e implementada por nuestros docentes. Esto permite ajustar semana a semana los planes de estudio vs los acontecimientos nacionales e internacionales.</p>
+                            <h5 class="mb-2">Programas acordes a la realidad</h5>
+                            <p class="mb-0 text-muted">Los cambios y la problemática mundial es analizada e implementada por nuestros docentes semana a semana.</p>
                         </div>
                     </div>
                     <div class="d-flex align-items-start">
                         <div class="btn-sm-square bg-primary text-white rounded-circle me-3"><i class="fa fa-lightbulb"></i></div>
                         <div>
-                            <h5 class="mb-2">La resolución de problemas como estrategia</h5>
-                            <p class="mb-0 text-muted">Nuestros estudiantes desarrollan pensamiento crítico y criterio propio a través de la investigación como medio para la resolución de problemas y conflictos.</p>
+                            <h5 class="mb-2">Resolución de problemas</h5>
+                            <p class="mb-0 text-muted">Nuestros estudiantes desarrollan pensamiento crítico y criterio propio a través de la investigación.</p>
                         </div>
                     </div>
                 </div>
@@ -114,28 +114,20 @@
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
                     <h6 class="section-title bg-primary text-start text-white pe-3">Por qué elegirnos</h6>
                     <h1 class="text-white mb-4">Ventajas Competitivas</h1>
-                    <p class="mb-4">CEFI ofrece una oferta académica diseñada específicamente según las necesidades del mercado actual, con una estructura universitaria robusta.</p>
                     <div class="row g-3">
                         <?php 
-                        $ventajas = [
-                            "Desarrollo profesional del equipo docente",
-                            "Innovación curricular constante",
-                            "Instalaciones de primer nivel",
-                            "Estructura administrativa experta",
-                            "Alta calidad a precio accesible",
-                            "Herramientas digitales de primer nivel"
-                        ];
+                        $ventajas = ["Desarrollo profesional", "Innovación constante", "Instalaciones de nivel", "Estructura experta", "Alta calidad", "Herramientas digitales"];
                         foreach($ventajas as $v): ?>
                         <div class="col-sm-6">
-                            <p class="mb-0"><i class="fa fa-check text-white me-2"></i><?php echo $v; ?></p>
+                            <p class="mb-0"><i class="fa fa-check text-white me-2"></i><?php echo htmlspecialchars($v); ?></p>
                         </div>
                         <?php endforeach; ?>
                     </div>
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="bg-white rounded p-4 shadow text-dark">
+                    <div class="bg-white rounded p-4 shadow text-dark text-center">
                         <h5 class="mb-3 text-primary"><i class="fa fa-university me-2"></i>Estructura Universitaria</h5>
-                        <p class="mb-0">Nivel académico y administrativo con estructura universitaria aplicada al aprendizaje sincrónico y asincrónico.</p>
+                        <p class="mb-0">Nivel académico aplicado al aprendizaje sincrónico y asincrónico.</p>
                     </div>
                 </div>
             </div>
