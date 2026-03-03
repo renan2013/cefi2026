@@ -137,10 +137,11 @@
     
         <div class="container">
             <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid" src="img/2.png" alt="Logo CEFI" style="max-height: 100%; margin: auto; display: block;">
+                    <img class="img-fluid" src="img/2.png" alt="Logo CEFI" style="width: 100%; margin: auto; display: block;">
                 </div>
+                <br/>
                 <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid" src="img/1.JPG" alt="Logo CEFI" style="max-height: 100%; margin: auto; display: block;">
+                    <img class="img-fluid" src="img/1.JPG" alt="Logo CEFI" style="width: 100%; margin: auto; display: block;">
                 </div>
         </div>
     
