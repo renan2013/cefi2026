@@ -106,7 +106,7 @@ try {
                         <?php foreach ($youtube_attachments as $vid): 
                             $vid_url = $vid['value'];
                             $vid_id = null;
-                            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid_url, $match)) {
+                            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?|shorts)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid_url, $match)) {
                                 $vid_id = $match[1];
                             } elseif (strlen(trim($vid_url)) === 11) {
                                 $vid_id = trim($vid_url);
