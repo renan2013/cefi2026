@@ -26,14 +26,23 @@ try {
     $attachments = $stmt_attach->fetchAll();
 
     $pdf_attachments = array_filter($attachments, function($a) { return $a['type'] === 'pdf'; });
-    $youtube_video = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
-    $youtube_url = !empty($youtube_video) ? reset($youtube_video)['value'] : null;
-
+    $youtube_videos = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
+    
     $youtube_id = null;
-    // Process YouTube URL to embed format
-    if ($youtube_url) {
+    $youtube_url = null;
+
+    if (!empty($youtube_videos)) {
+        $first_video = reset($youtube_videos);
+        $youtube_url = $first_video['value'];
+        
+        // Process YouTube URL to embed format - Enhanced Regex
         if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
             $youtube_id = $match[1];
+        } else {
+            // Fallback: maybe the value is just the ID itself
+            if (strlen(trim($youtube_url)) === 11) {
+                $youtube_id = trim($youtube_url);
+            }
         }
     }
 
