@@ -23,11 +23,9 @@
                                 if ($is_gallery_menu) {
                                     $sql_cat_f .= " JOIN posts p ON c.id_category = p.id_category 
                                                   WHERE (LOWER(c.name) LIKE '%graduacion%' 
-                                                  OR LOWER(c.name) LIKE '%diplomado%' 
                                                   OR LOWER(c.name) LIKE '%galería%')";
                                 } else {
                                     $sql_cat_f .= " WHERE LOWER(c.name) NOT LIKE '%graduacion%' 
-                                                  AND LOWER(c.name) NOT LIKE '%diplomado%' 
                                                   AND LOWER(c.name) NOT LIKE '%galería%'";
                                 }
                                 $sql_cat_f .= " ORDER BY c.name ASC";

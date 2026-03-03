@@ -116,7 +116,7 @@
                     <h1 class="text-white mb-4">Ventajas Competitivas</h1>
                     <div class="row g-3">
                         <?php 
-                        $ventajas = ["Desarrollo profesional", "Innovación constante", "Instalaciones de nivel", "Estructura experta", "Alta calidad", "Herramientas digitales"];
+                        $ventajas = ["Desarrollo profesional", "Innovación constante", "Instalaciones de nivel", "Estructura experta", "Alta calidad", "Herramientas digitales", "Rigor", "Compromiso", "Resultados"];
                         foreach($ventajas as $v): ?>
                         <div class="col-sm-6">
                             <p class="mb-0"><i class="fa fa-check text-white me-2"></i><?php echo htmlspecialchars($v); ?></p>
