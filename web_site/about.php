@@ -135,8 +135,8 @@
     </div>
 
     <!-- Final Image Start -->
-    <div class="container-fluid p-0 mb-5">
-        <img class="img-fluid w-100 wow fadeInUp" data-wow-delay="0.1s" src="img/3.png" alt="Información CEFI">
+    <div class="container-xxl p-0 mb-5">
+        <img class="img-fluid w-100 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s" src="img/3.png" alt="Información CEFI">
     </div>
     <!-- Final Image End -->
 
