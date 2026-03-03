@@ -32,6 +32,10 @@
     <link href="css/style.css" rel="stylesheet">
 
     <style>
+        /* Navbar Adjustments */
+        .navbar {
+            z-index: 9999 !important;
+        }
         /* Navbar Mobile Adjustments */
         @media (max-width: 991px) {
             .navbar-brand {
