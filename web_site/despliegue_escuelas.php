@@ -31,9 +31,7 @@ try {
                     FROM posts p 
                     JOIN categories c ON p.id_category = c.id_category
                     WHERE p.id_category = ? 
-                    AND LOWER(c.name) NOT LIKE '%graduacion%' 
-                    AND LOWER(c.name) NOT LIKE '%diplomado%' 
-                    AND LOWER(c.name) NOT LIKE '%galería%'
+                    
                     ORDER BY p.created_at DESC
                 ");
                 $stmt_posts->execute([$id_category]);
