@@ -19,18 +19,16 @@ $sql = "
 ";
 
 $params = [];
-$where_clauses = [
-    "LOWER(c.name) NOT LIKE '%graduacion%'",
-    "LOWER(c.name) NOT LIKE '%diplomado%'",
-    "LOWER(c.name) NOT LIKE '%galería%'"
-];
+$where_clauses = [];
 
 if (!empty($search_query)) {
     $where_clauses[] = "(p.title LIKE ? OR p.content LIKE ? OR c.name LIKE ?)";
     $params = ['%' . $search_query . '%', '%' . $search_query . '%', '%' . $search_query . '%'];
 }
 
-$sql .= " WHERE " . implode(" AND ", $where_clauses);
+if (!empty($where_clauses)) {
+    $sql .= " WHERE " . implode(" AND ", $where_clauses);
+}
 $sql .= " ORDER BY p.created_at DESC";
 
 $stmt = $pdo->prepare($sql);
