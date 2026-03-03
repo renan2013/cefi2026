@@ -126,11 +126,22 @@
                 </div>
                 <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
                     <div class="bg-white rounded p-4 shadow text-dark text-center">
-                        <h5 class="mb-3 text-primary"><i class="fa fa-university me-2"></i>Estructura Universitaria</h5>
+                        <h5 class="mb-3 text-primary"><i class="fa fa-university me-2"></i>Centro Parauniversitario con Estructura Universitaria</h5>
                         <p class="mb-0">Nivel académico aplicado al aprendizaje sincrónico y asincrónico.</p>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+     <div class="container-xxl py-5 bg-primary text-white mb-5">
+        <div class="container">
+            <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <img class="img-fluid" src="img/2.png" alt="Logo CEFI" style="max-height: 100%; margin: auto; display: block;">
+                </div>
+                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s">
+                    <img class="img-fluid" src="img/1.JPG" alt="Logo CEFI" style="max-height: 100%; margin: auto; display: block;">
+                </div>
         </div>
     </div>
 
