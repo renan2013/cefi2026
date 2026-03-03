@@ -134,13 +134,16 @@
         </div>
     </div>
 
-    
+    <!-- Final Image Start -->
+    <div class="container-xxl py-5">
         <div class="container">
-            <div class="col-lg-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid" src="img/3.png" alt="Logo CEFI" style="width: 100%; margin: auto; display: block;">
+            <div class="row g-4">
+                <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
+                    <img class="img-fluid w-100 rounded shadow-sm" src="img/3.png" alt="Información CEFI">
                 </div>
-               
+            </div>
         </div>
-    
+    </div>
+    <!-- Final Image End -->
 
 <?php include 'footer.php'; ?>
