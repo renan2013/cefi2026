@@ -137,11 +137,7 @@
     <!-- Final Image Start -->
     <div class="container-xxl py-5">
         <div class="container">
-            <div class="row g-4">
-                <div class="col-12 wow fadeInUp" data-wow-delay="0.1s">
-                    <img class="img-fluid w-100 rounded shadow-sm" src="img/3.png" alt="Información CEFI">
-                </div>
-            </div>
+            <img class="img-fluid w-100 rounded shadow-sm wow fadeInUp" data-wow-delay="0.1s" src="img/3.png" alt="Información CEFI">
         </div>
     </div>
     <!-- Final Image End -->
