@@ -26,27 +26,9 @@ try {
     $attachments = $stmt_attach->fetchAll();
 
     $pdf_attachments = array_filter($attachments, function($a) { return $a['type'] === 'pdf'; });
-    $youtube_videos = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
-    
-    $youtube_id = null;
-    $youtube_url = null;
+    $youtube_attachments = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
 
-    if (!empty($youtube_videos)) {
-        $first_video = reset($youtube_videos);
-        $youtube_url = $first_video['value'];
-        
-        // Process YouTube URL to embed format - Enhanced Regex
-        if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $youtube_url, $match)) {
-            $youtube_id = $match[1];
-        } else {
-            // Fallback: maybe the value is just the ID itself
-            if (strlen(trim($youtube_url)) === 11) {
-                $youtube_id = trim($youtube_url);
-            }
-        }
-    }
-
-    // Determine fallback image if no video
+    // Determine fallback image
     $image_path = 'img/course-1.jpg'; // Default fallback
     if (!empty($post['main_image'])) {
         $main_img = $post['main_image'];
@@ -73,6 +55,9 @@ try {
     height: auto;
     border-radius: 10px;
 }
+.video-resource {
+    margin-bottom: 15px;
+}
 </style>
 
 <div class="container mt-5">
@@ -96,24 +81,41 @@ try {
 
         <div class="col-lg-4 offset-lg-1 col-md-12">
             <div class="card shadow-sm border-0 sticky-top rounded-custom overflow-hidden" style="top: 100px;">
-                <?php if ($youtube_id): ?>
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/<?php echo $youtube_id; ?>" title="Video del curso" allowfullscreen></iframe>
-                    </div>
-                <?php else: ?>
-                    <img src="<?php echo htmlspecialchars($image_path); ?>" class="card-img-top" alt="Imagen del curso">
-                <?php endif; ?>
+                <img src="<?php echo htmlspecialchars($image_path); ?>" class="card-img-top" alt="Imagen del curso">
                 
                 <div class="card-body">
-                    <h5 class="card-title">Recursos del curso</h5>
+                    <h5 class="card-title mb-3">Recursos disponibles</h5>
                     
-                    <?php if (empty($pdf_attachments)): ?>
-                        <p class="card-text small text-muted">No hay documentos adjuntos disponibles.</p>
+                    <!-- YouTube Videos -->
+                    <?php if (!empty($youtube_attachments)): ?>
+                        <?php foreach ($youtube_attachments as $vid): 
+                            $vid_url = $vid['value'];
+                            $vid_id = null;
+                            if (preg_match('%(?:youtube(?:-nocookie)?\.com/(?:[^/]+/.+/|(?:v|e(?:mbed)?)/|.*[?&]v=)|youtu\.be/)([^"&?/ ]{11})%i', $vid_url, $match)) {
+                                $vid_id = $match[1];
+                            } elseif (strlen(trim($vid_url)) === 11) {
+                                $vid_id = trim($vid_url);
+                            }
+
+                            if ($vid_id): ?>
+                                <div class="video-resource">
+                                    <div class="ratio ratio-16x9 shadow-sm rounded overflow-hidden mb-2">
+                                        <iframe src="https://www.youtube.com/embed/<?php echo $vid_id; ?>" title="Video" allowfullscreen></iframe>
+                                    </div>
+                                    <small class="text-muted d-block text-center mb-3"><i class="fab fa-youtube me-1"></i> Ver video explicativo</small>
+                                </div>
+                            <?php endif; ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+
+                    <!-- PDF Documents -->
+                    <?php if (empty($pdf_attachments) && empty($youtube_attachments)): ?>
+                        <p class="card-text small text-muted">No hay recursos adicionales disponibles.</p>
                     <?php else: ?>
                         <div class="d-grid gap-2">
                             <?php foreach ($pdf_attachments as $pdf): ?>
-                                <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf['value']); ?>" target="_blank" class="btn btn-outline-primary d-flex justify-content-between align-items-center">
-                                    <span><i class="bi bi-file-earmark-pdf"></i> <?php echo htmlspecialchars($pdf['file_name'] ?: 'Descargar PDF'); ?></span>
+                                <a href="../classbox/public/uploads/attachments/<?php echo htmlspecialchars($pdf['value']); ?>" target="_blank" class="btn btn-outline-primary d-flex justify-content-between align-items-center btn-sm">
+                                    <span><i class="fa fa-file-pdf me-2"></i> <?php echo htmlspecialchars($pdf['file_name'] ?: 'Descargar PDF'); ?></span>
                                     <span class="badge bg-secondary">PDF</span>
                                 </a>
                             <?php endforeach; ?>
