@@ -20,9 +20,13 @@ try {
         exit;
     }
 
-    // Fetch attachments (PDFs and YouTube videos)
-    $stmt_attach = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_post = ?");
-    $stmt_attach->execute([$id_post]);
+    // Fetch attachments (PDFs and YouTube videos) - From Post AND its Category
+    $stmt_attach = $pdo->prepare("
+        SELECT type, value, file_name FROM attachments WHERE id_post = ?
+        UNION ALL
+        SELECT type, value, file_name FROM attachments WHERE id_category = ?
+    ");
+    $stmt_attach->execute([$id_post, $post['id_category']]);
     $attachments = $stmt_attach->fetchAll();
 
     $pdf_attachments = array_filter($attachments, function($a) { return $a['type'] === 'pdf'; });
