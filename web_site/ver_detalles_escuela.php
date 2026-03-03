@@ -21,16 +21,27 @@ try {
     }
 
     // Fetch attachments (PDFs and YouTube videos) - From Post AND its Category
-    $stmt_attach = $pdo->prepare("
-        SELECT type, value, file_name FROM attachments WHERE id_post = ?
-        UNION ALL
-        SELECT type, value, file_name FROM attachments WHERE id_category = ?
-    ");
-    $stmt_attach->execute([$id_post, $post['id_category']]);
-    $attachments = $stmt_attach->fetchAll();
+    $all_attachments = [];
+    
+    // 1. Post attachments
+    $stmt_post_att = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_post = ?");
+    $stmt_post_att->execute([$id_post]);
+    $all_attachments = array_merge($all_attachments, $stmt_post_att->fetchAll());
 
-    $pdf_attachments = array_filter($attachments, function($a) { return $a['type'] === 'pdf'; });
-    $youtube_attachments = array_filter($attachments, function($a) { return $a['type'] === 'youtube'; });
+    // 2. Category attachments (if category exists)
+    if (!empty($post['id_category'])) {
+        $stmt_cat_att = $pdo->prepare("SELECT type, value, file_name FROM attachments WHERE id_category = ?");
+        $stmt_cat_att->execute([$post['id_category']]);
+        $all_attachments = array_merge($all_attachments, $stmt_cat_att->fetchAll());
+    }
+
+    $pdf_attachments = array_filter($all_attachments, function($a) { 
+        return strtolower(trim($a['type'])) === 'pdf'; 
+    });
+    
+    $youtube_attachments = array_filter($all_attachments, function($a) { 
+        return strtolower(trim($a['type'])) === 'youtube'; 
+    });
 
     // Determine fallback image
     $image_path = 'img/course-1.jpg'; // Default fallback
