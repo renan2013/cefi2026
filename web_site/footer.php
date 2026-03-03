@@ -65,14 +65,21 @@
                     <div class="row g-2 pt-2">
                         <?php
                         try {
-                            $stmt_grad_f = $pdo->query("SELECT a.value, a.id_post FROM attachments a INNER JOIN (SELECT id_post, MAX(id_attachment) as max_id FROM attachments WHERE type = 'gallery_image' GROUP BY id_post) as latest_pics ON a.id_attachment = latest_pics.max_id ORDER BY a.id_post DESC LIMIT 4");
-                            while ($grad_img = $stmt_grad_f->fetch()) { ?>
+                            $stmt_grad_f = $pdo->query("SELECT id_graduacion, main_image FROM graduaciones ORDER BY id_graduacion DESC LIMIT 4");
+                            $grad_count = 0;
+                            while ($grad_img = $stmt_grad_f->fetch()) { 
+                                $grad_count++;
+                                $img_src = !empty($grad_img['main_image']) ? '../classbox/public/uploads/images/' . $grad_img['main_image'] : 'img/course-1.jpg';
+                                ?>
                                 <div class="col-6">
-                                    <a href="ver_graduacion.php?id=<?php echo $grad_img['id_post']; ?>">
-                                        <img class="img-fluid bg-light p-1" src="../classbox/public/uploads/attachments/<?php echo $grad_img['value']; ?>" alt="Graduación" style="height: 80px; width: 100%; object-fit: cover;">
+                                    <a href="ver_graduacion.php?id=<?php echo $grad_img['id_graduacion']; ?>">
+                                        <img class="img-fluid bg-light p-1" src="<?php echo $img_src; ?>" alt="Graduación" style="height: 80px; width: 100%; object-fit: cover;">
                                     </a>
                                 </div>
                             <?php }
+                            if ($grad_count === 0) {
+                                echo '<p class="text-white-50 small">Próximamente más eventos.</p>';
+                            }
                         } catch (PDOException $e) { echo '<p class="text-danger small">Error galería</p>'; }
                         ?>
                     </div>
