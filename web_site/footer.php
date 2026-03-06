@@ -15,20 +15,30 @@
                         while ($menu_f = $stmt_footer->fetch()) {
                             echo '<a class="btn btn-link" href="' . htmlspecialchars($menu_f['url']) . '">' . htmlspecialchars($menu_f['title']) . '</a>';
                             
-                            $is_gallery_menu = ($menu_f['title'] === 'Galerías' || $menu_f['title'] === 'Graduaciones');
+                            $is_graduacion_menu = ($menu_f['title'] === 'Graduaciones');
+                            $is_gallery_menu = ($menu_f['title'] === 'Galerías');
 
-                            // Dynamic categories (Simplified - No name restrictions)
-                            if ($menu_f['title'] === 'Categorías' || $is_gallery_menu) {
-                                $sql_cat_f = "SELECT DISTINCT c.id_category, c.name FROM categories c";
-                                if ($is_gallery_menu) {
-                                    $sql_cat_f .= " JOIN posts p ON c.id_category = p.id_category";
-                                }
-                                $sql_cat_f .= " ORDER BY c.name ASC";
-                                
-                                $stmt_cat_f = $pdo->query($sql_cat_f);
+                            // Dynamic categories for 'Categorías'
+                            if ($menu_f['title'] === 'Categorías') {
+                                $stmt_cat_f = $pdo->query("SELECT id_category, name FROM categories ORDER BY name ASC");
                                 while ($cat_f = $stmt_cat_f->fetch()) {
-                                    $link = $is_gallery_menu ? 'graduaciones.php' : 'despliegue_escuelas.php';
-                                    echo '<a class="btn btn-link ps-4" href="' . $link . '?id=' . $cat_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($cat_f['name']) . '</a>';
+                                    echo '<a class="btn btn-link ps-4" href="despliegue_escuelas.php?id=' . $cat_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($cat_f['name']) . '</a>';
+                                }
+                            }
+
+                            // Dynamic items for 'Graduaciones'
+                            if ($is_graduacion_menu) {
+                                $stmt_grad_items = $pdo->query("SELECT id_graduacion, title FROM graduaciones ORDER BY created_at DESC LIMIT 5");
+                                while ($grad_item = $stmt_grad_items->fetch()) {
+                                    echo '<a class="btn btn-link ps-4" href="ver_graduacion.php?id=' . $grad_item['id_graduacion'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($grad_item['title']) . '</a>';
+                                }
+                            }
+
+                            // Dynamic categories for 'Galerías' (based on posts)
+                            if ($is_gallery_menu) {
+                                $stmt_gal_f = $pdo->query("SELECT DISTINCT c.id_category, c.name FROM categories c JOIN posts p ON c.id_category = p.id_category ORDER BY c.name ASC");
+                                while ($gal_f = $stmt_gal_f->fetch()) {
+                                    echo '<a class="btn btn-link ps-4" href="graduaciones.php?id=' . $gal_f['id_category'] . '" style="font-size: 0.9em;">- ' . htmlspecialchars($gal_f['name']) . '</a>';
                                 }
                             }
 
