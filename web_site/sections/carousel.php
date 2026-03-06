@@ -16,7 +16,7 @@
 
             foreach ($slides as $slide): 
                 // Determine correct detail page
-                $is_gallery = (stripos($slide['cat_name'], 'Graduaciones') !== false || stripos($slide['cat_name'], 'Diplomado') !== false || stripos($slide['cat_name'], 'Galería') !== false);
+                $is_gallery = (stripos($slide['cat_name'], 'Graduaciones') !== false || stripos($slide['cat_name'], 'Galería') !== false);
                 $detail_page = $is_gallery ? 'ver_graduacion.php' : 'ver_detalles_escuela.php';
                 ?>
                                         <div class="owl-carousel-item position-relative">
